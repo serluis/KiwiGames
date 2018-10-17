@@ -5,8 +5,9 @@ var PlayScene = require('./play_scene.js');
 
 var BootScene = {
   preload: function () {
-    // load here assets required for the loading screen
+    // aqui se ponen los recursos, imagenes y sonido
     this.game.load.image('preloader_bar', 'images/preloader_bar.png');
+    this.game.load.image('prueba', 'images/prueba.jpg');
   },
 
   create: function () {
