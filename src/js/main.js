@@ -7,7 +7,7 @@ var BootScene = {
   preload: function () {
     // aqui se ponen los recursos, imagenes y sonido
     this.game.load.image('preloader_bar', 'images/preloader_bar.png');
-    this.game.load.image('prueba', 'images/prueba.jpg');
+    
   },
 
   create: function () {
