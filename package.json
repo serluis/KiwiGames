@@ -3,7 +3,7 @@
   "name": "awesome-game",
   "author": "gituser",
   "license": "CC-BY-NC-SA-4.0",
-  "repository": "gituser/awesome-game",
+  "repository": "gituser/serluis",
   "dependencies": {
     "browserify": "*",
     "browser-sync": "*",
