@@ -1,14 +1,22 @@
 'use strict';
 
+var player = require('../player/player.js');
+//var bullet = require('../objects/bullet.js');
+
   var PlayScene = {
   	preload: function(){
   		this.game.load.image('prueba', 'images/prueba.jpg');
-  	};
+  	},
   create: function () {
     var logo = this.game.add.sprite(
       this.game.world.centerX, this.game.world.centerY, 'prueba');
-    logo.anchor.setTo(0.5, 0.5);
-  }
+		logo.anchor.setTo(0.5, 0.5);
+		
+		this.game.physics
+	},
+	update: function(){
+
+	}
 };
 
 module.exports = PlayScene;
