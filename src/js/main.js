@@ -6,7 +6,7 @@ var PlayScene = require('./play_scene.js');
 var BootScene = {
   preload: function () {
     // aqui se ponen los recursos, imagenes y sonido
-    this.game.load.image('preloader_bar', 'images/preloader_bar.png');
+    this.game.load.image('preloader_bar', '../assets/images/preloader_bar.png');
     
   },
 
@@ -23,7 +23,8 @@ var PreloaderScene = {
     this.load.setPreloadSprite(this.loadingBar);
 
     // TODO: load here the assets for the game
-    this.game.load.image('logo', 'images/phaser.png');
+    this.game.load.image('prueba', '../assets/images/prueba.jpg');
+    this.game.load.audio('musicaFondo','../assets/sounds/Pentagram.mp3');
   },
 
   create: function () {
