@@ -41,7 +41,6 @@ Killing Floor 2 www.killingfloor2.com, TripWire Studios.
 ﻿# KiwiGames 🥝
 
 
-Para este proyecto usaremos JavaScript y la librería de Phaser.
 
 
 ## Autores
@@ -81,3 +80,7 @@ Los enemigos serán cada vez más numerosos y variados tras cada ronda completad
 
 <img src="images/KillingFloor2.jpg" alt="KillingFloor2" width="200"/>
 
+Para este proyecto usaremos JavaScript y la librería de Phaser.
+
+Presentación hito 1:
+https://prezi.com/view/AC3ALxfsDxJTNtrBg9DO/

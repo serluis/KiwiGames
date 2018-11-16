@@ -3,12 +3,11 @@ var Entity = require('./gameObjects/entity');
 var Enemy = require ('./gameObjects/enemy');
 var PlayScene = {
 	preload: function(){
-  		//this.game.load.image('prueba', 'images/prueba.jpg');
+  		this.game.load.image('prueba', 'images/prueba.jpg');
   	},
   	create: function () {
-   // var logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'prueba');
+    var logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'prueba');
    var logo = this.game.add.existing(new Entity(this.game, 10, 10, 'prueba'));
-
    var enemy = this.game.add.existing(new Enemy(this.game, 10, 50, 'prueba'));
    this.game.add.audio('musicaFondo').loopFull(1);
    logo.anchor.setTo(0.5, 0.5);

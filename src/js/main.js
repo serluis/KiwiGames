@@ -1,7 +1,7 @@
 'use strict';
 
-var PlayScene = require('./play_scene.js');
-
+//var PlayScene = require('./play_scene.js');
+var MainMenu = require('./gameObjects/MainMenu.js');
 
 var BootScene = {
   preload: function () {
@@ -23,12 +23,16 @@ var PreloaderScene = {
     this.load.setPreloadSprite(this.loadingBar);
 
     // TODO: load here the assets for the game
-    this.game.load.image('prueba', '../assets/images/prueba.jpg');
-    this.game.load.audio('musicaFondo','../assets/sounds/Pentagram.mp3');
+    //this.game.load.image('prueba', '../assets/images/prueba.jpg');
+    //images
+    //this.game.load.image('menuPrincipal','../assets/images/menu.png');
+    //music
+    //this.game.load.audio('musicaFondo','../assets/sounds/Pentagram.mp3');
   },
 
   create: function () {
-    this.game.state.start('play');
+    //this.game.state.start('play');
+    this.game.state.start('menu');
   }
 };
 
@@ -38,7 +42,8 @@ window.onload = function () {
 
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);
-  game.state.add('play', PlayScene);
+  //game.state.add('play', PlayScene);
+  game.state.add('menu',MainMenu);
 
   game.state.start('boot');
 };
