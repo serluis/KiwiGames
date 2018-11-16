@@ -1,7 +1,7 @@
 'use strict';
 
 //var PlayScene = require('./play_scene.js');
-var MainMenu = require('./gameObjects/MainMenu.js');
+var MainMenu = require('./MainMenu.js');
 
 var BootScene = {
   preload: function () {
@@ -12,7 +12,7 @@ var BootScene = {
 
   create: function () {
     this.game.state.start('preloader');
-  }
+  },
 };
 
 
