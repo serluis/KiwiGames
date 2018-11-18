@@ -13,6 +13,7 @@ var BootScene = {
   init: function(){
   this.input.maxPointers = 1;
   this.stage.disableVisibilityChange = true;
+  console.log("maxPointers = " + this.input.maxPointers);
   },
 
   create: function () {
@@ -30,7 +31,7 @@ var PreloaderScene = {
 
     // TODO: load here the assets for the game
     this.game.load.image('logo', 'images/phaser.png');
-    this.game.load.spritesheet('player', 'images/6ZombieSpriteSheet.png',41,36);
+    this.game.load.spritesheet('player', 'assets/images/6ZombieSpriteSheet.png', 41, 36);
   
   },
 
