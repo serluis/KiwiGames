@@ -1,28 +1,53 @@
 'use strict'
-//var PlayScene = require('./play_scene.js');
+var MainMenu = {
+//var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
+//var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+preload: function() {
 
-var Menu = {
-	preload: function(){
-    this.game.load.image('menu','./assets/images/menu.png');
-    var ZombieRock = this.game.load.audio('musicaFondo','../assets/sounds/ZombieRock.mp3');
-    this.game.load.image('playbutton','../assets/images/playbutton.png');
-  },
-  
-  create: function() {
-   var fondo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'menu');
-   this.game.add.audio('musicaFondo'/*ZombieRock*/).loopFull(1);
-   fondo.anchor.setTo(0.5, 0.5);
-   //var playbutton = new Button(game, 400, 300,'playbutton', actionOnClick,/* this,0,0,0,0);
-   
-  },
-  /*function actionOnClick () {
+    this.game.add.audio('musicaFondo').loopFull(1);
+    
+},
 
-    console.log('button clicked');
-    game.state.start('play');
 
-}*/
-  
-   	
-   
+
+create: function() {
+    var playbutton;
+    var classbutton;
+    var background;
+    var exitbutton;
+    this.game.stage.backgroundColor = '#182d3b';
+
+    this.background = this.game.add.image(0, 0, 'menu');
+
+    playbutton = this.game.add.button(318, 315, 'playbutton', this.actionOnClick, this/*, 2, 1, 0*/);
+    classbutton = this.game.add.button(150,375,'classbutton',this.actionOnClick2,this);
+    exitbutton=  this.game.add.button(325,440,'exitbutton',this.actionOnClick3,this);
+    /*button.onInputOver.add(over, this);
+    button.onInputOut.add(out, this);
+    button.onInputUp.add(up, this);*/
+
+},
+actionOnClick: function() {
+    this.background.visible =! this.background.visible;
+},
+actionOnClick2: function(){
+    this.background.visible =! this.background.visible;
+},
+actionOnClick3: function(){
+    this.background.visible =! this.background.visible;
+},
+    
 };
-module.exports = Menu;
+/*function up() {
+    console.log('button up', arguments);
+}
+
+function over() {
+    console.log('button over');
+}
+
+function out() {
+    console.log('button out');
+}*/
+
+module.exports = MainMenu;

@@ -2,7 +2,7 @@
 
 var PlayScene = require('./play_scene.js');
 var Menu = require('./MainMenu.js');
-var botonera = require('./botonera.js');
+var MainMenu = require('./MainMenu.js');
 var BootScene = {
   preload: function () {
     // aqui se ponen los recursos, imagenes y sonido
@@ -86,8 +86,8 @@ window.onload = function () {
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);
   game.state.add('play', PlayScene);
-  game.state.add('menu',Menu);
-  game.state.add('botonera',botonera);
+  //game.state.add('menu',Menu);
+  game.state.add('botonera',MainMenu);
 
   game.state.start('boot');
 };
