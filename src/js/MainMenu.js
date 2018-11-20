@@ -1,14 +1,13 @@
 'use strict'
+//var SubMenu = require('./SubMenu.js');
 var MainMenu = {
 //var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 //var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
 preload: function() {
 
-    this.game.add.audio('musicaFondo').loopFull(1);
+    //this.game.add.audio('musicaFondo').loopFull(1);
     
 },
-
-
 
 create: function() {
     var playbutton;
@@ -29,12 +28,15 @@ create: function() {
 },
 actionOnClick: function() {
     this.background.visible =! this.background.visible;
+    console.log(this.game.clase);
 },
 actionOnClick2: function(){
-    this.background.visible =! this.background.visible;
+    //this.background.visible =! this.background.visible;
+    this.game.state.start('SubMenu');
 },
 actionOnClick3: function(){
-    this.background.visible =! this.background.visible;
+    this.game.state.start('GameOver');
+
 },
     
 };

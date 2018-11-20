@@ -1,8 +1,9 @@
 'use strict';
 
 var PlayScene = require('./play_scene.js');
-var Menu = require('./MainMenu.js');
+var SubMenu = require('./SubMenu.js');
 var MainMenu = require('./MainMenu.js');
+var GameOver = require ('./GameOver.js');
 var BootScene = {
   preload: function () {
     // aqui se ponen los recursos, imagenes y sonido
@@ -53,41 +54,22 @@ var PreloaderScene = {
   },
 
   create: function () {
-    //this.game.state.start('play');
-    this.game.state.start('botonera');
+    var clase = 1;
+    this.game.state.start('MainMenu');
+    console.log(clase);
   }
 };
-/*var Menu = {
-  preload: function(){
-    this.game.load.image('menu','./assets/images/menu.png');
-    this.game.load.audio('musicaFondo','../assets/sounds/ZombieRock.mp3');
-    //this.game.load.image('playbutton','../assets/images/playbutton.png');
-  },
-  
-  create: function() {
-   var fondo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'menu');
-   this.game.add.audio('musicaFondo').loopFull(1);
-   //fondo.anchor.setTo(0.5, 0.5);
-   //var playbutton = new Button(game, 400, 300,'playbutton', actionOnClick, this,0,0,0,0);
-   game.add.button(400, 300, 'playbutton', actionOnClick, this, 2, 1, 0);
-   
-  },
 
-};
-function actionOnClick () {
-
-    console.log('button clicked');
-    game.state.start('play');
-  };
-*/
 window.onload = function () {
   var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
 
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);
   game.state.add('play', PlayScene);
-  //game.state.add('menu',Menu);
-  game.state.add('botonera',MainMenu);
+  game.state.add('SubMenu',SubMenu);
+  game.state.add('MainMenu',MainMenu);
+  game.state.add('GameOver',GameOver);
+  
 
   game.state.start('boot');
 };
