@@ -32,6 +32,7 @@ var PreloaderScene = {
     // TODO: load here the assets for the game
     this.game.load.image('logo', 'images/phaser.png');
     this.game.load.spritesheet('player', 'assets/images/6ZombieSpriteSheet.png', 41, 36);
+    this.game.load.image('bullet', 'assets/images/red_bullet.png');
   
   },
 
