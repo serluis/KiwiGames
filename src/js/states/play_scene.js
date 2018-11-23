@@ -10,6 +10,7 @@ var enemies;
 
 /*------------------------------*/
 
+
 var PlayScene = {
 	preload: function () {
 		player = new Player(this.game, 300, 300);
@@ -38,6 +39,8 @@ var PlayScene = {
 		enemies.setAll('anchor.x', 0.5);
 		enemies.setAll('anchor.y', 0.5);
 		/*-------Se acaban las cosas de enemies--------*/
+
+		this.game.add.audio('musicaFondo').loopFull(1);
 	},
 
 	update: function () {
@@ -45,6 +48,7 @@ var PlayScene = {
 		//this.game.physics.arcade.overlap(enemies, player.getBullets(), this.collisionHandler, null, this);
 		enemies.forEach(this.game.physics.arcade.moveToObject,
 			this.game.physics.arcade, false, player, playerSpeed * 0.25);
+
 	},
 
 	collisionHandler: function (bullet, enemy) {
@@ -61,7 +65,11 @@ var PlayScene = {
 		this.game.debug.body(enemies);
 		enemies.forEach(this.game.debug.body, this.game.debug);
 		player.render();
-	}
+	},
+
+	backToMenu: function () {
+		this.game.state.start('menu');
+	},
 
 };
 
