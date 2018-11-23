@@ -1,13 +1,19 @@
 'use strict';
 
-var PlayScene = require('./play_scene.js');
 var Menu = require('./MainMenu.js');
 var botonera = require('./botonera.js');
+var PlayScene = require('./states/play_scene.js');
 var BootScene = {
   preload: function () {
     // aqui se ponen los recursos, imagenes y sonido
     this.game.load.image('preloader_bar', '../assets/images/preloader_bar.png');
     
+  },
+
+  init: function(){
+  this.input.maxPointers = 1;
+  this.stage.disableVisibilityChange = true;
+  console.log("maxPointers = " + this.input.maxPointers);
   },
 
   create: function () {
@@ -21,8 +27,14 @@ var PreloaderScene = {
     this.loadingBar = this.game.add.sprite(0, 240, 'preloader_bar');
     this.loadingBar.anchor.setTo(0, 0.5);
     this.load.setPreloadSprite(this.loadingBar);
+    this.time.advancedTiming = true;
 
     // TODO: load here the assets for the game
+    this.game.load.image('logo', 'images/phaser.png');
+    this.game.load.spritesheet('player', 'assets/images/6ZombieSpriteSheet.png', 40, 36);
+    this.game.load.image('bullet', 'assets/images/red_bullet.png');
+    this.game.load.spritesheet('enemy', 'assets/images/2ZombieSpriteSheet.png', 40, 36);
+  
     
     //images
     this.game.load.image('prueba', '../assets/images/prueba.jpg');
@@ -81,10 +93,11 @@ function actionOnClick () {
   };
 */
 window.onload = function () {
-  var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+  var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'game');
 
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);
+  //game.state.add('menu', MenuScene);
   game.state.add('play', PlayScene);
   game.state.add('menu',Menu);
   game.state.add('botonera',botonera);
