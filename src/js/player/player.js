@@ -1,84 +1,103 @@
 'use strict';
 
-require('./objects/entity.js');
+const Bullet = require('../objects/bullet.js');
 
-var sprite;
 var playerSpeed = 150;
 var fireRate = 100;
 var nextFire = 0;
 var controls = {};
-var pos = {x = 0, y = 0};
+
+var bullets;
+var bullet;
+var bulletSpeed = 300;
 
 //function 
-function Player(game, posX, posY){ 
-     var game = game;
-     pos.x = posX; pos.y = posY;
+function Player(game, posX, posY) {
+    Phaser.Sprite.call(this, game, posX, posY, 'player');
+    game.add.existing(this);
 }
 
-Player.prototype = Object.create(Entity.prototype);
+Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.constructor = Player;
 
-Player.prototype.create = function(){
-    sprite = this.game.add.sprite(pos.x, pos.y, 'player');
-    sprite.anchor.setTo(0.5,0.5);
-    sprite.animations.add('idle',[0],1,true);
-    sprite.animations.add('moveFront',[0,1,2],1,true);
-    sprite.animations.add('moveRight',[3,4,5],3,true);
-    sprite.animations.add('moveBack',[6,7,8],3,true);
-    sprite.animations.add('moveLeft',[9,10,11],3,true);
-    this.physics.arcade.enable(sprite);
-    this.camera.follow(sprite);
-    Player.body.colliderWorldBounds = true;
+Player.prototype.create = function () {
+    this.anchor.setTo(0.5, 0.5);
+    /*this.animations.add('idle', [0], 1, true);
+    this.animations.add('moveFront', [0, 1, 2], 1, true);
+    this.animations.add('moveRight', [3, 4, 5], 3, true);
+    this.animations.add('moveBack', [6, 7, 8], 3, true);
+    this.animations.add('moveLeft', [9, 10, 11], 3, true);*/
+    this.game.physics.arcade.enable(this);
+    this.body.bounce.set(1);
+    this.body.colliderWorldBounds = true;
+
+    bullets = this.game.add.group();
+    bullets.enableBody = true;
+    bullets.physicsBodyType = Phaser.Physics.ARCADE;
+    for (var i = 0; i < 50; i++) {
+        bullets.add(new Bullet(this.game, 0, 0));
+    }
+    bullets.setAll('exists', false);
+    bullets.setAll('visible', false);
+    bullets.setAll('checkWorldBounds', true);
+    bullets.setAll('outOfBoundsKill', true);
 
     controls = {
-        right: this.input.keyboard.addKey(Phaser.Keyboard.A),
-        left: this.input.keyboard.addKey(Phaser.Keyboard.L),
-        up: this.input.keyboard.addKey(Phaser.Keyboard.W),
-        down: this.input.keyboard.addKey(Phaser.Keyboard.S),
+        right: this.game.input.keyboard.addKey(Phaser.Keyboard.D),
+        left: this.game.input.keyboard.addKey(Phaser.Keyboard.A),
+        up: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
+        down: this.game.input.keyboard.addKey(Phaser.Keyboard.S),
+        shoot: this.game.input.activePointer,
     };
 
-    console.log("Player created");
+    console.log("Player created at POS: " + this.x + "," + this.y);
 
 }
 
-Player.prototype.update = function(){
+Player.prototype.update = function () {
 
-    sprite.body.velocity.x = 0;
-    sprite.body.velocity.y = 0;
+    this.body.velocity.x = 0;
+    this.body.velocity.y = 0;
 
-    if(controls.up.isDown){
-        sprite.animations.play('moveBack');
-        sprite.body.velocity.y -= playerSpeed;
+    if (controls.up.isDown) {
+        this.body.velocity.y -= playerSpeed;
     }
-    if(controls.right.isDown){
-        sprite.animations.play('moveRight');
-        sprite.body.velocity.x += playerSpeed;
+    if (controls.right.isDown) {
+        this.body.velocity.x += playerSpeed;
     }
-    if(controls.down.isDown){
-        sprite.animations.play('moveFront');
-        sprite.body.velocity.y += playerSpeed;
+    if (controls.down.isDown) {
+        this.body.velocity.y += playerSpeed;
     }
-    if(controls.left.isDown){
-        sprite.animations.play('moveLeft');
-        sprite.body.velocity.x -= playerSpeed;
+    if (controls.left.isDown) {
+        this.body.velocity.x -= playerSpeed;
     }
 
-    if(sprite.body.velocity.x === 0 && sprite.body.velocity.y === 0){
-        sprite.animations.play('idle');
+    if (controls.shoot.isDown) {
+        this.fire();
     }
 }
 
-/*function fire(){
-    if (this.game.time.now > nextFire && bullets.countDead() > 0)
-    {
+Player.prototype.fire = function () {
+    if (this.game.time.now > nextFire) {
+
         nextFire = this.game.time.now + fireRate;
 
-        var bullet = bullets.getFirstDead();
+        bullet = bullets.getFirstExists(false);
 
-        bullet.reset(sprite.x - 8, sprite.y - 8);
-
-        this.game.physics.arcade.moveToPointer(bullet, 300);
+        if (bullet) {
+            bullet.reset(this.x - 8, this.y - 8);
+            this.game.physics.arcade.moveToPointer(bullet, bulletSpeed);
+            console.log("PIUM!");
+        }
     }
-}*/
+}
+Player.prototype.render = function () {
+    this.game.debug.body(bullets);
+    bullets.forEach(this.game.debug.body, this.game.debug);
+}
+
+Player.prototype.getBullets = function () {
+    return bullets;
+}
 
 module.exports = Player;
