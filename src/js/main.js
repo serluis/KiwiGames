@@ -55,8 +55,11 @@ var PreloaderScene = {
 
   create: function () {
     var clase = 1;
-    this.game.state.start('MainMenu');
     console.log(clase);
+    var ZombieRock = this.game.add.audio('musicaMenu');
+    ZombieRock.play();
+
+    this.game.state.start('MainMenu');
   }
 };
 

@@ -24,18 +24,15 @@ var SubMenu = {
 	actionOnClick: function() {
 		this.game.clase = 1;
 		this.game.state.start('MainMenu');
-	    //this.background.visible =! this.background.visible;
 	},
 	actionOnClick2: function(){
 		this.game.clase = 2;
 		this.game.state.start('MainMenu');
-	    //this.background.visible =! this.background.visible;
-	},
+	    },
 	actionOnClick3: function(){
 		this.game.clase = 3;
 		this.game.state.start('MainMenu');
-	    //this.background.visible =! this.background.visible;
-	},
+	    },
 	    
 };
 

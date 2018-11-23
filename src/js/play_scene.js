@@ -1,6 +1,8 @@
 'use strict';
+//var sound = require('./sound.js');
 var Entity = require('./gameObjects/entity');
 var Enemy = require ('./gameObjects/enemy');
+
 var PlayScene = {
 	preload: function(){
   		this.game.load.image('prueba', 'images/prueba.jpg');
@@ -14,6 +16,7 @@ var PlayScene = {
    enemy.cabreo = 100;
    console.log(enemy.cabreo);
    console.log(enemy._cabreo);
+   //this.game.sound.musicaAccion.play();
    }
 
 
