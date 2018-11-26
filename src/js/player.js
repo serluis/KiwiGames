@@ -41,7 +41,8 @@ Player.prototype.create = function () {
     bullets.setAll('visible', false);
     bullets.setAll('checkWorldBounds', true);
     bullets.setAll('outOfBoundsKill', true);
-
+    bullets.setAll('anchorX',0.5);
+    bullets.setAll('anchorY',0.5);
     controls = {
         right: this.game.input.keyboard.addKey(Phaser.Keyboard.D),
         left: this.game.input.keyboard.addKey(Phaser.Keyboard.A),

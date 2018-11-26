@@ -2,8 +2,9 @@
 //var sound = require('./sound.js');
 const Entity = require('./entity');
 const Enemy = require ('./enemy');
-const player = require('./player.js');
+const Player = require('./player.js');
 
+var player;
 
 /* THIS SHOULD GO IN OTHER FILES*/
 var playerSpeed = 150;
@@ -14,7 +15,7 @@ var enemies;
 
 var PlayScene = {
   preload: function () {
-    player = new Player(this.game, 300, 300);
+     player = new Player(this.game, 300, 300);
   },
   create: function () {
 
