@@ -1,9 +1,9 @@
 'use strict';
 //var sound = require('./sound.js');
-var Entity = require('./entity');
-var Enemy = require ('./enemy');
+const Entity = require('./entity');
+const Enemy = require ('./enemy');
+const player = require('./player.js');
 
-var player;
 
 /* THIS SHOULD GO IN OTHER FILES*/
 var playerSpeed = 150;
