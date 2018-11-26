@@ -4,11 +4,17 @@ var PlayScene = require('./play_scene.js');
 var SubMenu = require('./SubMenu.js');
 var MainMenu = require('./MainMenu.js');
 var GameOver = require ('./GameOver.js');
+
 var BootScene = {
   preload: function () {
     // aqui se ponen los recursos, imagenes y sonido
     this.game.load.image('preloader_bar', '../assets/images/preloader_bar.png');
     
+  },
+  init: function () {
+    this.input.maxPointers = 1;
+    this.stage.disableVisibilityChange = true;
+    console.log("maxPointers = " + this.input.maxPointers);
   },
 
   create: function () {
@@ -26,7 +32,6 @@ var PreloaderScene = {
     // TODO: load here the assets for the game
     
     //images
-    this.game.load.image('prueba', '../assets/images/prueba.jpg');
     this.game.load.image('menu','./assets/images/menu.png');
     this.game.load.image('submenu','../assets/images/submenu.png');
     this.game.load.image('gameover','../assets/images/gameover.png');
@@ -39,7 +44,10 @@ var PreloaderScene = {
       this.game.load.image('berserkerbutton','../assets/images/berserkerbutton.png');
       this.game.load.image('againbutton','../assets/images/againbutton.png');
       //muñecos
+      this.game.load.image('bullet', '../assets/images/red_bullet.png');
       this.game.load.image('zombi','../assets/images/zombi.png');
+      this.game.load.spritesheet('player', 'assets/images/6ZombieSpriteSheet.png', 40, 36);
+      this.game.load.spritesheet('enemy', 'assets/images/2ZombieSpriteSheet.png', 40, 36);
       this.game.load.image('zombiBoy','../assets/images/zombiBoy.png');
     //music
     this.game.load.audio('musicaFondo','../assets/sounds/Pentagram.mp3');
