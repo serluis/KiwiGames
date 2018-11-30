@@ -1,8 +1,9 @@
 'use strict';
 const Entity = require('./entity');
 
-var health = 100;
-var speed = 150;
+//var health = 100;
+//var speed = 150;
+// no variables globales
 
 function Character(game, x, y, imgName) {
     Entity.call(this, game, x, y, imgName);
