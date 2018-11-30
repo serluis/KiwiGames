@@ -7,7 +7,7 @@ const Player = require('./player.js');
 var player;
 
 /* THIS SHOULD GO IN OTHER FILES*/
-var playerSpeed = 150;
+var enemySpeed = 75;
 var enemies;
 
 /*------------------------------*/
@@ -15,24 +15,21 @@ var enemies;
 
 var PlayScene = {
   preload: function () {
-     player = new Player(this.game, 300, 300);
   },
   create: function () {
-
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.world.setBounds(0, 0, 1000, 1000);
     this.game.stage.backgroundColor = '#313131';
 
-    /*PLAYER STUFF: Esto tiene que ir en otro file*/
-    player.create();
-    this.game.camera.follow(player);
-    /*-------Se acaban las cosas del player--------*/
+    player = new Player(this.game, 300, 300, 'player',this.game.clase); // we create our player
+    this.game.camera.follow(player); // camera attached to player
+
     /*ENEMIES STUFF: Para un futuro crear un file con todos los game groups*/
     enemies = this.game.add.group();
     enemies.enableBody = true;
     enemies.physicsBodyType = Phaser.Physics.ARCADE;
     for (var i = 0; i < 4; i++) {
-      enemies.add(new Enemy(this.game, this.game.world.randomX, this.game.world.randomY));
+      enemies.add(new Enemy(this.game, this.game.world.randomX, this.game.world.randomY, 'zombi'));
       //enemy.name = 'enem' + i;
       enemies.children[i].name = 'enem' + i;
       console.log("An enemy created at POS: " + enemies.children[i].x + "," + enemies.children[i].y);
@@ -47,22 +44,22 @@ var PlayScene = {
 
   update: function () {
     //this.game.physics.arcade.overlap(enemies.children, bullets.children, this.collisionHandler, null, this);
-    //this.game.physics.arcade.overlap(enemies, player.getBullets(), this.collisionHandler, null, this);
+    //this.game.physics.arcade.overlap(player.getWeapon().bullets, enemies, this.collisionHandler, null, this);
     enemies.forEach(this.game.physics.arcade.moveToObject,
-      this.game.physics.arcade, false, player, playerSpeed * 0.25);
+      this.game.physics.arcade, false, player, enemySpeed);
 
   },
 
   collisionHandler: function (bullet, enemy) {
-    bullet.kill();
-    enemy.kill();
+    //bullet.kill();
+    //enemy.kill();
     console.log("Collision? Enemy:" + enemy.x + "," + enemy.y);
     console.log("Bullet:" + bullet.x + "," + bullet.y)
   },
 
   render: function () {
-    this.game.debug.cameraInfo(this.game.camera, 32, 32);
-    this.game.debug.spriteInfo(player, 32, 250);
+    this.game.debug.cameraInfo(this.game.camera, 32, 100);
+    this.game.debug.spriteInfo(player, 32, 400);
     this.game.debug.body(player);
     this.game.debug.body(enemies);
     enemies.forEach(this.game.debug.body, this.game.debug);
