@@ -21,7 +21,7 @@ var PlayScene = {
     this.game.world.setBounds(0, 0, 1000, 1000);
     this.game.stage.backgroundColor = '#313131';
 
-    player = new Player(this.game, 300, 300, 'player'); // we create our player
+    player = new Player(this.game, 300, 300, 'player',this.game.clase); // we create our player
     this.game.camera.follow(player); // camera attached to player
 
     /*ENEMIES STUFF: Para un futuro crear un file con todos los game groups*/

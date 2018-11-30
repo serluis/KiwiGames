@@ -1,15 +1,16 @@
 'use strict';
+
 const Character = require('./character.js');
 
 var speed = 150;
-var fireRate = 1000;
+var fireRate = 100;
 var controls = {};
 
 var bulletSpeed = 300;
 var weapon;
 
 //function 
-function Player(game, x, y, imgName) {
+function Player(game, x, y, imgName,clase) {
     //Phaser.Sprite.call(this, game, x, y, imgName);
     //game.add.existing(this); // we add the sprite
 
@@ -18,7 +19,29 @@ function Player(game, x, y, imgName) {
     Character.call(this, game, x, y, imgName);
     game.physics.arcade.enable(this);
     this.body.colliderWorldBounds = true;
+    
     // we create a weapon 
+    if(clase===1){
+    weapon = game.add.weapon(10, 'bullet');
+    weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
+    weapon.bulletLifespan = 2000;
+    weapon.bulletSpeed = bulletSpeed;
+    weapon.fireRate = fireRate*10;
+    weapon.bullets.setAll('anchor.x', 0.5);
+    weapon.bullets.setAll('anchor.y', 0.5);
+    weapon.trackSprite(this, 0, 0, true);// the bullets come out from player
+    }
+    else if(clase===2){
+    weapon = game.add.weapon(20, 'bullet');
+    weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
+    weapon.bulletLifespan = 1000;
+    weapon.bulletSpeed = bulletSpeed;
+    weapon.fireRate = fireRate*20;
+    weapon.bullets.setAll('anchor.x', 0.5);
+    weapon.bullets.setAll('anchor.y', 0.5);
+    weapon.trackSprite(this, 0, 0, true);// the bullets come out from player
+    }
+    else if(clase===3){
     weapon = game.add.weapon(30, 'bullet');
     weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
     weapon.bulletLifespan = 2000;
@@ -27,7 +50,8 @@ function Player(game, x, y, imgName) {
     weapon.bullets.setAll('anchor.x', 0.5);
     weapon.bullets.setAll('anchor.y', 0.5);
     weapon.trackSprite(this, 0, 0, true);// the bullets come out from player
-    // se puede poner un offset con los 2 numeros
+    }
+    // se puede poner un offset con los 2 numeros*/
 
     controls = {
         right: game.input.keyboard.addKey(Phaser.Keyboard.D),
@@ -70,8 +94,8 @@ Player.prototype.render = function () {
     weapon.debug();
 }
 
-Player.prototype.getWeapon = function () {
+/*Player.prototype.getWeapon = function () {
     return weapon;
-}
+}*/
 
 module.exports = Player;
