@@ -91,7 +91,7 @@ Player.prototype.update = function () {
 }
 
 Player.prototype.render = function () {
-    weapon.debug();
+    //weapon.debug();
 }
 
 /*Player.prototype.getWeapon = function () {
