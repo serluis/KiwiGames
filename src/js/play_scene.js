@@ -20,7 +20,35 @@ var PlayScene = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.world.setBounds(0, 0, 1000, 1000);
     this.game.stage.backgroundColor = '#313131';
+    //mapa
+    //game.physics.startSystem(Phaser.Physics.ARCADE);//habilita las fisicas de arcade
+    //variables del mapa
+    var mapa;//suelo,colisiones,puerta1,puerta2,puerta3,decoracion;
 
+    mapa = this.game.add.tilemap('Mapa');
+    mapa.addTilesetImage('tilesetsangriento', 'tiledSangre');
+    mapa.addTilesetImage('stone_house_interior', 'tiledStoneInterior');
+    //create layer
+    mapa.suelo = mapa.createLayer('suelo');
+    mapa.colisiones = mapa.createLayer('colisiones');
+    mapa.puerta1 = mapa.createLayer('puerta1');
+    mapa.puerta2 = mapa.createLayer('puerta2');
+    mapa.puerta3 = mapa.createLayer('puerta3');
+    mapa.decoracion = mapa.createLayer('decoracion');
+    //escalado
+    mapa.suelo.resizeWorld();
+    mapa.colisiones.resizeWorld();
+    mapa.puerta1.resizeWorld();
+    mapa.puerta2.resizeWorld();
+    mapa.puerta3.resizeWorld();
+    mapa.decoracion.resizeWorld();
+    
+    //collision con paredes layer
+    mapa.setCollisionBetween(1, 100000, true, 'colisiones'); 
+    mapa.setCollisionBetween(1, 100000, true, 'puerta1');
+    mapa.setCollisionBetween(1, 100000, true, 'puerta2');
+    mapa.setCollisionBetween(1, 100000, true, 'puerta3');
+    //player
     player = new Player(this.game, 300, 300, 'player',this.game.clase); // we create our player
     this.game.camera.follow(player); // camera attached to player
 
@@ -40,34 +68,7 @@ var PlayScene = {
     /*-------Se acaban las cosas de enemies--------*/
     //musica
     this.game.add.audio('musicaFondo').loopFull(1);
-    //mapa
-    //game.physics.startSystem(Phaser.Physics.ARCADE);//habilita las fisicas de arcade
-    //variables del mapa
-    var mapa;//suelo,colisiones,puerta1,puerta2,puerta3,decoracion;
-
-    mapa = this.game.add.tilemap('Mapa');
-    mapa.addTilesetImage('tilesetsangriento', 'tiledSangre');
-    mapa.addTilesetImage('stone_house_interior', 'tiledStoneInterior');
-    //create layer
-    this.suelo = this.mapa.createLayer('suelo');
-    this.colisiones = this.mapa.createLayer('colisiones');
-    this.puerta1 = this.mapa.createLayer('puerta1');
-    this.puerta2 = this.mapa.createLayer('puerta2');
-    this.puerta3 = this.mapa.createLayer('puerta3');
-    this.decoracion = this.mapa.createLayer('decoracion');
-    //escalado
-    this.suelo.resizeWorld();
-    this.colisiones.resizeWorld();
-    this.puerta1.resizeWorld();
-    this.puerta2.resizeWorld();
-    this.puerta3.resizeWorld();
-    this.decoracion.resizeWorld();
     
-    //collision con paredes layer
-    this.mapa.setCollisionBetween(1, 100000, true, 'colisiones'); 
-    this.mapa.setCollisionBetween(1, 100000, true, 'puerta1');
-    this.mapa.setCollisionBetween(1, 100000, true, 'puerta2');
-    this.mapa.setCollisionBetween(1, 100000, true, 'puerta3');
   },
 
   update: function () {
@@ -76,8 +77,8 @@ var PlayScene = {
     enemies.forEach(this.game.physics.arcade.moveToObject,
       this.game.physics.arcade, false, player, enemySpeed);
      //mapa
-     game.physics.arcade.enable(player);//da fisicas al jugador para que choque
-     game.physics.arcade.collide(colisiones,player);//habilita las colisiones entre paredes y player
+     //game.physics.arcade.enable(player);//da fisicas al jugador para que choque
+     //game.physics.arcade.collide(colisiones,player);//habilita las colisiones entre paredes y player
   },
 
   collisionHandler: function (bullet, enemy) {

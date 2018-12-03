@@ -81,12 +81,30 @@
  "tileheight":32,
  "tilesets":[
         {
+         "columns":16,
          "firstgid":1,
-         "source":"stone_interior_tileset.tsx"
+         "image":"stone_house_interior.png",
+         "imageheight":512,
+         "imagewidth":512,
+         "margin":0,
+         "name":"stone_house_interior",
+         "spacing":0,
+         "tilecount":256,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
+         "columns":16,
          "firstgid":257,
-         "source":"tilesetsangriento.tsx"
+         "image":"tilesetsangriento.png",
+         "imageheight":512,
+         "imagewidth":512,
+         "margin":0,
+         "name":"tilesetsangriento",
+         "spacing":0,
+         "tilecount":256,
+         "tileheight":32,
+         "tilewidth":32
         }],
  "tilewidth":32,
  "type":"map",
