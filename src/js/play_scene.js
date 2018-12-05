@@ -3,9 +3,9 @@
 const Entity = require('./entity');
 const Enemy = require ('./enemy');
 const Player = require('./player.js');
-
+//const mapa = require('./mapa.js');
 var player;
-
+var mapa;
 /* THIS SHOULD GO IN OTHER FILES*/
 var enemySpeed = 75;
 var enemies;
@@ -14,16 +14,18 @@ var enemies;
 
 
 var PlayScene = {
+  
   preload: function () {
+    
   },
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.world.setBounds(0, 0, 1000, 1000);
     this.game.stage.backgroundColor = '#313131';
     //mapa
-    //game.physics.startSystem(Phaser.Physics.ARCADE);//habilita las fisicas de arcade
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);//habilita las fisicas de arcade
     //variables del mapa
-    var mapa;//suelo,colisiones,puerta1,puerta2,puerta3,decoracion;
+    //suelo,colisiones,puerta1,puerta2,puerta3,decoracion;
 
     mapa = this.game.add.tilemap('Mapa');
     mapa.addTilesetImage('tilesetsangriento', 'tiledSangre');
@@ -77,8 +79,16 @@ var PlayScene = {
     enemies.forEach(this.game.physics.arcade.moveToObject,
       this.game.physics.arcade, false, player, enemySpeed);
      //mapa
-     //game.physics.arcade.enable(player);//da fisicas al jugador para que choque
-     //game.physics.arcade.collide(colisiones,player);//habilita las colisiones entre paredes y player
+     this.game.physics.arcade.enable(player);//da fisicas al jugador para que choque
+     this.game.physics.arcade.collide(mapa.colisiones,player);//habilita las colisiones entre paredes y player
+     this.game.physics.arcade.collide(mapa.puerta1,player);
+     this.game.physics.arcade.collide(mapa.puerta2,player);
+     this.game.physics.arcade.collide(mapa.puerta3,player);
+     
+     this.game.physics.arcade.collide(mapa.colisiones,enemies);//habilita las colisiones entre paredes y enemigos
+     this.game.physics.arcade.collide(mapa.puerta1,enemies);
+     this.game.physics.arcade.collide(mapa.puerta2,enemies);
+     this.game.physics.arcade.collide(mapa.puerta3,enemies);
   },
 
   collisionHandler: function (bullet, enemy) {
