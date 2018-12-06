@@ -34,9 +34,9 @@ Killing Floor 2 www.killingfloor2.com, TripWire Studios.
 
 
 
-<img src="images/AgeOfZombies.png" alt="AgeOfZombies" width="200"/>
+<img src="src/assets/images/AgeOfZombies.png" alt="AgeOfZombies" width="200"/>
 
-<img src="images/KillingFloor2.jpg" alt="KillingFloor2" width="200"/>
+<img src="src/assets/images/KillingFloor2.jpg" alt="KillingFloor2" width="200"/>
 
 ﻿# KiwiGames 🥝
 
@@ -76,9 +76,9 @@ Los enemigos serán cada vez más numerosos y variados tras cada ronda completad
 ¡ LUCHA POR TU VIDA, GANA DINERO, MATA ZOMBIES !
 
 
-<img src="images/AgeOfZombies.png" alt="AgeOfZombies" width="200"/>
+<img src="src/assets/images/AgeOfZombies.png" alt="AgeOfZombies" width="200"/>
 
-<img src="images/KillingFloor2.jpg" alt="KillingFloor2" width="200"/>
+<img src="src/assets/images/KillingFloor2.jpg" alt="KillingFloor2" width="200"/>
 
 Para este proyecto usaremos JavaScript y la librería de Phaser.
 
