@@ -16,7 +16,7 @@ var enemies;
 var PlayScene = {
   
   preload: function () {
-    
+
   },
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -27,29 +27,29 @@ var PlayScene = {
     //variables del mapa
     //suelo,colisiones,puerta1,puerta2,puerta3,decoracion;
 
-    mapa = this.game.add.tilemap('Mapa');
-    mapa.addTilesetImage('tilesetsangriento', 'tiledSangre');
-    mapa.addTilesetImage('stone_house_interior', 'tiledStoneInterior');
+    this.mapa = this.game.add.tilemap('Mapa');
+    this.mapa.addTilesetImage('tilesetsangriento', 'tiledSangre');
+    this.mapa.addTilesetImage('stone_house_interior', 'tiledStoneInterior');
     //create layer
-    mapa.suelo = mapa.createLayer('suelo');
-    mapa.colisiones = mapa.createLayer('colisiones');
-    mapa.puerta1 = mapa.createLayer('puerta1');
-    mapa.puerta2 = mapa.createLayer('puerta2');
-    mapa.puerta3 = mapa.createLayer('puerta3');
-    mapa.decoracion = mapa.createLayer('decoracion');
+    this.suelo = this.mapa.createLayer('suelo');
+    this.colisiones = this.mapa.createLayer('colisiones');
+    this.puerta1 = this.mapa.createLayer('puerta1');
+    this.puerta2 = this.mapa.createLayer('puerta2');
+    this.puerta3 = this.mapa.createLayer('puerta3');
+    this.decoracion = this.mapa.createLayer('decoracion');
     //escalado
-    mapa.suelo.resizeWorld();
-    mapa.colisiones.resizeWorld();
-    mapa.puerta1.resizeWorld();
-    mapa.puerta2.resizeWorld();
-    mapa.puerta3.resizeWorld();
-    mapa.decoracion.resizeWorld();
+    this.suelo.resizeWorld();
+    this.colisiones.resizeWorld();
+    this.puerta1.resizeWorld();
+    this.puerta2.resizeWorld();
+    this.puerta3.resizeWorld();
+    this.decoracion.resizeWorld();
     
     //collision con paredes layer
-    mapa.setCollisionBetween(1, 100000, true, 'colisiones'); 
-    mapa.setCollisionBetween(1, 100000, true, 'puerta1');
-    mapa.setCollisionBetween(1, 100000, true, 'puerta2');
-    mapa.setCollisionBetween(1, 100000, true, 'puerta3');
+    this.mapa.setCollisionBetween(1, 100000, true, 'colisiones'); 
+    this.mapa.setCollisionBetween(1, 100000, true, 'puerta1');
+    this.mapa.setCollisionBetween(1, 100000, true, 'puerta2');
+    this.mapa.setCollisionBetween(1, 100000, true, 'puerta3');
     //player
     player = new Player(this.game, 300, 300, 'player',this.game.clase); // we create our player
     this.game.camera.follow(player); // camera attached to player
@@ -80,15 +80,15 @@ var PlayScene = {
       this.game.physics.arcade, false, player, enemySpeed);
      //mapa
      this.game.physics.arcade.enable(player);//da fisicas al jugador para que choque
-     this.game.physics.arcade.collide(mapa.colisiones,player);//habilita las colisiones entre paredes y player
-     this.game.physics.arcade.collide(mapa.puerta1,player);
-     this.game.physics.arcade.collide(mapa.puerta2,player);
-     this.game.physics.arcade.collide(mapa.puerta3,player);
-     
-     this.game.physics.arcade.collide(mapa.colisiones,enemies);//habilita las colisiones entre paredes y enemigos
-     this.game.physics.arcade.collide(mapa.puerta1,enemies);
-     this.game.physics.arcade.collide(mapa.puerta2,enemies);
-     this.game.physics.arcade.collide(mapa.puerta3,enemies);
+     this.game.physics.arcade.collide(colisiones,player);//habilita las colisiones entre paredes y player
+     this.game.physics.arcade.collide(puerta1,player);
+     this.game.physics.arcade.collide(puerta2,player);
+     this.game.physics.arcade.collide(puerta3,player);
+    
+     this.game.physics.arcade.collide(colisiones,enemies);//habilita las colisiones entre paredes y enemigos
+     this.game.physics.arcade.collide(puerta1,enemies);
+     this.game.physics.arcade.collide(puerta2,enemies);
+     this.game.physics.arcade.collide(puerta3,enemies);
   },
 
   collisionHandler: function (bullet, enemy) {
