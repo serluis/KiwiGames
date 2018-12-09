@@ -1,8 +1,12 @@
 'use strict';
 //var sound = require('./sound.js');
 const Entity = require('./entity');
-const Enemy = require ('./enemy');
+const Enemy = require('./enemy');
 const Player = require('./player.js');
+const Soldier = require('./soldier.js');
+const Berserker = require('./berserker.js');
+//const GunMan = require('./gunMan.js');
+
 
 /* THIS SHOULD GO IN OTHER FILES*/
 const enemySpeed = 75;
@@ -18,7 +22,7 @@ var PlayScene = {
     this.game.world.setBounds(0, 0, 1000, 1000);
     this.game.stage.backgroundColor = '#313131';
 
-    this.player = new Player(this.game, 300, 300, 'player',this.game.clase); // we create our player
+    this.player = new Berserker(this.game, 300, 300, 'zombiBoy'); // we create our player
     this.game.camera.follow(this.player); // camera attached to player
 
     /*ENEMIES STUFF: Para un futuro crear un file con todos los game groups*/
@@ -40,11 +44,10 @@ var PlayScene = {
   },
 
   update: function () {
-    //this.game.physics.arcade.overlap(this.player, bullets.children, this.collisionHandler, null, this);
-    this.game.physics.arcade.overlap(this.player.weapon.bullets.children, 
-      this.enemies.children, this.bulletCollisionHandler, null, this); // miramos los hijos de cada grupo porque si no caca
-    
-    this.game.physics.arcade.overlap(this.player, this.enemies.children, 
+    this.game.physics.arcade.overlap(this.player.weapon.bullets.children,
+      this.enemies.children, this.bulletCollisionHandler, null, this); // miramos los hijos de cada grupo
+
+    this.game.physics.arcade.overlap(this.player, this.enemies.children,
       this.playerCollisionHandler, null, this);
 
 
@@ -55,14 +58,11 @@ var PlayScene = {
 
   bulletCollisionHandler: function (bullet, enemy) {
     bullet.kill();
-    enemy.kill();
-    //bajar vida del malote
-    //console.log("Collision?");
-    //console.log("Bullet:" + bullet.x + "," + bullet.y)
+    enemy.getsDamage(this.player.damage);
   },
 
-  playerCollisionHandler: function(player, enemy){
-    console.log("Collision?");
+  playerCollisionHandler: function (player, enemy) {
+    player.getsDamage(enemy.damage);
   },
 
   render: function () {
