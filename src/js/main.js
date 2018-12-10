@@ -35,6 +35,9 @@ var PreloaderScene = {
     this.game.load.image('menu', './assets/images/menu.png');
     this.game.load.image('submenu', '../assets/images/submenu.png');
     this.game.load.image('gameover', '../assets/images/gameover.png');
+    this.game.load.image('wavecomp', '../assets/images/waveComplete.png');
+    this.game.load.image('waveinc', '../assets/images/waveIncoming.png');
+    this.game.load.image('defeat', '../assets/images/defeat.png');
     //botones
     this.game.load.image('playbutton', './assets/images/playbutton.png');
     this.game.load.image('classbutton', '../assets/images/classbutton.png');

@@ -5,6 +5,7 @@ const Enemy = require('./enemy');
 const Player = require('./player.js');
 const Soldier = require('./soldier.js');
 const Berserker = require('./berserker.js');
+const Medic = require('./medic.js');
 //const GunMan = require('./gunMan.js');
 
 
@@ -22,7 +23,7 @@ var PlayScene = {
     this.game.world.setBounds(0, 0, 1000, 1000);
     this.game.stage.backgroundColor = '#313131';
 
-    this.player = new Berserker(this.game, 300, 300, 'zombiBoy'); // we create our player
+    this.player = new Medic(this.game, 300, 300, 'zombiBoy'); // we create our player
     this.game.camera.follow(this.player); // camera attached to player
 
     /*ENEMIES STUFF: Para un futuro crear un file con todos los game groups*/

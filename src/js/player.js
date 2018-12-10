@@ -3,8 +3,6 @@
 const Character = require('./character.js');
 
 const speed = 150;
-//const fireRate = 100;
-//const bulletSpeed = 350;
 
 //function 
 function Player(game, x, y, imgName) {
@@ -36,9 +34,10 @@ Player.prototype = Object.create(Character.prototype);
 Player.constructor = Player;
 
 Player.prototype.update = function () {
-
+    Character.prototype.update.call(this);
     this.body.velocity.x = 0;
     this.body.velocity.y = 0;
+    //the character rotates to face the pointer
     this.rotation = this.game.physics.arcade.angleToPointer(this) + 1.5;
 
     if (this.controls.up.isDown) {
