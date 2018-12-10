@@ -1,72 +1,78 @@
 'use strict';
 //var sound = require('./sound.js');
 const Entity = require('./entity');
-const Enemy = require ('./enemy');
+const Enemy = require('./enemy');
 const Player = require('./player.js');
+const Soldier = require('./soldier.js');
+const Berserker = require('./berserker.js');
+const Medic = require('./medic.js');
+//const GunMan = require('./gunMan.js');
 
-var player;
 
 /* THIS SHOULD GO IN OTHER FILES*/
-var playerSpeed = 150;
-var enemies;
+const enemySpeed = 75;
 
 /*------------------------------*/
 
 
 var PlayScene = {
   preload: function () {
-     player = new Player(this.game, 300, 300);
   },
   create: function () {
-
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.world.setBounds(0, 0, 1000, 1000);
     this.game.stage.backgroundColor = '#313131';
 
-    /*PLAYER STUFF: Esto tiene que ir en otro file*/
-    player.create();
-    this.game.camera.follow(player);
-    /*-------Se acaban las cosas del player--------*/
+    this.player = new Medic(this.game, 300, 300, 'zombiBoy'); // we create our player
+    this.game.camera.follow(this.player); // camera attached to player
+
     /*ENEMIES STUFF: Para un futuro crear un file con todos los game groups*/
-    enemies = this.game.add.group();
-    enemies.enableBody = true;
-    enemies.physicsBodyType = Phaser.Physics.ARCADE;
+    this.enemies = this.game.add.group();
+    this.enemies.enableBody = true;
+    this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
     for (var i = 0; i < 4; i++) {
-      enemies.add(new Enemy(this.game, this.game.world.randomX, this.game.world.randomY));
+      this.enemies.add(new Enemy(this.game, this.game.world.randomX, this.game.world.randomY, 'zombi'));
       //enemy.name = 'enem' + i;
-      enemies.children[i].name = 'enem' + i;
-      console.log("An enemy created at POS: " + enemies.children[i].x + "," + enemies.children[i].y);
+      this.enemies.children[i].name = 'enem' + i;
+      console.log("An enemy created at POS: " + this.enemies.children[i].x + "," + this.enemies.children[i].y);
     }
-    enemies.setAll('checkWorldBounds', true);
-    enemies.setAll('anchor.x', 0.5);
-    enemies.setAll('anchor.y', 0.5);
+    this.enemies.setAll('checkWorldBounds', true);
+    this.enemies.setAll('anchor.x', 0.5);
+    this.enemies.setAll('anchor.y', 0.5);
     /*-------Se acaban las cosas de enemies--------*/
 
     this.game.add.audio('musicaFondo').loopFull(1);
   },
 
   update: function () {
-    //this.game.physics.arcade.overlap(enemies.children, bullets.children, this.collisionHandler, null, this);
-    //this.game.physics.arcade.overlap(enemies, player.getBullets(), this.collisionHandler, null, this);
-    enemies.forEach(this.game.physics.arcade.moveToObject,
-      this.game.physics.arcade, false, player, playerSpeed * 0.25);
+    this.game.physics.arcade.overlap(this.player.weapon.bullets.children,
+      this.enemies.children, this.bulletCollisionHandler, null, this); // miramos los hijos de cada grupo
+
+    this.game.physics.arcade.overlap(this.player, this.enemies.children,
+      this.playerCollisionHandler, null, this);
+
+
+    this.enemies.forEach(this.game.physics.arcade.moveToObject,
+      this.game.physics.arcade, false, this.player, enemySpeed);
 
   },
 
-  collisionHandler: function (bullet, enemy) {
+  bulletCollisionHandler: function (bullet, enemy) {
     bullet.kill();
-    enemy.kill();
-    console.log("Collision? Enemy:" + enemy.x + "," + enemy.y);
-    console.log("Bullet:" + bullet.x + "," + bullet.y)
+    enemy.getsDamage(this.player.damage);
+  },
+
+  playerCollisionHandler: function (player, enemy) {
+    player.getsDamage(enemy.damage);
   },
 
   render: function () {
-    this.game.debug.cameraInfo(this.game.camera, 32, 32);
-    this.game.debug.spriteInfo(player, 32, 250);
-    this.game.debug.body(player);
-    this.game.debug.body(enemies);
-    enemies.forEach(this.game.debug.body, this.game.debug);
-    player.render();
+    this.game.debug.cameraInfo(this.game.camera, 32, 100);
+    this.game.debug.spriteInfo(this.player, 32, 400);
+    this.game.debug.body(this.player);
+    this.game.debug.body(this.enemies);
+    this.enemies.forEach(this.game.debug.body, this.game.debug);
+    this.player.render();
   },
 
   backToMenu: function () {
@@ -76,16 +82,3 @@ var PlayScene = {
 };
 
 module.exports = PlayScene;
-
-/*var cosa = function(cosa1,x,y){//esto es una constructora
-	sprite.call(this,cosa1,x,y);
-	//colocar
-	//rotacion
-	//declaracion de variables que se usaran en update
-	//direccion velocidad etc.
-	//añadiduras herencia y tal
-
-}
-//justo despues se pone las cosas de prototypes
-//cosa.prototype.update=function (){}//aqui se hace el update
-//para usar las variables de cosa se pone this.variable=3;*/
