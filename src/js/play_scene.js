@@ -80,15 +80,15 @@ var PlayScene = {
       this.game.physics.arcade, false, player, enemySpeed);
      //mapa
      this.game.physics.arcade.enable(player);//da fisicas al jugador para que choque
-     this.game.physics.arcade.collide(colisiones,player);//habilita las colisiones entre paredes y player
-     this.game.physics.arcade.collide(puerta1,player);
-     this.game.physics.arcade.collide(puerta2,player);
-     this.game.physics.arcade.collide(puerta3,player);
+     this.game.physics.arcade.collide(this.colisiones,player);//habilita las colisiones entre paredes y player
+     this.game.physics.arcade.collide(this.puerta1,player);
+     this.game.physics.arcade.collide(this.puerta2,player);
+     this.game.physics.arcade.collide(this.puerta3,player);
     
-     this.game.physics.arcade.collide(colisiones,enemies);//habilita las colisiones entre paredes y enemigos
-     this.game.physics.arcade.collide(puerta1,enemies);
-     this.game.physics.arcade.collide(puerta2,enemies);
-     this.game.physics.arcade.collide(puerta3,enemies);
+     this.game.physics.arcade.collide(this.colisiones,enemies);//habilita las colisiones entre paredes y enemigos
+     this.game.physics.arcade.collide(this.puerta1,enemies);
+     this.game.physics.arcade.collide(this.puerta2,enemies);
+     this.game.physics.arcade.collide(this.puerta3,enemies);
   },
 
   collisionHandler: function (bullet, enemy) {
