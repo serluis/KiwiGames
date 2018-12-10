@@ -24,8 +24,6 @@ var PlayScene = {
     this.game.stage.backgroundColor = '#313131';
     //mapa
     this.game.physics.startSystem(Phaser.Physics.ARCADE);//habilita las fisicas de arcade
-    //variables del mapa
-    //suelo,colisiones,puerta1,puerta2,puerta3,decoracion;
 
     this.mapa = this.game.add.tilemap('Mapa');
     this.mapa.addTilesetImage('tilesetsangriento', 'tiledSangre');
