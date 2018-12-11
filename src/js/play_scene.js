@@ -1,11 +1,11 @@
 'use strict';
-//var sound = require('./sound.js');
+
 const Entity = require('./entity');
 const Enemy = require ('./enemy');
 const Player = require('./player.js');
-//const mapa = require('./mapa.js');
+const mapa = require('./mapa.js');
 var player;
-var mapa;
+
 /* THIS SHOULD GO IN OTHER FILES*/
 var enemySpeed = 75;
 var enemies;
@@ -24,8 +24,8 @@ var PlayScene = {
     this.game.stage.backgroundColor = '#313131';
     //mapa
     this.game.physics.startSystem(Phaser.Physics.ARCADE);//habilita las fisicas de arcade
-
-    this.mapa = this.game.add.tilemap('Mapa');
+    mapa = new mapa();?
+    /*this.mapa = this.game.add.tilemap('Mapa');
     this.mapa.addTilesetImage('tilesetsangriento', 'tiledSangre');
     this.mapa.addTilesetImage('stone_house_interior', 'tiledStoneInterior');
     //create layer
@@ -47,7 +47,8 @@ var PlayScene = {
     this.mapa.setCollisionBetween(1, 100000, true, 'colisiones'); 
     this.mapa.setCollisionBetween(1, 100000, true, 'puerta1');
     this.mapa.setCollisionBetween(1, 100000, true, 'puerta2');
-    this.mapa.setCollisionBetween(1, 100000, true, 'puerta3');
+    this.mapa.setCollisionBetween(1, 100000, true, 'puerta3');*/
+
     //player
     player = new Player(this.game, 300, 300, 'player',this.game.clase); // we create our player
     this.game.camera.follow(player); // camera attached to player
@@ -78,7 +79,7 @@ var PlayScene = {
       this.game.physics.arcade, false, player, enemySpeed);
      //mapa
      this.game.physics.arcade.enable(player);//da fisicas al jugador para que choque
-     this.game.physics.arcade.collide(this.colisiones,player);//habilita las colisiones entre paredes y player
+     /*this.game.physics.arcade.collide(this.colisiones,player);//habilita las colisiones entre paredes y player
      this.game.physics.arcade.collide(this.puerta1,player);
      this.game.physics.arcade.collide(this.puerta2,player);
      this.game.physics.arcade.collide(this.puerta3,player);
@@ -86,7 +87,7 @@ var PlayScene = {
      this.game.physics.arcade.collide(this.colisiones,enemies);//habilita las colisiones entre paredes y enemigos
      this.game.physics.arcade.collide(this.puerta1,enemies);
      this.game.physics.arcade.collide(this.puerta2,enemies);
-     this.game.physics.arcade.collide(this.puerta3,enemies);
+     this.game.physics.arcade.collide(this.puerta3,enemies);*/
   },
 
   collisionHandler: function (bullet, enemy) {
