@@ -4,6 +4,7 @@ var PlayScene = require('./play_scene.js');
 var SubMenu = require('./SubMenu.js');
 var MainMenu = require('./MainMenu.js');
 var GameOver = require('./GameOver.js');
+var youwin = require('./youwin.js');
 
 var BootScene = {
   preload: function () {
@@ -35,6 +36,7 @@ var PreloaderScene = {
     this.game.load.image('menu', './assets/images/menu.png');
     this.game.load.image('submenu', '../assets/images/submenu.png');
     this.game.load.image('gameover', '../assets/images/gameover.png');
+    this.game.load.image('youwin', '../assets/images/youwin.png');
     this.game.load.image('wavecomp', '../assets/images/waveComplete.png');
     this.game.load.image('waveinc', '../assets/images/waveIncoming.png');
     this.game.load.image('defeat', '../assets/images/defeat.png');
@@ -46,6 +48,7 @@ var PreloaderScene = {
     this.game.load.image('exitbutton', '../assets/images/exitbutton.png');
     this.game.load.image('berserkerbutton', '../assets/images/berserkerbutton.png');
     this.game.load.image('againbutton', '../assets/images/againbutton.png');
+    
     //muñecos
     this.game.load.image('bullet', '../assets/images/red_bullet.png');
     this.game.load.image('zombi', '../assets/images/zombi.png');
@@ -61,14 +64,14 @@ var PreloaderScene = {
     this.game.load.audio('shotgun1', '../assets/sounds/shotgun.wav');
     this.game.load.audio('shotgun2', '../assets/sounds/shotgun+Reload.wav');
     this.game.load.audio('Pdolor', '../assets/sounds/pain.wav');
-
+    this.game.load.audio('winsound', '../assets/sounds/winsound.wav');
   },
 
   create: function () {
     var clase = 1;
     console.log(clase);
     var ZombieRock = this.game.add.audio('musicaMenu');
-    ZombieRock.play();
+    //ZombieRock.play();
 
     this.game.state.start('MainMenu');
   }
@@ -83,7 +86,7 @@ window.onload = function () {
   game.state.add('SubMenu', SubMenu);
   game.state.add('MainMenu', MainMenu);
   game.state.add('GameOver', GameOver);
-
+  game.state.add('youwin', youwin);
 
   game.state.start('boot');
 };
