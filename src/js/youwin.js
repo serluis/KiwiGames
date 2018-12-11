@@ -26,7 +26,7 @@ var youwin = {
     },
     
     actionOnClick: function () {
-        
+        this.winsound.stop();
         this.game.state.start('MainMenu');
     },    
 

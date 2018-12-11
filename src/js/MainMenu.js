@@ -37,9 +37,11 @@ var MainMenu = {
     },
     actionOnClick2: function () {
         //this.background.visible =! this.background.visible;
+        //this.ZombieRock.stop();
         this.game.state.start('SubMenu');
     },
     actionOnClick3: function () {
+        this.ZombieRock.stop();
         this.game.state.start('GameOver');
 
     },

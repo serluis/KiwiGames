@@ -6,6 +6,7 @@ const Player = require('./player.js');
 const Soldier = require('./soldier.js');
 const Berserker = require('./berserker.js');
 const Medic = require('./medic.js');
+const mapa = require('./mapa.js');
 //const GunMan = require('./gunMan.js');
 
 
@@ -41,6 +42,7 @@ var PlayScene = {
     this.enemies.setAll('anchor.y', 0.5);
     /*-------Se acaban las cosas de enemies--------*/
 
+    /*this.musicafondo = */
     this.game.add.audio('musicaFondo').loopFull(1);
   },
 
@@ -76,6 +78,7 @@ var PlayScene = {
   },
 
   backToMenu: function () {
+    //this.game.audio('musicafondo').loopFull(0);?
     this.game.state.start('MainMenu');
   },
 
