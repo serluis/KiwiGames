@@ -6,7 +6,7 @@ const Player = require('./player.js');
 const Soldier = require('./soldier.js');
 const Berserker = require('./berserker.js');
 const Medic = require('./medic.js');
-const mapa = require('./mapa.js');
+//const mapa = require('./mapa.js');
 
 
 /* THIS SHOULD GO IN OTHER FILES*/
@@ -17,6 +17,9 @@ const enemySpeed = 75;
 
 var PlayScene = {
   preload: function () {
+    this.Zdolor = this.game.add.audio('Zdolor');
+    this.Zhola = this.game.add.audio('Zhola');
+    this.Pdolor = this.game.add.audio('Pdolor');
   },
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -25,7 +28,30 @@ var PlayScene = {
 
     this.player = new Medic(this.game, 300, 300, 'zombiBoy'); // we create our player
     this.game.camera.follow(this.player); // camera attached to player
-
+    //
+    this.mapa = this.game.add.tilemap('Mapa');
+    this.mapa.addTilesetImage('tilesetsangriento', 'tiledSangre');
+    this.mapa.addTilesetImage('stone_house_interior', 'tiledStoneInterior');
+    //create layer
+    this.suelo = this.mapa.createLayer('suelo');
+    this.colisiones = this.mapa.createLayer('colisiones');
+    this.puerta1 = this.mapa.createLayer('puerta1');
+    this.puerta2 = this.mapa.createLayer('puerta2');
+    this.puerta3 = this.mapa.createLayer('puerta3');
+    this.decoracion = this.mapa.createLayer('decoracion');
+    //escalado
+    this.suelo.resizeWorld();
+    this.colisiones.resizeWorld();
+    this.puerta1.resizeWorld();
+    this.puerta2.resizeWorld();
+    this.puerta3.resizeWorld();
+    this.decoracion.resizeWorld();
+    
+    //collision con paredes layer
+    this.mapa.setCollisionBetween(1, 100000, true, 'colisiones'); 
+    this.mapa.setCollisionBetween(1, 100000, true, 'puerta1');
+    this.mapa.setCollisionBetween(1, 100000, true, 'puerta2');
+    this.mapa.setCollisionBetween(1, 100000, true, 'puerta3');
     /*ENEMIES STUFF: Para un futuro crear un file con todos los game groups*/
     this.enemies = this.game.add.group();
     this.enemies.enableBody = true;
@@ -55,15 +81,27 @@ var PlayScene = {
 
     this.enemies.forEach(this.game.physics.arcade.moveToObject,
       this.game.physics.arcade, false, this.player, enemySpeed);
-
+      //mapa
+     this.game.physics.arcade.enable(this.player);//da fisicas al jugador para que choque
+     this.game.physics.arcade.collide(this.colisiones,this.player);//habilita las colisiones entre paredes y player
+     this.game.physics.arcade.collide(this.puerta1,this.player);
+     this.game.physics.arcade.collide(this.puerta2,this.player);
+     this.game.physics.arcade.collide(this.puerta3,this.player);
+    
+     this.game.physics.arcade.collide(this.colisiones,this.enemies);//habilita las colisiones entre paredes y enemigos
+     this.game.physics.arcade.collide(this.puerta1,this.enemies);
+     this.game.physics.arcade.collide(this.puerta2,this.enemies);
+     this.game.physics.arcade.collide(this.puerta3,this.enemies);
   },
 
   bulletCollisionHandler: function (bullet, enemy) {
     bullet.kill();
+    this.Zdolor.play();
     enemy.getsDamage(this.player.damage);
   },
 
   playerCollisionHandler: function (player, enemy) {
+    this.Pdolor.play();
     player.getsDamage(enemy.damage);
   },
 

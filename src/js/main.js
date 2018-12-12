@@ -61,6 +61,7 @@ var PreloaderScene = {
     this.game.load.audio('musicaMenu', './assets/sounds/ZombieRock.mp3');
     this.game.load.audio('Zhola', './assets/sounds/zombihola.wav');
     this.game.load.audio('Zdolor', './assets/sounds/zombidolor.mp3');
+    this.game.load.audio('shoot','./assets/sounds/shoot.wav');
     this.game.load.audio('shotgun1', './assets/sounds/shotgun.wav');
     this.game.load.audio('shotgun2', './assets/sounds/shotgun+Reload.wav');
     this.game.load.audio('Pdolor', './assets/sounds/pain.wav');

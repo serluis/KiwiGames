@@ -34,7 +34,7 @@ var mapa = {
     
   },
 
-  update: function () {
+  /*update: function () {
      //mapa
      this.game.physics.arcade.enable(player);//da fisicas al jugador para que choque
      this.game.physics.arcade.collide(this.colisiones,player);//habilita las colisiones entre paredes y player
@@ -46,7 +46,7 @@ var mapa = {
      this.game.physics.arcade.collide(this.puerta1,enemies);
      this.game.physics.arcade.collide(this.puerta2,enemies);
      this.game.physics.arcade.collide(this.puerta3,enemies);
-  },
+  },*/
 
 };
 

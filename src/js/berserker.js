@@ -17,7 +17,7 @@ function Berserker(game, x, y, imgName) {
     this.weapon.multiFire = true;
     this.weapon.fireLimit = 3;
     this.damage = 34;
-    
+    this.shoot = this.game.add.audio('shoot');
     console.log("Im a berserker");
 }
 
@@ -27,6 +27,7 @@ Berserker.constructor = Berserker;
 Berserker.prototype.update = function () {
     Player.prototype.update.call(this);
     if (this.controls.shoot.isDown) {
+        this.shoot.play();
         this.weapon.fireAtPointer();
         //this.weapon.fireAtPointer();
         //this.weapon.fireAtPointer();
