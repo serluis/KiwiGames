@@ -21,24 +21,18 @@ var PlayScene = {
     this.Zhola = this.game.add.audio('Zhola');
     this.Pdolor = this.game.add.audio('Pdolor');
   },
-  create: function () {
-    this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.game.world.setBounds(0, 0, 1000, 1000);
-    this.game.stage.backgroundColor = '#313131';
+  inicializeMap: function () {
 
-    this.player = new Medic(this.game, 300, 300, 'zombiBoy'); // we create our player
-    this.game.camera.follow(this.player); // camera attached to player
-    //
-    this.mapa = this.game.add.tilemap('Mapa');
-    this.mapa.addTilesetImage('tilesetsangriento', 'tiledSangre');
-    this.mapa.addTilesetImage('stone_house_interior', 'tiledStoneInterior');
+    this.map = this.game.add.tilemap('Map');
+    this.map.addTilesetImage('tilesetsangriento', 'tiledSangre');
+    this.map.addTilesetImage('stone_house_interior', 'tiledStoneInterior');
     //create layer
-    this.suelo = this.mapa.createLayer('suelo');
-    this.colisiones = this.mapa.createLayer('colisiones');
-    this.puerta1 = this.mapa.createLayer('puerta1');
-    this.puerta2 = this.mapa.createLayer('puerta2');
-    this.puerta3 = this.mapa.createLayer('puerta3');
-    this.decoracion = this.mapa.createLayer('decoracion');
+    this.suelo = this.map.createLayer('suelo');
+    this.colisiones = this.map.createLayer('colisiones');
+    this.puerta1 = this.map.createLayer('puerta1');
+    this.puerta2 = this.map.createLayer('puerta2');
+    this.puerta3 = this.map.createLayer('puerta3');
+    this.decoracion = this.map.createLayer('decoracion');
     //escalado
     this.suelo.resizeWorld();
     this.colisiones.resizeWorld();
@@ -46,12 +40,22 @@ var PlayScene = {
     this.puerta2.resizeWorld();
     this.puerta3.resizeWorld();
     this.decoracion.resizeWorld();
-    
+
     //collision con paredes layer
-    this.mapa.setCollisionBetween(1, 100000, true, 'colisiones'); 
-    this.mapa.setCollisionBetween(1, 100000, true, 'puerta1');
-    this.mapa.setCollisionBetween(1, 100000, true, 'puerta2');
-    this.mapa.setCollisionBetween(1, 100000, true, 'puerta3');
+    this.map.setCollisionBetween(1, 100000, true, 'colisiones');
+    this.map.setCollisionBetween(1, 100000, true, 'puerta1');
+    this.map.setCollisionBetween(1, 100000, true, 'puerta2');
+    this.map.setCollisionBetween(1, 100000, true, 'puerta3');
+  },
+  create: function () {
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    this.game.world.setBounds(0, 0, 1000, 1000);
+    this.game.stage.backgroundColor = '#313131';
+
+    this.inicializeMap();
+    this.player = new Medic(this.game, 300, 300, 'zombiBoy'); // we create our player
+    this.game.camera.follow(this.player); // camera attached to player
+    
     /*ENEMIES STUFF: Para un futuro crear un file con todos los game groups*/
     this.enemies = this.game.add.group();
     this.enemies.enableBody = true;
@@ -68,7 +72,9 @@ var PlayScene = {
     /*-------Se acaban las cosas de enemies--------*/
 
     /*this.musicafondo = */
-    this.game.add.audio('musicaFondo').loopFull(1);
+    this.fondo = this.game.add.audio('musicaFondo');
+    this.fondo.play();
+    this.fondo.play.loop = true;
   },
 
   update: function () {
@@ -81,19 +87,27 @@ var PlayScene = {
 
     this.enemies.forEach(this.game.physics.arcade.moveToObject,
       this.game.physics.arcade, false, this.player, enemySpeed);
-      //mapa
-     this.game.physics.arcade.enable(this.player);//da fisicas al jugador para que choque
-     this.game.physics.arcade.collide(this.colisiones,this.player);//habilita las colisiones entre paredes y player
-     this.game.physics.arcade.collide(this.puerta1,this.player);
-     this.game.physics.arcade.collide(this.puerta2,this.player);
-     this.game.physics.arcade.collide(this.puerta3,this.player);
-    
-     this.game.physics.arcade.collide(this.colisiones,this.enemies);//habilita las colisiones entre paredes y enemigos
-     this.game.physics.arcade.collide(this.puerta1,this.enemies);
-     this.game.physics.arcade.collide(this.puerta2,this.enemies);
-     this.game.physics.arcade.collide(this.puerta3,this.enemies);
-  },
+    //mapa
+    this.game.physics.arcade.enable(this.player);//da fisicas al jugador para que choque
+    this.game.physics.arcade.collide(this.colisiones, this.player);//habilita las colisiones entre paredes y player
+    this.game.physics.arcade.collide(this.puerta1, this.player);
+    this.game.physics.arcade.collide(this.puerta2, this.player);
+    this.game.physics.arcade.collide(this.puerta3, this.player);
 
+    this.game.physics.arcade.collide(this.colisiones, this.enemies);//habilita las colisiones entre paredes y enemigos
+    this.game.physics.arcade.collide(this.puerta1, this.enemies);
+    this.game.physics.arcade.collide(this.puerta2, this.enemies);
+    this.game.physics.arcade.collide(this.puerta3, this.enemies);
+    //habilita las colisiones entre paredes y enemigos
+    this.game.physics.arcade.collide(this.colisiones, this.player.weapon.bullets, this.bulletCollObj, null, this);
+    this.game.physics.arcade.collide(this.puerta1, this.player.weapon.bullets, this.bulletCollObj, null, this);
+    this.game.physics.arcade.collide(this.puerta2, this.player.weapon.bullets, this.bulletCollObj, null, this);
+    this.game.physics.arcade.collide(this.puerta3, this.player.weapon.bullets, this.bulletCollObj, null, this);
+
+  },
+  bulletCollObj: function (bullet) {
+    bullet.kill();
+  },
   bulletCollisionHandler: function (bullet, enemy) {
     bullet.kill();
     this.Zdolor.play();

@@ -67,7 +67,7 @@ var PreloaderScene = {
     this.game.load.audio('Pdolor', './assets/sounds/pain.wav');
     this.game.load.audio('winsound', './assets/sounds/winsound.wav');
     //mapa
-    this.game.load.tilemap('Mapa', './assets/images/Mapa.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.tilemap('Map', './assets/images/Mapa.json', null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiledSangre', './assets/images/tilesetsangriento.png');
     this.game.load.image('tiledStoneInterior', './assets/images/stone_house_interior.png');
   },
