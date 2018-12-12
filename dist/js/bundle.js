@@ -266,7 +266,7 @@ var youwin = require('./youwin.js');
 var BootScene = {
   preload: function () {
     // aqui se ponen los recursos, imagenes y sonido
-    this.game.load.image('preloader_bar', '../assets/images/preloader_bar.png');
+    this.game.load.image('preloader_bar', './assets/images/preloader_bar.png');
 
   },
   init: function () {
