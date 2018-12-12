@@ -1,13 +1,12 @@
 'use strict';
 //var sound = require('./sound.js');
-const Entity = require('./entity');
-const Enemy = require('./enemy');
+const Entity = require('./entity.js');
+const Enemy = require('./enemy.js');
 const Player = require('./player.js');
 const Soldier = require('./soldier.js');
 const Berserker = require('./berserker.js');
 const Medic = require('./medic.js');
 const mapa = require('./mapa.js');
-//const GunMan = require('./gunMan.js');
 
 
 /* THIS SHOULD GO IN OTHER FILES*/

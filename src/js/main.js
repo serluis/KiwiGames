@@ -34,37 +34,37 @@ var PreloaderScene = {
 
     //images
     this.game.load.image('menu', './assets/images/menu.png');
-    this.game.load.image('submenu', '../assets/images/submenu.png');
-    this.game.load.image('gameover', '../assets/images/gameover.png');
-    this.game.load.image('youwin', '../assets/images/youwin.png');
-    this.game.load.image('wavecomp', '../assets/images/waveComplete.png');
-    this.game.load.image('waveinc', '../assets/images/waveIncoming.png');
-    this.game.load.image('defeat', '../assets/images/defeat.png');
+    this.game.load.image('submenu', './assets/images/submenu.png');
+    this.game.load.image('gameover', './assets/images/gameover.png');
+    this.game.load.image('youwin', './assets/images/youwin.png');
+    this.game.load.image('wavecomp', './assets/images/waveComplete.png');
+    this.game.load.image('waveinc', './assets/images/waveIncoming.png');
+    this.game.load.image('defeat', './assets/images/defeat.png');
     //botones
     this.game.load.image('playbutton', './assets/images/playbutton.png');
-    this.game.load.image('classbutton', '../assets/images/classbutton.png');
-    this.game.load.image('soldadobutton', '../assets/images/soldadobutton.png');
-    this.game.load.image('medicobutton', '../assets/images/medicobutton.png');
-    this.game.load.image('exitbutton', '../assets/images/exitbutton.png');
-    this.game.load.image('berserkerbutton', '../assets/images/berserkerbutton.png');
-    this.game.load.image('againbutton', '../assets/images/againbutton.png');
+    this.game.load.image('classbutton', './assets/images/classbutton.png');
+    this.game.load.image('soldadobutton', './assets/images/soldadobutton.png');
+    this.game.load.image('medicobutton', './assets/images/medicobutton.png');
+    this.game.load.image('exitbutton', './assets/images/exitbutton.png');
+    this.game.load.image('berserkerbutton', './assets/images/berserkerbutton.png');
+    this.game.load.image('againbutton', './assets/images/againbutton.png');
     
     //muñecos
-    this.game.load.image('bullet', '../assets/images/red_bullet.png');
-    this.game.load.image('zombi', '../assets/images/zombi.png');
-    this.game.load.spritesheet('player', 'assets/images/6ZombieSpriteSheet.png', 40, 36);
-    this.game.load.spritesheet('enemy', 'assets/images/2ZombieSpriteSheet.png', 40, 36);
-    this.game.load.image('zombiBoy', '../assets/images/zombiBoy.png');
+    this.game.load.image('bullet', './assets/images/red_bullet.png');
+    this.game.load.image('zombi', './assets/images/zombi.png');
+    this.game.load.spritesheet('player', './assets/images/6ZombieSpriteSheet.png', 40, 36);
+    this.game.load.spritesheet('enemy', './assets/images/2ZombieSpriteSheet.png', 40, 36);
+    this.game.load.image('zombiBoy', './assets/images/zombiBoy.png');
     //music
-    this.game.load.audio('musicaFondo', '../assets/sounds/Pentagram.mp3');
-    this.game.load.audio('musicaAccion', '../assets/sounds/HeavyAction.mp3');
-    this.game.load.audio('musicaMenu', '../assets/sounds/ZombieRock.mp3');
-    this.game.load.audio('Zhola', '../assets/sounds/zombihola.wav');
-    this.game.load.audio('Zdolor', '../assets/sounds/zombidolor.mp3');
-    this.game.load.audio('shotgun1', '../assets/sounds/shotgun.wav');
-    this.game.load.audio('shotgun2', '../assets/sounds/shotgun+Reload.wav');
-    this.game.load.audio('Pdolor', '../assets/sounds/pain.wav');
-    this.game.load.audio('winsound', '../assets/sounds/winsound.wav');
+    this.game.load.audio('musicaFondo', './assets/sounds/Pentagram.mp3');
+    this.game.load.audio('musicaAccion', './assets/sounds/HeavyAction.mp3');
+    this.game.load.audio('musicaMenu', './assets/sounds/ZombieRock.mp3');
+    this.game.load.audio('Zhola', './assets/sounds/zombihola.wav');
+    this.game.load.audio('Zdolor', './assets/sounds/zombidolor.mp3');
+    this.game.load.audio('shotgun1', './assets/sounds/shotgun.wav');
+    this.game.load.audio('shotgun2', './assets/sounds/shotgun+Reload.wav');
+    this.game.load.audio('Pdolor', './assets/sounds/pain.wav');
+    this.game.load.audio('winsound', './assets/sounds/winsound.wav');
   },
 
   create: function () {

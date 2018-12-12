@@ -1,5 +1,5 @@
 'use strict';
-const Character = require('./character');
+const Character = require('./character.js');
 
 function Enemy(game, x, y, imgName) {
     //Phaser.Sprite.call(this, game, x, y, imgName);
