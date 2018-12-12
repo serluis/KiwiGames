@@ -159,7 +159,7 @@ function Berserker(game, x, y, imgName) {
     this.weapon.multiFire = true;
     this.weapon.fireLimit = 3;
     this.damage = 34;
-    
+    this.shoot = this.game.add.audio('shoot');
     console.log("Im a berserker");
 }
 
@@ -169,6 +169,7 @@ Berserker.constructor = Berserker;
 Berserker.prototype.update = function () {
     Player.prototype.update.call(this);
     if (this.controls.shoot.isDown) {
+        this.shoot.play();
         this.weapon.fireAtPointer();
         //this.weapon.fireAtPointer();
         //this.weapon.fireAtPointer();
@@ -179,9 +180,9 @@ Berserker.prototype.update = function () {
 }
 
 module.exports = Berserker;
-},{"./player.js":12}],5:[function(require,module,exports){
+},{"./player.js":11}],5:[function(require,module,exports){
 'use strict';
-const Entity = require('./entity');
+const Entity = require('./entity.js');
 
 const maxHealth = 100;
 
@@ -221,9 +222,9 @@ Character.prototype.heal = function (h) {
 }
 
 module.exports = Character;
-},{"./entity":7}],6:[function(require,module,exports){
+},{"./entity.js":7}],6:[function(require,module,exports){
 'use strict';
-const Character = require('./character');
+const Character = require('./character.js');
 
 function Enemy(game, x, y, imgName) {
     //Phaser.Sprite.call(this, game, x, y, imgName);
@@ -237,7 +238,7 @@ Enemy.constructor = Enemy;
 
 
 module.exports = Enemy;
-},{"./character":5}],7:[function(require,module,exports){
+},{"./character.js":5}],7:[function(require,module,exports){
 'use strict';
 
 function Entity(game, x, y, imgName) {
@@ -266,7 +267,7 @@ var youwin = require('./youwin.js');
 var BootScene = {
   preload: function () {
     // aqui se ponen los recursos, imagenes y sonido
-    this.game.load.image('preloader_bar', './assets/images/preloader_bar.png');
+    this.game.load.image('preloader_bar', '../assets/images/preloader_bar.png');
 
   },
   init: function () {
@@ -318,10 +319,15 @@ var PreloaderScene = {
     this.game.load.audio('musicaMenu', './assets/sounds/ZombieRock.mp3');
     this.game.load.audio('Zhola', './assets/sounds/zombihola.wav');
     this.game.load.audio('Zdolor', './assets/sounds/zombidolor.mp3');
+    this.game.load.audio('shoot','./assets/sounds/shoot.wav');
     this.game.load.audio('shotgun1', './assets/sounds/shotgun.wav');
     this.game.load.audio('shotgun2', './assets/sounds/shotgun+Reload.wav');
     this.game.load.audio('Pdolor', './assets/sounds/pain.wav');
     this.game.load.audio('winsound', './assets/sounds/winsound.wav');
+    //mapa
+    this.game.load.tilemap('Map', './assets/images/Mapa.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.image('tiledSangre', './assets/images/tilesetsangriento.png');
+    this.game.load.image('tiledStoneInterior', './assets/images/stone_house_interior.png');
   },
 
   create: function () {
@@ -348,63 +354,7 @@ window.onload = function () {
   game.state.start('boot');
 };
 
-},{"./GameOver.js":1,"./MainMenu.js":2,"./SubMenu.js":3,"./play_scene.js":11,"./youwin.js":14}],9:[function(require,module,exports){
-'use strict';
-
-
-var mapa = {
-  
-  preload: function () {
-
-  },
-  create: function () {
-    
-    this.mapa = this.game.add.tilemap('Mapa');
-    this.mapa.addTilesetImage('tilesetsangriento', 'tiledSangre');
-    this.mapa.addTilesetImage('stone_house_interior', 'tiledStoneInterior');
-    //create layer
-    this.suelo = this.mapa.createLayer('suelo');
-    this.colisiones = this.mapa.createLayer('colisiones');
-    this.puerta1 = this.mapa.createLayer('puerta1');
-    this.puerta2 = this.mapa.createLayer('puerta2');
-    this.puerta3 = this.mapa.createLayer('puerta3');
-    this.decoracion = this.mapa.createLayer('decoracion');
-    //escalado
-    this.suelo.resizeWorld();
-    this.colisiones.resizeWorld();
-    this.puerta1.resizeWorld();
-    this.puerta2.resizeWorld();
-    this.puerta3.resizeWorld();
-    this.decoracion.resizeWorld();
-    
-    //collision con paredes layer
-    this.mapa.setCollisionBetween(1, 100000, true, 'colisiones'); 
-    this.mapa.setCollisionBetween(1, 100000, true, 'puerta1');
-    this.mapa.setCollisionBetween(1, 100000, true, 'puerta2');
-    this.mapa.setCollisionBetween(1, 100000, true, 'puerta3');
-    
-  },
-
-  update: function () {
-     //mapa
-     this.game.physics.arcade.enable(player);//da fisicas al jugador para que choque
-     this.game.physics.arcade.collide(this.colisiones,player);//habilita las colisiones entre paredes y player
-     this.game.physics.arcade.collide(this.puerta1,player);
-     this.game.physics.arcade.collide(this.puerta2,player);
-     this.game.physics.arcade.collide(this.puerta3,player);
-    
-     this.game.physics.arcade.collide(this.colisiones,enemies);//habilita las colisiones entre paredes y enemigos
-     this.game.physics.arcade.collide(this.puerta1,enemies);
-     this.game.physics.arcade.collide(this.puerta2,enemies);
-     this.game.physics.arcade.collide(this.puerta3,enemies);
-  },
-
-};
-
-module.exports = mapa;
-
-
-},{}],10:[function(require,module,exports){
+},{"./GameOver.js":1,"./MainMenu.js":2,"./SubMenu.js":3,"./play_scene.js":10,"./youwin.js":13}],9:[function(require,module,exports){
 'use strict';
 
 const Player = require('./player.js');
@@ -421,7 +371,7 @@ function Medic(game, x, y, imgName) {
     this.weapon.fireRate = fireRate;
     this.weapon.bulletAngleVariance = 5;
     this.damage = 25;
-    
+    this.shoot = this.game.add.audio('shoot');
     console.log("Im a medic");
 }
 
@@ -431,23 +381,23 @@ Medic.constructor = Medic;
 Medic.prototype.update = function () {
     Player.prototype.update.call(this);
     if (this.controls.shoot.isDown) {
+        this.shoot.play();
         this.weapon.fireAtPointer();
     }
 }
 
 module.exports = Medic;
 
-},{"./player.js":12}],11:[function(require,module,exports){
+},{"./player.js":11}],10:[function(require,module,exports){
 'use strict';
 //var sound = require('./sound.js');
-const Entity = require('./entity');
-const Enemy = require('./enemy');
+const Entity = require('./entity.js');
+const Enemy = require('./enemy.js');
 const Player = require('./player.js');
 const Soldier = require('./soldier.js');
 const Berserker = require('./berserker.js');
 const Medic = require('./medic.js');
-const mapa = require('./mapa.js');
-//const GunMan = require('./gunMan.js');
+//const mapa = require('./mapa.js');
 
 
 /* THIS SHOULD GO IN OTHER FILES*/
@@ -458,15 +408,45 @@ const enemySpeed = 75;
 
 var PlayScene = {
   preload: function () {
+    this.Zdolor = this.game.add.audio('Zdolor');
+    this.Zhola = this.game.add.audio('Zhola');
+    this.Pdolor = this.game.add.audio('Pdolor');
+  },
+  inicializeMap: function () {
+
+    this.map = this.game.add.tilemap('Map');
+    this.map.addTilesetImage('tilesetsangriento', 'tiledSangre');
+    this.map.addTilesetImage('stone_house_interior', 'tiledStoneInterior');
+    //create layer
+    this.suelo = this.map.createLayer('suelo');
+    this.colisiones = this.map.createLayer('colisiones');
+    this.puerta1 = this.map.createLayer('puerta1');
+    this.puerta2 = this.map.createLayer('puerta2');
+    this.puerta3 = this.map.createLayer('puerta3');
+    this.decoracion = this.map.createLayer('decoracion');
+    //escalado
+    this.suelo.resizeWorld();
+    this.colisiones.resizeWorld();
+    this.puerta1.resizeWorld();
+    this.puerta2.resizeWorld();
+    this.puerta3.resizeWorld();
+    this.decoracion.resizeWorld();
+
+    //collision con paredes layer
+    this.map.setCollisionBetween(1, 100000, true, 'colisiones');
+    this.map.setCollisionBetween(1, 100000, true, 'puerta1');
+    this.map.setCollisionBetween(1, 100000, true, 'puerta2');
+    this.map.setCollisionBetween(1, 100000, true, 'puerta3');
   },
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.world.setBounds(0, 0, 1000, 1000);
     this.game.stage.backgroundColor = '#313131';
 
+    this.inicializeMap();
     this.player = new Medic(this.game, 300, 300, 'zombiBoy'); // we create our player
     this.game.camera.follow(this.player); // camera attached to player
-
+    
     /*ENEMIES STUFF: Para un futuro crear un file con todos los game groups*/
     this.enemies = this.game.add.group();
     this.enemies.enableBody = true;
@@ -483,7 +463,9 @@ var PlayScene = {
     /*-------Se acaban las cosas de enemies--------*/
 
     /*this.musicafondo = */
-    this.game.add.audio('musicaFondo').loopFull(1);
+    this.fondo = this.game.add.audio('musicaFondo');
+    this.fondo.play();
+    this.fondo.play.loop = true;
   },
 
   update: function () {
@@ -496,15 +478,35 @@ var PlayScene = {
 
     this.enemies.forEach(this.game.physics.arcade.moveToObject,
       this.game.physics.arcade, false, this.player, enemySpeed);
+    //mapa
+    this.game.physics.arcade.enable(this.player);//da fisicas al jugador para que choque
+    this.game.physics.arcade.collide(this.colisiones, this.player);//habilita las colisiones entre paredes y player
+    this.game.physics.arcade.collide(this.puerta1, this.player);
+    this.game.physics.arcade.collide(this.puerta2, this.player);
+    this.game.physics.arcade.collide(this.puerta3, this.player);
+
+    this.game.physics.arcade.collide(this.colisiones, this.enemies);//habilita las colisiones entre paredes y enemigos
+    this.game.physics.arcade.collide(this.puerta1, this.enemies);
+    this.game.physics.arcade.collide(this.puerta2, this.enemies);
+    this.game.physics.arcade.collide(this.puerta3, this.enemies);
+    //habilita las colisiones entre paredes y enemigos
+    this.game.physics.arcade.collide(this.colisiones, this.player.weapon.bullets, this.bulletCollObj, null, this);
+    this.game.physics.arcade.collide(this.puerta1, this.player.weapon.bullets, this.bulletCollObj, null, this);
+    this.game.physics.arcade.collide(this.puerta2, this.player.weapon.bullets, this.bulletCollObj, null, this);
+    this.game.physics.arcade.collide(this.puerta3, this.player.weapon.bullets, this.bulletCollObj, null, this);
 
   },
-
+  bulletCollObj: function (bullet) {
+    bullet.kill();
+  },
   bulletCollisionHandler: function (bullet, enemy) {
     bullet.kill();
+    this.Zdolor.play();
     enemy.getsDamage(this.player.damage);
   },
 
   playerCollisionHandler: function (player, enemy) {
+    this.Pdolor.play();
     player.getsDamage(enemy.damage);
   },
 
@@ -526,7 +528,7 @@ var PlayScene = {
 
 module.exports = PlayScene;
 
-},{"./berserker.js":4,"./enemy":6,"./entity":7,"./mapa.js":9,"./medic.js":10,"./player.js":12,"./soldier.js":13}],12:[function(require,module,exports){
+},{"./berserker.js":4,"./enemy.js":6,"./entity.js":7,"./medic.js":9,"./player.js":11,"./soldier.js":12}],11:[function(require,module,exports){
 'use strict';
 
 const Character = require('./character.js');
@@ -589,7 +591,7 @@ Player.prototype.render = function () {
 }
 
 module.exports = Player;
-},{"./character.js":5}],13:[function(require,module,exports){
+},{"./character.js":5}],12:[function(require,module,exports){
 'use strict';
 
 const Player = require('./player.js');
@@ -622,7 +624,7 @@ Soldier.prototype.update = function () {
 
 module.exports = Soldier;
 
-},{"./player.js":12}],14:[function(require,module,exports){
+},{"./player.js":11}],13:[function(require,module,exports){
 'use strict'
 
 
