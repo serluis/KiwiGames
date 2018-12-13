@@ -6,8 +6,7 @@ const speed = 150;
 
 //function 
 function Player(game, x, y, imgName) {
-    Character.call(this, game, x, y, imgName);
-    
+    Character.call(this, game, x, y, imgName);    
     // we create the weapon 
     this.weapon = game.add.weapon(30, 'bullet');
     this.weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;

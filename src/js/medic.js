@@ -24,7 +24,9 @@ Medic.constructor = Medic;
 Medic.prototype.update = function () {
     Player.prototype.update.call(this);
     if (this.controls.shoot.isDown) {
-        this.shoot.play();
+        if (!this.shoot.isPlaying) {
+            this.shoot.play();
+        }
         this.weapon.fireAtPointer();
     }
 }

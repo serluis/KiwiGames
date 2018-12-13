@@ -17,11 +17,16 @@ const enemySpeed = 75;
 
 var PlayScene = {
   preload: function () {
-    this.Zdolor = this.game.add.audio('Zdolor');
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    this.game.world.setBounds(0, 0, 1000, 1000);
+    this.game.stage.backgroundColor = '#313131';
+
+    this.zDmg = this.game.add.audio('Zdolor');
     this.Zhola = this.game.add.audio('Zhola');
-    this.Pdolor = this.game.add.audio('Pdolor');
+
+    this.initializeMap();
   },
-  inicializeMap: function () {
+  initializeMap: function () {
 
     this.map = this.game.add.tilemap('Map');
     this.map.addTilesetImage('tilesetsangriento', 'tiledSangre');
@@ -42,20 +47,16 @@ var PlayScene = {
     this.decoracion.resizeWorld();
 
     //collision con paredes layer
-    this.map.setCollisionBetween(1, 100000, true, 'colisiones');
-    this.map.setCollisionBetween(1, 100000, true, 'puerta1');
-    this.map.setCollisionBetween(1, 100000, true, 'puerta2');
-    this.map.setCollisionBetween(1, 100000, true, 'puerta3');
+    this.map.setCollisionBetween(1, 1000, true, 'colisiones');
+    //this.map.setCollisionBetween(1, 1000, true, 'puerta1');
+    //this.map.setCollisionBetween(1, 1000, true, 'puerta2');
+    //this.map.setCollisionBetween(1, 1000, true, 'puerta3');
   },
   create: function () {
-    this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.game.world.setBounds(0, 0, 1000, 1000);
-    this.game.stage.backgroundColor = '#313131';
 
-    this.inicializeMap();
     this.player = new Medic(this.game, 300, 300, 'zombiBoy'); // we create our player
     this.game.camera.follow(this.player); // camera attached to player
-    
+
     /*ENEMIES STUFF: Para un futuro crear un file con todos los game groups*/
     this.enemies = this.game.add.group();
     this.enemies.enableBody = true;
@@ -72,50 +73,57 @@ var PlayScene = {
     /*-------Se acaban las cosas de enemies--------*/
 
     /*this.musicafondo = */
-    this.fondo = this.game.add.audio('musicaFondo');
-    this.fondo.play();
-    this.fondo.play.loop = true;
+    this.music = this.game.add.audio('musicaFondo');
+    this.music.play();
+    this.music.play.loop = true;
   },
 
   update: function () {
     this.game.physics.arcade.overlap(this.player.weapon.bullets.children,
-      this.enemies.children, this.bulletCollisionHandler, null, this); // miramos los hijos de cada grupo
+      this.enemies.children, this.bulletEnemyCollisionHandler, null, this); // miramos los hijos de cada grupo
 
     this.game.physics.arcade.overlap(this.player, this.enemies.children,
-      this.playerCollisionHandler, null, this);
+      this.playerEnemyCollisionHandler, null, this);
 
+    this.mapCollision();
 
     this.enemies.forEach(this.game.physics.arcade.moveToObject,
       this.game.physics.arcade, false, this.player, enemySpeed);
-    //mapa
-    this.game.physics.arcade.enable(this.player);//da fisicas al jugador para que choque
+  },
+
+  mapCollision: function () {
+    //colisiones entre paredes y jugador
     this.game.physics.arcade.collide(this.colisiones, this.player);//habilita las colisiones entre paredes y player
     this.game.physics.arcade.collide(this.puerta1, this.player);
     this.game.physics.arcade.collide(this.puerta2, this.player);
     this.game.physics.arcade.collide(this.puerta3, this.player);
-
-    this.game.physics.arcade.collide(this.colisiones, this.enemies);//habilita las colisiones entre paredes y enemigos
+    //colisiones entre paredes y enemigos
+    this.game.physics.arcade.collide(this.colisiones, this.enemies);
     this.game.physics.arcade.collide(this.puerta1, this.enemies);
     this.game.physics.arcade.collide(this.puerta2, this.enemies);
     this.game.physics.arcade.collide(this.puerta3, this.enemies);
-    //habilita las colisiones entre paredes y enemigos
-    this.game.physics.arcade.collide(this.colisiones, this.player.weapon.bullets, this.bulletCollObj, null, this);
-    this.game.physics.arcade.collide(this.puerta1, this.player.weapon.bullets, this.bulletCollObj, null, this);
-    this.game.physics.arcade.collide(this.puerta2, this.player.weapon.bullets, this.bulletCollObj, null, this);
-    this.game.physics.arcade.collide(this.puerta3, this.player.weapon.bullets, this.bulletCollObj, null, this);
+    //colisiones entre paredes y balas
+    this.game.physics.arcade.collide(this.colisiones, this.player.weapon.bullets,
+      this.bulletMapCollisionHandler, null, this);
+    this.game.physics.arcade.collide(this.puerta1, this.player.weapon.bullets,
+      this.bulletMapCollisionHandler, null, this);
+    this.game.physics.arcade.collide(this.puerta2, this.player.weapon.bullets,
+      this.bulletMapCollisionHandler, null, this);
+    this.game.physics.arcade.collide(this.puerta3, this.player.weapon.bullets,
+      this.bulletMapCollisionHandler, null, this);
+  },
 
-  },
-  bulletCollObj: function (bullet) {
+  bulletMapCollisionHandler: function (bullet) {
     bullet.kill();
   },
-  bulletCollisionHandler: function (bullet, enemy) {
+  bulletEnemyCollisionHandler: function (bullet, enemy) {
     bullet.kill();
-    this.Zdolor.play();
+    this.zDmg.play();
     enemy.getsDamage(this.player.damage);
   },
 
-  playerCollisionHandler: function (player, enemy) {
-    this.Pdolor.play();
+  playerEnemyCollisionHandler: function (player, enemy) {
+    enemy.attack();
     player.getsDamage(enemy.damage);
   },
 
@@ -130,6 +138,7 @@ var PlayScene = {
 
   backToMenu: function () {
     //this.game.audio('musicafondo').loopFull(0);?
+    this.music.stop();
     this.game.state.start('MainMenu');
   },
 

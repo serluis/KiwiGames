@@ -4,12 +4,12 @@ var PlayScene = require('./play_scene.js');
 var SubMenu = require('./SubMenu.js');
 var MainMenu = require('./MainMenu.js');
 var GameOver = require('./GameOver.js');
-var youwin = require('./youwin.js');
+var youWin = require('./youwin.js');
 
 var BootScene = {
   preload: function () {
     // aqui se ponen los recursos, imagenes y sonido
-    this.game.load.image('preloader_bar', '../assets/images/preloader_bar.png');
+    this.game.load.image('preloader_bar', './assets/images/preloader_bar.png');
 
   },
   init: function () {
@@ -26,7 +26,7 @@ var BootScene = {
 
 var PreloaderScene = {
   preload: function () {
-    this.loadingBar = this.game.add.sprite(0, 240, 'preloader_bar');
+    this.loadingBar = this.game.add.sprite(75, 340, 'preloader_bar');
     this.loadingBar.anchor.setTo(0, 0.5);
     this.load.setPreloadSprite(this.loadingBar);
 
@@ -40,6 +40,7 @@ var PreloaderScene = {
     this.game.load.image('wavecomp', './assets/images/waveComplete.png');
     this.game.load.image('waveinc', './assets/images/waveIncoming.png');
     this.game.load.image('defeat', './assets/images/defeat.png');
+    this.game.load.image('shop', './assets/images/shop1.png');
     //botones
     this.game.load.image('playbutton', './assets/images/playbutton.png');
     this.game.load.image('classbutton', './assets/images/classbutton.png');
@@ -48,20 +49,20 @@ var PreloaderScene = {
     this.game.load.image('exitbutton', './assets/images/exitbutton.png');
     this.game.load.image('berserkerbutton', './assets/images/berserkerbutton.png');
     this.game.load.image('againbutton', './assets/images/againbutton.png');
-    
+
     //muñecos
     this.game.load.image('bullet', './assets/images/red_bullet.png');
     this.game.load.image('zombi', './assets/images/zombi.png');
     this.game.load.spritesheet('player', './assets/images/6ZombieSpriteSheet.png', 40, 36);
     this.game.load.spritesheet('enemy', './assets/images/2ZombieSpriteSheet.png', 40, 36);
     this.game.load.image('zombiBoy', './assets/images/zombiBoy.png');
-    //music
+    //music & sounds
     this.game.load.audio('musicaFondo', './assets/sounds/Pentagram.mp3');
     this.game.load.audio('musicaAccion', './assets/sounds/HeavyAction.mp3');
     this.game.load.audio('musicaMenu', './assets/sounds/ZombieRock.mp3');
     this.game.load.audio('Zhola', './assets/sounds/zombihola.wav');
     this.game.load.audio('Zdolor', './assets/sounds/zombidolor.mp3');
-    this.game.load.audio('shoot','./assets/sounds/shoot.wav');
+    this.game.load.audio('shoot', './assets/sounds/shoot.wav');
     this.game.load.audio('shotgun1', './assets/sounds/shotgun.wav');
     this.game.load.audio('shotgun2', './assets/sounds/shotgun+Reload.wav');
     this.game.load.audio('Pdolor', './assets/sounds/pain.wav');
@@ -73,11 +74,6 @@ var PreloaderScene = {
   },
 
   create: function () {
-    var clase = 1;
-    console.log(clase);
-    var ZombieRock = this.game.add.audio('musicaMenu');
-    //ZombieRock.play();
-
     this.game.state.start('MainMenu');
   }
 };
@@ -91,7 +87,7 @@ window.onload = function () {
   game.state.add('SubMenu', SubMenu);
   game.state.add('MainMenu', MainMenu);
   game.state.add('GameOver', GameOver);
-  game.state.add('youwin', youwin);
+  game.state.add('youwin', youWin);
 
   game.state.start('boot');
 };

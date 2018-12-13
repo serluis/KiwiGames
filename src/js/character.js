@@ -6,7 +6,7 @@ const maxHealth = 100;
 function Character(game, x, y, imgName) {
     Entity.call(this, game, x, y, imgName);
     game.physics.arcade.enable(this);
-    this.scale.setTo(0.25, 0.25);
+    this.scale.setTo(0.20, 0.20);
     this.body.colliderWorldBounds = true;
     this.health = 100;
     this.damage = 1;

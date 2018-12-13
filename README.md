@@ -24,8 +24,10 @@ Each of those give us different bonuses.
 The enemies will be more and more, and more powerful each horde.
 It will be possible that a boss appear at lasts rounds.
 
-¡FIGHT FOR YOUR LIVE, EARN MONEY, KILL ZOMBIES!
+FIGHT FOR YOUR LIVE, EARN MONEY, KILL ZOMBIES!
 
+
+Click [here](https://serluis.github.io/KiwiGames/dist/) to play the game!
 
 
 [Age of Zombies](https://ageofzombies.com), Halfbrick Studios.
@@ -72,8 +74,10 @@ Los enemigos serán cada vez más numerosos y variados tras cada ronda completad
 
 
 
-
 ¡ LUCHA POR TU VIDA, GANA DINERO, MATA ZOMBIES !
+
+
+¡Haz click [aquí](https://serluis.github.io/KiwiGames/dist/) para jugar!
 
 
 <img src="src/assets/images/AgeOfZombies.png" alt="AgeOfZombies" width="200"/>
@@ -83,4 +87,4 @@ Los enemigos serán cada vez más numerosos y variados tras cada ronda completad
 Para este proyecto usaremos JavaScript y la librería de Phaser.
 
 Presentación hito 1:
-https://prezi.com/view/AC3ALxfsDxJTNtrBg9DO/
+[Hito1](https://prezi.com/view/AC3ALxfsDxJTNtrBg9DO/)

@@ -4,43 +4,41 @@
 var MainMenu = {
 
     preload: function () {
-
         //this.game.add.audio('musicaFondo').loopFull(1);
-
+        this.ZombieRock = this.game.add.audio('musicaMenu');
 
     },
 
     create: function () {
-        var playbutton;
-        var classbutton;
-        var background;
-        var exitbutton;
         this.game.stage.backgroundColor = '#182d3b';
+
+        if (!this.ZombieRock.isPlaying){
+            this.ZombieRock.play();
+        }
 
         this.background = this.game.add.image(0, 0, 'menu');
 
-        playbutton = this.game.add.button(318, 315, 'playbutton', this.actionOnClick, this/*, 2, 1, 0*/);
-        classbutton = this.game.add.button(150, 375, 'classbutton', this.actionOnClick2, this);
-        exitbutton = this.game.add.button(325, 440, 'exitbutton', this.actionOnClick3, this);
-        this.ZombieRock = this.game.add.audio('musicaMenu');
-        this.ZombieRock.play();
+        this.playButton = this.game.add.button(318, 315, 'playbutton', this.playSelection, this/*, 2, 1, 0*/);
+        this.classButton = this.game.add.button(150, 375, 'classbutton', this.classSelection, this);
+        this.exitButton = this.game.add.button(325, 440, 'exitbutton', this.exitSelection, this);
+
         /*button.onInputOver.add(over, this);
         button.onInputOut.add(out, this);
         button.onInputUp.add(up, this);*/
 
     },
-    actionOnClick: function () {
+    playSelection: function () {
         //this.background.visible =! this.background.visible;
         console.log(this.game.clase);
         this.ZombieRock.stop();
         this.game.state.start('play');
     },
-    actionOnClick2: function () {
+    classSelection: function () {
         //this.background.visible =! this.background.visible;
         //this.ZombieRock.stop();
         this.game.state.start('SubMenu');
     },
-    actionOnClick3: function () {
+    exitSelection: function () {
         this.ZombieRock.stop();
         this.game.state.start('GameOver');
 
