@@ -14,6 +14,7 @@ const enemySpeed = 75;
 
 /*------------------------------*/
 
+const maxRounds = 5;
 
 var PlayScene = {
   preload: function () {
@@ -53,7 +54,12 @@ var PlayScene = {
     //this.map.setCollisionBetween(1, 1000, true, 'puerta3');
   },
   create: function () {
+    // LEVEL MANAGING
+    this.round = 0;
+    this.killedEnemies = 0;
+    this.timer = this.game.time.create(false);
 
+    // PLAYER
     this.player = new Medic(this.game, 300, 300, 'zombiBoy'); // we create our player
     this.game.camera.follow(this.player); // camera attached to player
 
@@ -72,23 +78,42 @@ var PlayScene = {
     this.enemies.setAll('anchor.y', 0.5);
     /*-------Se acaban las cosas de enemies--------*/
 
-    /*this.musicafondo = */
+    // FIRST ROUND
+    nextRound();
+
+    // MUSIC
     this.music = this.game.add.audio('musicaFondo');
     this.music.play();
     this.music.play.loop = true;
+
+    //UI
+    this.enemyText = this.game.add.text(10, 300, this.killedEnemies + '/' + this.enemiesToSpawn,
+      {
+        font: "65px Arial",
+        fill: "#ff0044",
+        align: "center"
+      });
+      this.enemyText.anchor.setTo(0, 0.5);
+      this.enemyText.fixedToCamera = true;
   },
 
   update: function () {
     this.game.physics.arcade.overlap(this.player.weapon.bullets.children,
-      this.enemies.children, this.bulletEnemyCollisionHandler, null, this); // miramos los hijos de cada grupo
+      this.enemies.children, bulletEnemyCollision, null, this); // miramos los hijos de cada grupo
 
     this.game.physics.arcade.overlap(this.player, this.enemies.children,
-      this.playerEnemyCollisionHandler, null, this);
+      playerEnemyCollision, null, this);
 
     this.mapCollision();
 
     this.enemies.forEach(this.game.physics.arcade.moveToObject,
       this.game.physics.arcade, false, this.player, enemySpeed);
+
+    if (this.killedEnemies === this.enemiesToSpawn) {
+      console.log("Se acabó la ronda");
+      this.killedEnemies = 0;
+      roundEnded();
+    }
   },
 
   mapCollision: function () {
@@ -104,27 +129,13 @@ var PlayScene = {
     this.game.physics.arcade.collide(this.puerta3, this.enemies);
     //colisiones entre paredes y balas
     this.game.physics.arcade.collide(this.colisiones, this.player.weapon.bullets,
-      this.bulletMapCollisionHandler, null, this);
+      bulletMapCollision, null, this);
     this.game.physics.arcade.collide(this.puerta1, this.player.weapon.bullets,
-      this.bulletMapCollisionHandler, null, this);
+      bulletMapCollision, null, this);
     this.game.physics.arcade.collide(this.puerta2, this.player.weapon.bullets,
-      this.bulletMapCollisionHandler, null, this);
+      bulletMapCollision, null, this);
     this.game.physics.arcade.collide(this.puerta3, this.player.weapon.bullets,
-      this.bulletMapCollisionHandler, null, this);
-  },
-
-  bulletMapCollisionHandler: function (bullet) {
-    bullet.kill();
-  },
-  bulletEnemyCollisionHandler: function (bullet, enemy) {
-    bullet.kill();
-    this.zDmg.play();
-    enemy.getsDamage(this.player.damage);
-  },
-
-  playerEnemyCollisionHandler: function (player, enemy) {
-    enemy.attack();
-    player.getsDamage(enemy.damage);
+      bulletMapCollision, null, this);
   },
 
   render: function () {
@@ -134,6 +145,9 @@ var PlayScene = {
     this.game.debug.body(this.enemies);
     this.enemies.forEach(this.game.debug.body, this.game.debug);
     this.player.render();
+
+    //UI
+    this.enemyText.setText(this.killedEnemies + '/' + this.enemiesToSpawn);
   },
 
   backToMenu: function () {
@@ -143,5 +157,37 @@ var PlayScene = {
   },
 
 };
+
+function bulletMapCollision(bullet) {
+  bullet.kill();
+}
+
+function bulletEnemyCollision(bullet, enemy) {
+  bullet.kill();
+  PlayScene.zDmg.play();
+  enemy.getsDamage(PlayScene.player.damage);
+  if (enemy.health <= 0) {
+    PlayScene.killedEnemies++;
+    console.log("Killed enemies: " + PlayScene.killedEnemies);
+    // mostrar un cadaver o algo asi si queremos
+  }
+}
+
+function playerEnemyCollision(player, enemy) {
+  enemy.attack();
+  player.getsDamage(enemy.damage);
+}
+
+function roundEnded() {
+  // activamos el timer entre rondas
+  PlayScene.timer.add(4000, nextRound, PlayScene);
+  PlayScene.timer.start();
+}
+
+function nextRound() {
+  PlayScene.round++;
+  console.log("RONDA: " + PlayScene.round);
+  PlayScene.enemiesToSpawn = 2 * PlayScene.round;
+}
 
 module.exports = PlayScene;

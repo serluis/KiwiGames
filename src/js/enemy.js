@@ -3,9 +3,7 @@ const Character = require('./character.js');
 
 function Enemy(game, x, y, imgName) {
     Character.call(this, game, x, y, imgName);
-
-    this.scale.setTo(0.25, 0.25);
-
+    
     this.timePerAttack = 3000; // ataca cada X milisegundos
     this.lastAttack = Date.now(); // tiempo desde el ultimo ataque
 
