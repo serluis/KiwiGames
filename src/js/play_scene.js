@@ -6,7 +6,7 @@ const Player = require('./player.js');
 const Soldier = require('./soldier.js');
 const Berserker = require('./berserker.js');
 const Medic = require('./medic.js');
-//const mapa = require('./mapa.js');
+const Groups = require('./groups.js');
 
 
 /* THIS SHOULD GO IN OTHER FILES*/
@@ -58,56 +58,45 @@ var PlayScene = {
     this.round = 0;
     this.killedEnemies = 0;
     this.timer = this.game.time.create(false);
-
     // PLAYER
     this.player = new Medic(this.game, 300, 300, 'zombiBoy'); // we create our player
     this.game.camera.follow(this.player); // camera attached to player
-
-    /*ENEMIES STUFF: Para un futuro crear un file con todos los game groups*/
-    this.enemies = this.game.add.group();
-    this.enemies.enableBody = true;
-    this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
-    for (var i = 0; i < 4; i++) {
-      this.enemies.add(new Enemy(this.game, this.game.world.randomX, this.game.world.randomY, 'zombi'));
-      //enemy.name = 'enem' + i;
-      this.enemies.children[i].name = 'enem' + i;
-      console.log("An enemy created at POS: " + this.enemies.children[i].x + "," + this.enemies.children[i].y);
+    // GROUPS
+    this.groups = new Groups(this.game);
+    //ENEMIES
+    this.enemies = [];
+    for (var i = 0; i < 5; i++) {
+      this.enemies.push(new Enemy(this.game, 0, 0, 'zombi'));
     }
-    this.enemies.setAll('checkWorldBounds', true);
-    this.enemies.setAll('anchor.x', 0.5);
-    this.enemies.setAll('anchor.y', 0.5);
-    /*-------Se acaban las cosas de enemies--------*/
-
+    this.groups.createEnemies(this.enemies, this.player);
     // FIRST ROUND
     nextRound();
-
     // MUSIC
     this.music = this.game.add.audio('musicaFondo');
     this.music.play();
     this.music.play.loop = true;
-
-    //UI
+    //UI cutre
     this.enemyText = this.game.add.text(10, 300, this.killedEnemies + '/' + this.enemiesToSpawn,
       {
         font: "65px Arial",
         fill: "#ff0044",
         align: "center"
       });
-      this.enemyText.anchor.setTo(0, 0.5);
-      this.enemyText.fixedToCamera = true;
+    this.enemyText.anchor.setTo(0, 0.5);
+    this.enemyText.fixedToCamera = true;
   },
 
   update: function () {
     this.game.physics.arcade.overlap(this.player.weapon.bullets.children,
-      this.enemies.children, bulletEnemyCollision, null, this); // miramos los hijos de cada grupo
+      this.groups.enemies.children, bulletEnemyCollision, null, this); // miramos los hijos de cada grupo
 
-    this.game.physics.arcade.overlap(this.player, this.enemies.children,
+    this.game.physics.arcade.overlap(this.player, this.groups.enemies.children,
       playerEnemyCollision, null, this);
 
     this.mapCollision();
-
-    this.enemies.forEach(this.game.physics.arcade.moveToObject,
-      this.game.physics.arcade, false, this.player, enemySpeed);
+    this.groups.updateGroups();
+    //this.groups.enemies.forEach(this.game.physics.arcade.moveToObject,
+    //this.game.physics.arcade, false, this.player, enemySpeed);
 
     if (this.killedEnemies === this.enemiesToSpawn) {
       console.log("Se acabó la ronda");
@@ -142,8 +131,8 @@ var PlayScene = {
     this.game.debug.cameraInfo(this.game.camera, 32, 100);
     this.game.debug.spriteInfo(this.player, 32, 400);
     this.game.debug.body(this.player);
-    this.game.debug.body(this.enemies);
-    this.enemies.forEach(this.game.debug.body, this.game.debug);
+    this.game.debug.body(this.groups.enemies);
+    this.groups.enemies.forEach(this.game.debug.body, this.game.debug);
     this.player.render();
 
     //UI
