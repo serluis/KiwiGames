@@ -26,6 +26,8 @@ var PlayScene = {
     this.Zhola = this.game.add.audio('Zhola');
 
     this.initializeMap();
+
+    this.spawnPoints = [{ x: 180, y: 100 }, { x: 300, y: 1000 }, { x: 650, y: 850 }];
   },
   initializeMap: function () {
 
@@ -95,8 +97,6 @@ var PlayScene = {
 
     this.mapCollision();
     this.groups.updateGroups();
-    //this.groups.enemies.forEach(this.game.physics.arcade.moveToObject,
-    //this.game.physics.arcade, false, this.player, enemySpeed);
 
     if (this.killedEnemies === this.enemiesToSpawn) {
       console.log("Se acabó la ronda");
@@ -125,6 +125,8 @@ var PlayScene = {
       bulletMapCollision, null, this);
     this.game.physics.arcade.collide(this.puerta3, this.player.weapon.bullets,
       bulletMapCollision, null, this);
+    //UI
+    //this.enemyText.setText(this.killedEnemies + '/' + this.enemiesToSpawn);
   },
 
   render: function () {
@@ -135,8 +137,7 @@ var PlayScene = {
     this.groups.enemies.forEach(this.game.debug.body, this.game.debug);
     this.player.render();
 
-    //UI
-    this.enemyText.setText(this.killedEnemies + '/' + this.enemiesToSpawn);
+
   },
 
   backToMenu: function () {
@@ -168,15 +169,52 @@ function playerEnemyCollision(player, enemy) {
 }
 
 function roundEnded() {
+  //hacer que la tienda exista
+  // ...
   // activamos el timer entre rondas
   PlayScene.timer.add(4000, nextRound, PlayScene);
   PlayScene.timer.start();
+}
+
+function addSpawnPoint(x, y) {
+  PlayScene.spawnPoints.push({ x: x, y: y });
 }
 
 function nextRound() {
   PlayScene.round++;
   console.log("RONDA: " + PlayScene.round);
   PlayScene.enemiesToSpawn = 2 * PlayScene.round;
+  roundSpawn();
+  if (PlayScene.round === 2) {
+    addSpawnPoint(1000, 850);
+    addSpawnPoint(1500, 950);
+    addSpawnPoint(1500, 700);
+  }
+  else if (PlayScene.round === 3) {
+    addSpawnPoint(1000, 200);
+    addSpawnPoint(1500, 500);
+    addSpawnPoint(1500, 200);
+  }
+  else if (PlayScene.round === 5) {
+    addSpawnPoint(150, 1300);
+    addSpawnPoint(350, 1500);
+    addSpawnPoint(800, 1500);
+    addSpawnPoint(1500, 1200);
+  }
+
+  function spawnEnemy() {
+    PlayScene.spawnPoint = PlayScene.spawnPoints[Math.floor(Math.random() * PlayScene.spawnPoints.length)];
+    if (PlayScene.groups.enemies.getFirstExists(false)) {
+      var enemy = PlayScene.groups.enemies.getFirstDead();
+      enemy.reset(PlayScene.spawnPoint.x, PlayScene.spawnPoint.y);
+      enemy.heal(100);
+      enemy.body.setSize(200, 200);
+    }
+  }
+
+  function roundSpawn() {
+    PlayScene.game.time.events.repeat(500, PlayScene.enemiesToSpawn, spawnEnemy, this);
+  }
 }
 
 module.exports = PlayScene;

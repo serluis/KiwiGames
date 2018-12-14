@@ -10,7 +10,7 @@ Groups.prototype.createEnemies = function (entities, player) {
     this.enemies.enableBody = true;
     this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
     this.enemies.addMultiple(entities);
-    //this.enemies.callAll('kill');
+    this.enemies.callAll('kill');
     this.enemies.setAll('checkWorldBounds', true);
     this.enemies.setAll('anchor.x', 0.5);
     this.enemies.setAll('anchor.y', 0.5);
