@@ -17,9 +17,10 @@ Groups.prototype.createEnemies = function (entities, player) {
     this.player = player;
 }
 
-Groups.prototype.updateGroups = function () {
+Groups.prototype.updateGroups = function (player) {
     this.enemies.forEach(this.game.physics.arcade.moveToObject,
         this.game.physics.arcade, false, this.player, this.enemies.speed);
+    //this.enemies.forEach(this.game.physics.arcade.rotation = this.game.physics.arcade.angleToPointer(player);
 }
 
 module.exports = Groups;

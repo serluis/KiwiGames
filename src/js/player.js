@@ -39,7 +39,7 @@ Player.prototype.update = function () {
     this.body.velocity.x = 0;
     this.body.velocity.y = 0;
     //the character rotates to face the pointer
-    this.rotation = this.game.physics.arcade.angleToPointer(this) + 1.5;
+    this.rotation = this.game.physics.arcade.angleToPointer(this);
 
     if (this.controls.up.isDown) {
         this.body.velocity.y -= this.speed;

@@ -16,9 +16,7 @@ Character.prototype = Object.create(Entity.prototype);
 Character.prototype.constructor = Character;
 
 Character.prototype.update = function () {
-    if (this.health > 100) {
-        this.health = 100;
-    }
+   
 }
 
 Character.prototype.getsDamage = function (dmg) {
@@ -35,6 +33,9 @@ Character.prototype.getsDamage = function (dmg) {
 Character.prototype.heal = function (h) {
     if (h > 0 && this.health < maxHealth) {
         this.health += h;
+        if (this.health > 100) {
+            this.health = 100;
+        }
     }
 }
 

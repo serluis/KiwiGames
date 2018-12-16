@@ -20,7 +20,7 @@ Enemy.constructor = Enemy;
 Enemy.prototype.attack = function () {
     if (Date.now() - this.lastAttack > this.timePerAttack) {
         this.lastAttack = Date.now();
-        this.damage = 10;
+        this.damage = 20;
         this.pDmg.play();
     }
     else {

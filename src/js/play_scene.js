@@ -7,7 +7,7 @@ const Soldier = require('./soldier.js');
 const Berserker = require('./berserker.js');
 const Medic = require('./medic.js');
 const Groups = require('./groups.js');
-
+const Boss = require('./boss.js');
 
 /* THIS SHOULD GO IN OTHER FILES*/
 const enemySpeed = 75;
@@ -59,11 +59,12 @@ var PlayScene = {
     this.killedEnemies = 0;
     this.timer = this.game.time.create(false);
     // PLAYER
-    this.player = new Medic(this.game, 300, 300, 'zombiBoy'); // we create our player
+    this.player = new Medic(this.game, 300, 300, 'player'); // we create our player
     this.game.camera.follow(this.player); // camera attached to player
     // GROUPS
     this.groups = new Groups(this.game);
     //ENEMIES
+    this.Boss = new Boss (this.game, 300,200,'Boss',this.player);//creamos Boss
     this.enemies = [];
     for (var i = 0; i < 5; i++) {
       this.enemies.push(new Enemy(this.game, 0, 0, 'zombi'));
@@ -93,8 +94,14 @@ var PlayScene = {
     this.game.physics.arcade.overlap(this.player, this.groups.enemies.children,
       playerEnemyCollision, null, this);
 
+    this.game.physics.arcade.overlap(this.player.weapon.bullets.children,
+      this.Boss, bulletEnemyCollision, null, this);
+
+    this.game.physics.arcade.overlap(this.player, this.Boss,
+      playerBossCollision, null, this);
+
     this.mapCollision();
-    this.groups.updateGroups();
+    this.groups.updateGroups(this.player);
     //this.groups.enemies.forEach(this.game.physics.arcade.moveToObject,
     //this.game.physics.arcade, false, this.player, enemySpeed);
 
@@ -103,6 +110,11 @@ var PlayScene = {
       this.killedEnemies = 0;
       roundEnded();
     }
+    //Boss
+    this.game.physics.arcade.moveToObject(this.Boss,this.player,this.Boss.speed);
+    this.Boss.rotation = this.game.physics.arcade.angleToXY(this.Boss,this.player.x,this.player.y);
+    
+    
   },
 
   mapCollision: function () {
@@ -116,6 +128,11 @@ var PlayScene = {
     this.game.physics.arcade.collide(this.puerta1, this.enemies);
     this.game.physics.arcade.collide(this.puerta2, this.enemies);
     this.game.physics.arcade.collide(this.puerta3, this.enemies);
+    //colisiones entre paredes y Boss
+    this.game.physics.arcade.collide(this.colisiones, this.Boss);
+    this.game.physics.arcade.collide(this.puerta1, this.Boss);
+    this.game.physics.arcade.collide(this.puerta2, this.Boss);
+    this.game.physics.arcade.collide(this.puerta3, this.Boss);
     //colisiones entre paredes y balas
     this.game.physics.arcade.collide(this.colisiones, this.player.weapon.bullets,
       bulletMapCollision, null, this);
@@ -125,6 +142,7 @@ var PlayScene = {
       bulletMapCollision, null, this);
     this.game.physics.arcade.collide(this.puerta3, this.player.weapon.bullets,
       bulletMapCollision, null, this);
+      
   },
 
   render: function () {
@@ -165,6 +183,10 @@ function bulletEnemyCollision(bullet, enemy) {
 function playerEnemyCollision(player, enemy) {
   enemy.attack();
   player.getsDamage(enemy.damage);
+}
+function playerBossCollision(player,Boss){
+  Boss.attack();
+  player.getsDamage(Boss.damage);
 }
 
 function roundEnded() {
