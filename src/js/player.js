@@ -59,5 +59,5 @@ Player.prototype.render = function () {
     this.weapon.debug(10, 10, true);
     console.log("Health: " + this.health);
 }
-
+//this.game.state.start('GameOver');//cuando muera player
 module.exports = Player;
