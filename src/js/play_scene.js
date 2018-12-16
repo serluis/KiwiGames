@@ -240,6 +240,6 @@ function nextRound() {
 }
 function createChoff(cadaver){
   //Phaser.Sprite.call(this, game, x, y, imgName);
-  this.game.add.sprite(cadaver.x, cadaver.y, 'choff');
+  //this.game.add.sprite(cadaver.x, cadaver.y, 'choff');
 }
 module.exports = PlayScene;
