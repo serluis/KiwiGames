@@ -175,6 +175,7 @@ function bulletEnemyCollision(bullet, enemy) {
   enemy.getsDamage(PlayScene.player.damage);
   if (enemy.health <= 0) {
     PlayScene.killedEnemies++;
+    createChoff(enemy);
     console.log("Killed enemies: " + PlayScene.killedEnemies);
     // mostrar un cadaver o algo asi si queremos
   }
@@ -200,5 +201,8 @@ function nextRound() {
   console.log("RONDA: " + PlayScene.round);
   PlayScene.enemiesToSpawn = 2 * PlayScene.round;
 }
-
+function createChoff(cadaver){
+  //Phaser.Sprite.call(this, game, x, y, imgName);
+  this.game.add.sprite(cadaver.x, cadaver.y, 'choff');
+}
 module.exports = PlayScene;
