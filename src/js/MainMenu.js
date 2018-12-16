@@ -35,7 +35,7 @@ var MainMenu = {
     },
     classSelection: function () {
         //this.background.visible =! this.background.visible;
-        //this.ZombieRock.stop();
+        this.ZombieRock.stop();
         this.game.state.start('SubMenu');
     },
     exitSelection: function () {
