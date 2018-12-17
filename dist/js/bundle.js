@@ -21,7 +21,7 @@ var GameOver = {
   },
   actionOnClick: function () {
 
-    this.game.state.start('MainMenu');
+    this.game.state.start('youwin');
   },
 };
 
@@ -245,8 +245,8 @@ Character.prototype.getsDamage = function (dmg) {
 Character.prototype.heal = function (h) {
     if (h > 0 && this.health < maxHealth) {
         this.health += h;
-        if (this.health > 100) {
-            this.health = 100;
+        if (this.health > this.maxHealth) {
+            this.health = this.maxHealth;
         }
     }
 }
@@ -338,9 +338,9 @@ Groups.prototype.createBosses = function (entities) {
     this.bosses.setAll('anchor.y', 0.5);
 }
 
-Groups.prototype.updateGroups = function (player) {
+Groups.prototype.updateGroups = function () {
     this.enemies.forEach(this.game.physics.arcade.moveToObject,
-        this.game.physics.arcade, false, this.player, this.enemies.speed);
+        this.game.physics.arcade, false, this.player, 75);
     this.bosses.forEach(this.game.physics.arcade.moveToObject,
         this.game.physics.arcade, false, this.player, this.bosses.speed);
 }
@@ -523,16 +523,16 @@ var PlayScene = {
     //create layer
     this.suelo = this.map.createLayer('suelo');
     this.colisiones = this.map.createLayer('colisiones');
-    this.puerta1 = this.map.createLayer('puerta1');
-    this.puerta2 = this.map.createLayer('puerta2');
-    this.puerta3 = this.map.createLayer('puerta3');
+    //this.puerta1 = this.map.createLayer('puerta1');
+    //this.puerta2 = this.map.createLayer('puerta2');
+    //this.puerta3 = this.map.createLayer('puerta3');
     this.decoracion = this.map.createLayer('decoracion');
     //escalado
     this.suelo.resizeWorld();
     this.colisiones.resizeWorld();
-    this.puerta1.resizeWorld();
-    this.puerta2.resizeWorld();
-    this.puerta3.resizeWorld();
+    //this.puerta1.resizeWorld();
+    //this.puerta2.resizeWorld();
+    //this.puerta3.resizeWorld();
     this.decoracion.resizeWorld();
 
     //collision con paredes layer
@@ -548,7 +548,7 @@ var PlayScene = {
     this.timer = this.game.time.create(false);
 
     // PLAYER
-    this.player = new Medic(this.game, 300, 300, 'player'); // we create our player
+    this.player = new Soldier(this.game, 300, 300, 'player'); // we create our player
     this.game.camera.follow(this.player); // camera attached to player
 
     // GROUPS
@@ -569,7 +569,7 @@ var PlayScene = {
     // MUSIC
     this.music = this.game.add.audio('musicaFondo');
     this.music.play();
-    this.music.play.loop = true;
+    this.music.loopFull();
 
     //UI cutre
     this.enemyText = this.game.add.text(10, 300, this.killedEnemies + '/' + this.enemiesToSpawn,
@@ -607,9 +607,7 @@ var PlayScene = {
       roundEnded();
     }
     this.game.world.bringToTop(this.player);
-    //Boss
-    //this.game.physics.arcade.moveToObject(this.Boss, this.player, this.Boss.speed);
-    //this.Boss.rotation = this.game.physics.arcade.angleToXY(this.Boss,this.player.x,this.player.y);
+    //this.music.play.loop = true;
 
     gameOver(this.player);
   },
@@ -617,28 +615,28 @@ var PlayScene = {
   mapCollision: function () {
     //colisiones entre paredes y jugador
     this.game.physics.arcade.collide(this.colisiones, this.player);//habilita las colisiones entre paredes y player
-    this.game.physics.arcade.collide(this.puerta1, this.player);
-    this.game.physics.arcade.collide(this.puerta2, this.player);
-    this.game.physics.arcade.collide(this.puerta3, this.player);
+    //this.game.physics.arcade.collide(this.puerta1, this.player);
+    //this.game.physics.arcade.collide(this.puerta2, this.player);
+    //this.game.physics.arcade.collide(this.puerta3, this.player);
     //colisiones entre paredes y enemigos
     this.game.physics.arcade.collide(this.colisiones, this.enemies);
-    this.game.physics.arcade.collide(this.puerta1, this.enemies);
-    this.game.physics.arcade.collide(this.puerta2, this.enemies);
-    this.game.physics.arcade.collide(this.puerta3, this.enemies);
+    //this.game.physics.arcade.collide(this.puerta1, this.enemies);
+   //this.game.physics.arcade.collide(this.puerta2, this.enemies);
+    //this.game.physics.arcade.collide(this.puerta3, this.enemies);
     //colisiones entre paredes y Boss
     this.game.physics.arcade.collide(this.colisiones, this.bosses);
-    this.game.physics.arcade.collide(this.puerta1, this.bosses);
-    this.game.physics.arcade.collide(this.puerta2, this.bosses);
-    this.game.physics.arcade.collide(this.puerta3, this.bosses);
+   // this.game.physics.arcade.collide(this.puerta1, this.bosses);
+    //this.game.physics.arcade.collide(this.puerta2, this.bosses);
+    //this.game.physics.arcade.collide(this.puerta3, this.bosses);
     //colisiones entre paredes y balas
     this.game.physics.arcade.collide(this.colisiones, this.player.weapon.bullets,
       bulletMapCollision, null, this);
-    this.game.physics.arcade.collide(this.puerta1, this.player.weapon.bullets,
-      bulletMapCollision, null, this);
-    this.game.physics.arcade.collide(this.puerta2, this.player.weapon.bullets,
-      bulletMapCollision, null, this);
-    this.game.physics.arcade.collide(this.puerta3, this.player.weapon.bullets,
-      bulletMapCollision, null, this);
+   // this.game.physics.arcade.collide(this.puerta1, this.player.weapon.bullets,
+    //  bulletMapCollision, null, this);
+   // this.game.physics.arcade.collide(this.puerta2, this.player.weapon.bullets,
+    //  bulletMapCollision, null, this);
+   // this.game.physics.arcade.collide(this.puerta3, this.player.weapon.bullets,
+    //  bulletMapCollision, null, this);
   },
 
   /*render: function () {
@@ -700,25 +698,27 @@ function addSpawnPoint(x, y) {
 function nextRound() {
   PlayScene.round++;
   console.log("RONDA: " + PlayScene.round);
-  PlayScene.enemiesToSpawn = 2 * PlayScene.round;
+  PlayScene.enemiesToSpawn = 10 * PlayScene.round;
   roundSpawn();
   if (PlayScene.round === 2) {
     addSpawnPoint(1000, 850);
     addSpawnPoint(1500, 950);
     addSpawnPoint(1500, 700);
     spawnBoss();
-    PlayScene.enemiesToSpawn += 1;
+    spawnBoss();
   }
   else if (PlayScene.round === 3) {
     addSpawnPoint(1000, 200);
     addSpawnPoint(1500, 500);
     addSpawnPoint(1500, 200);
+    spawnBoss();
   }
   else if (PlayScene.round === 5) {
     addSpawnPoint(150, 1300);
     addSpawnPoint(350, 1500);
     addSpawnPoint(800, 1500);
     addSpawnPoint(1500, 1200);
+    spawnBoss();
   }
   PlayScene.enemyText.setText(PlayScene.killedEnemies + '/' + PlayScene.enemiesToSpawn);
 }
@@ -740,6 +740,7 @@ function spawnBoss() {
     boss.reset(PlayScene.spawnPoint.x, PlayScene.spawnPoint.y);
     boss.heal(boss.maxHealth);
     boss.body.setSize(200, 200);
+    PlayScene.enemiesToSpawn += 1;
   }
 }
 
@@ -820,6 +821,10 @@ Player.prototype.update = function () {
     if (this.controls.left.isDown) {
         this.body.velocity.x -= this.speed;
     }
+}
+
+Player.prototype.heal = function(h) {
+    Character.prototype.update.heal(this,h);
 }
 
 Player.prototype.render = function () {
