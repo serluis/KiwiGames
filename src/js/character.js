@@ -34,8 +34,8 @@ Character.prototype.getsDamage = function (dmg) {
 Character.prototype.heal = function (h) {
     if (h > 0 && this.health < maxHealth) {
         this.health += h;
-        if (this.health > 100) {
-            this.health = 100;
+        if (this.health > this.maxHealth) {
+            this.health = this.maxHealth;
         }
     }
 }

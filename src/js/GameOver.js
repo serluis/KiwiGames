@@ -20,7 +20,7 @@ var GameOver = {
   },
   actionOnClick: function () {
 
-    this.game.state.start('MainMenu');
+    this.game.state.start('youwin');
   },
 };
 

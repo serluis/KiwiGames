@@ -56,6 +56,10 @@ Player.prototype.update = function () {
     }
 }
 
+Player.prototype.heal = function(h) {
+    Character.prototype.update.heal(this,h);
+}
+
 Player.prototype.render = function () {
     this.weapon.debug(10, 10, true);
     console.log("Health: " + this.health);

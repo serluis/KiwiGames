@@ -28,9 +28,9 @@ Groups.prototype.createBosses = function (entities) {
     this.bosses.setAll('anchor.y', 0.5);
 }
 
-Groups.prototype.updateGroups = function (player) {
+Groups.prototype.updateGroups = function () {
     this.enemies.forEach(this.game.physics.arcade.moveToObject,
-        this.game.physics.arcade, false, this.player, this.enemies.speed);
+        this.game.physics.arcade, false, this.player, 75);
     this.bosses.forEach(this.game.physics.arcade.moveToObject,
         this.game.physics.arcade, false, this.player, this.bosses.speed);
 }
