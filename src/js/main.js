@@ -52,7 +52,7 @@ var PreloaderScene = {
 
     //muñecos
     this.game.load.image('bullet', './assets/images/red_bullet.png');
-    this.game.load.image('zombi', './assets/images/zombi.png');
+    this.game.load.image('zombi', './assets/images/zombi2.png');
     this.game.load.spritesheet('player', './assets/images/6ZombieSpriteSheet.png', 40, 36);
     this.game.load.spritesheet('enemy', './assets/images/2ZombieSpriteSheet.png', 40, 36);
     this.game.load.image('zombiBoy', './assets/images/zombiBoy.png');

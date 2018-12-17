@@ -3,7 +3,7 @@ const Character = require('./character.js');
 
 const speed = 75;
 
-function Enemy(game, x, y, imgName) {
+function Enemy(game, x, y, imgName, player) {
     Character.call(this, game, x, y, imgName);
 
     this.speed = speed;
@@ -12,10 +12,16 @@ function Enemy(game, x, y, imgName) {
     this.lastAttack = Date.now(); // tiempo desde el ultimo ataque
 
     this.pDmg = this.game.add.audio('Pdolor'); // el player recibe daño
+
+    this.player = player;
 }
 
 Enemy.prototype = Object.create(Character.prototype);
 Enemy.constructor = Enemy;
+
+Enemy.prototype.update = function () {
+    this.rotation = this.game.physics.arcade.angleToXY(this, this.player.x, this.player.y);
+}
 
 Enemy.prototype.attack = function () {
     if (Date.now() - this.lastAttack > this.timePerAttack) {

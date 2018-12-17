@@ -8,7 +8,8 @@ function Character(game, x, y, imgName) {
     game.physics.arcade.enable(this);
     this.scale.setTo(0.20, 0.20);
     this.body.colliderWorldBounds = true;
-    this.health = 100;
+    this.maxHealth = 100;
+    this.health = maxHealth;
     this.damage = 1;
 }
 
@@ -16,7 +17,7 @@ Character.prototype = Object.create(Entity.prototype);
 Character.prototype.constructor = Character;
 
 Character.prototype.update = function () {
-   
+
 }
 
 Character.prototype.getsDamage = function (dmg) {

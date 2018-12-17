@@ -1,13 +1,14 @@
 'use strict'
-const Enemy= require('./enemy.js');
+const Enemy = require('./enemy.js');
 
-function Boss(game, x, y, imgName,player){
-    Enemy.call(this,game,x,y,imgName);
-    this.speed=35;
-    this.health = this.health * 10;
+function Boss(game, x, y, imgName, player) {
+    Enemy.call(this, game, x, y, imgName, player);
+    this.speed = 35;
+    this.maxHealth = this.maxHealth * 5;
+    this.health = this.maxHealth;
     this.enableBody = true;
     this.physicsBodyType = Phaser.Physics.ARCADE;
-    this.rotation = this.game.physics.arcade.angleToPointer(player);
+    this.player = player;
 }
 
 Boss.prototype = Object.create(Enemy.prototype);
@@ -22,6 +23,10 @@ Boss.prototype.attack = function () {
     else {
         this.damage = 0;
     }
+}
+
+Boss.prototype.update = function () {
+    Enemy.prototype.update.call(this);
 }
 
 module.exports = Boss;

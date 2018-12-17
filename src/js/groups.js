@@ -4,6 +4,7 @@
 function Groups(game) {
     this.game = game;
     this.enemies = game.add.group();
+    this.bosses = game.add.group();
 }
 
 Groups.prototype.createEnemies = function (entities, player) {
@@ -17,10 +18,27 @@ Groups.prototype.createEnemies = function (entities, player) {
     this.player = player;
 }
 
+Groups.prototype.createBosses = function (entities) {
+    this.bosses.enableBody = true;
+    this.bosses.physicsBodyType = Phaser.Physics.ARCADE;
+    this.bosses.addMultiple(entities);
+    this.bosses.callAll('kill');
+    this.bosses.setAll('checkWorldBounds', true);
+    this.bosses.setAll('anchor.x', 0.5);
+    this.bosses.setAll('anchor.y', 0.5);
+}
+
 Groups.prototype.updateGroups = function (player) {
     this.enemies.forEach(this.game.physics.arcade.moveToObject,
         this.game.physics.arcade, false, this.player, this.enemies.speed);
-    //this.enemies.forEach(this.game.physics.arcade.rotation = this.game.physics.arcade.angleToPointer(player);
+    this.bosses.forEach(this.game.physics.arcade.moveToObject,
+        this.game.physics.arcade, false, this.player, this.bosses.speed);
+}
+
+Groups.prototype.render=function(){
+    this.enemies.forEach(this.game.debug.body, this.game.debug);
+    this.bosses.forEach(this.game.debug.body, this.game.debug);
+
 }
 
 module.exports = Groups;
