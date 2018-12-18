@@ -1,4 +1,5 @@
 'use strict'
+var config = require('./config.js');
 
 var SubMenu = {
 	preload: function () {
@@ -18,15 +19,18 @@ var SubMenu = {
 
 	},
 	soldierSelection: function () {
-		this.game.clase = 1;
+		//this.game.clase = 1;
+		config.chosenClass = 1;
 		this.game.state.start('MainMenu');
 	},
 	medicSelection: function () {
-		this.game.clase = 2;
+		//this.game.clase = 2;
+		config.chosenClass = 2;
 		this.game.state.start('MainMenu');
 	},
 	berserkerSelection: function () {
-		this.game.clase = 3;
+		//this.game.clase = 3;
+		config.chosenClass = 3;
 		this.game.state.start('MainMenu');
 	},
 
