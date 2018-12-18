@@ -14,6 +14,8 @@ var PlayScene = {
   preload: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.world.setBounds(0, 0, 1000, 1000);
+    this.cameraSize = new Phaser.Rectangle();
+    this.cameraSize.setTo(0, 0, 1000, 1000);
     this.game.stage.backgroundColor = '#313131';
 
     this.zDmg = this.game.add.audio('Zdolor');
@@ -57,7 +59,14 @@ var PlayScene = {
 
     // PLAYER
     this.player = new PlayerManager(this.game, 300, 300, 'player');
+
+    // CAMERA
     this.game.camera.follow(this.player.subClass); // camera attached to player
+    /*this.game.camera.scale.setTo(1.5, 1.5);
+    this.game.camera.bounds.x = this.cameraSize.x * this.game.camera.scale.x;
+    this.game.camera.bounds.y = this.cameraSize.y * this.game.camera.scale.y;
+    this.game.camera.bounds.width = this.cameraSize.width * this.game.camera.scale.x;
+    this.game.camera.bounds.height = this.cameraSize.height * this.game.camera.scale.y;*/
 
     // GROUPS
     this.groups = new Groups(this.game);
