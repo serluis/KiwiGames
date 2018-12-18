@@ -1,5 +1,8 @@
 'use strict';
 
-var chosenClass = 0;
+
+var config = {
+    chosenClass: 0,
+};
 
 module.exports = config;

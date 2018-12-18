@@ -8,6 +8,7 @@
     "browser-sync": "*",
     "browserify": "*",
     "del": "*",
+    "event-stream": "^4.0.1",
     "gulp": "^3.9.1",
     "gulp-connect": "*",
     "gulp-gh-pages": "*",

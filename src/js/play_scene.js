@@ -1,11 +1,5 @@
 'use strict';
-//var sound = require('./sound.js');
-//const Entity = require('./entity.js');
 const Enemy = require('./enemy.js');
-//const Player = require('./player.js');
-//const Soldier = require('./soldier.js');
-//const Berserker = require('./berserker.js');
-//const Medic = require('./medic.js');
 const Groups = require('./groups.js');
 const Boss = require('./boss.js');
 const PlayerManager = require('./playerManager.js');
@@ -62,9 +56,8 @@ var PlayScene = {
     this.timer = this.game.time.create(false);
 
     // PLAYER
-    //this.player = new Soldier(this.game, 300, 300, 'player'); // we create our player
     this.player = new PlayerManager(this.game, 300, 300, 'player');
-    this.game.camera.follow(this.player); // camera attached to player
+    this.game.camera.follow(this.player.subClass); // camera attached to player
 
     // GROUPS
     this.groups = new Groups(this.game);
@@ -72,11 +65,11 @@ var PlayScene = {
     //ENEMIES
     this.bosses = [];
     for (var i = 0; i < 3; i++) {
-      this.bosses.push(new Boss(this.game, 0, 0, 'Boss', this.player));
+      this.bosses.push(new Boss(this.game, 0, 0, 'Boss', this.player.subClass));
     }
     this.enemies = [];
     for (var i = 0; i < 100; i++) {
-      this.enemies.push(new Enemy(this.game, 0, 0, 'zombi', this.player));
+      this.enemies.push(new Enemy(this.game, 0, 0, 'zombi', this.player.subClass));
     }
     this.groups.createEnemies(this.enemies, this.player.subClass);
     this.groups.createBosses(this.bosses);
@@ -122,9 +115,8 @@ var PlayScene = {
       roundEnded();
     }
     this.game.world.bringToTop(this.player.subClass);
-    this.game.world.bringToTop(this.groups);
-
-    //this.music.play.loop = true;
+    this.game.world.bringToTop(this.groups.enemies);
+    this.game.world.bringToTop(this.groups.bosses);
 
     gameOver(this.player.subClass);
   },
@@ -167,7 +159,6 @@ var PlayScene = {
   },*/
 
   backToMenu: function () {
-    //this.game.audio('musicafondo').loopFull(0);?
     this.music.stop();
     this.game.state.start('MainMenu');
   },
@@ -181,13 +172,12 @@ function bulletMapCollision(bullet) {
 function bulletEnemyCollision(bullet, enemy) {
   bullet.kill();
   PlayScene.zDmg.play();
-  enemy.getsDamage(PlayScene.player.damage);
+  enemy.getsDamage(PlayScene.player.subClass.damage);
   if (enemy.health <= 0) {
     PlayScene.killedEnemies++;
     createChoff(enemy);
     console.log("Killed enemies: " + PlayScene.killedEnemies);
     PlayScene.enemyText.setText(PlayScene.killedEnemies + '/' + PlayScene.enemiesToSpawn);
-    // mostrar un cadaver o algo asi si queremos
   }
 }
 
@@ -218,19 +208,21 @@ function nextRound() {
   PlayScene.enemiesToSpawn = 10 * PlayScene.round;
   roundSpawn();
   if (PlayScene.round === 2) {
+    PlayScene.puerta3.kill();
     addSpawnPoint(1000, 850);
     addSpawnPoint(1500, 950);
     addSpawnPoint(1500, 700);
     spawnBoss();
-    spawnBoss();
   }
   else if (PlayScene.round === 3) {
+    PlayScene.puerta2.kill();
     addSpawnPoint(1000, 200);
     addSpawnPoint(1500, 500);
     addSpawnPoint(1500, 200);
     spawnBoss();
   }
   else if (PlayScene.round === 5) {
+    PlayScene.puerta1.kill();
     addSpawnPoint(150, 1300);
     addSpawnPoint(350, 1500);
     addSpawnPoint(800, 1500);
@@ -266,7 +258,6 @@ function roundSpawn() {
 }
 
 function createChoff(cadaver) {
-  //Phaser.Sprite.call(this, game, x, y, imgName);
   var choff = PlayScene.game.add.sprite(cadaver.x, cadaver.y, 'choff');
   choff.anchor.setTo(0.5, 0.5);
   choff.scale.setTo(0.50, 0.50);

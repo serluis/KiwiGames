@@ -1,5 +1,6 @@
 'use strict'
 //var sound = require('./sound.js');
+var config = require('./config.js');
 
 var MainMenu = {
 
@@ -12,7 +13,7 @@ var MainMenu = {
     create: function () {
         this.game.stage.backgroundColor = '#182d3b';
 
-        if (!this.ZombieRock.isPlaying){
+        if (!this.ZombieRock.isPlaying) {
             this.ZombieRock.play();
         }
 
@@ -28,10 +29,12 @@ var MainMenu = {
 
     },
     playSelection: function () {
-        //this.background.visible =! this.background.visible;
-        console.log(this.game.clase);
         this.ZombieRock.stop();
-        this.game.state.start('play');
+        if (config.chosenClass != 0)
+            this.game.state.start('play');
+        else {
+            this.game.state.start('SubMenu');            
+        }
     },
     classSelection: function () {
         //this.background.visible =! this.background.visible;
