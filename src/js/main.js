@@ -15,7 +15,6 @@ var BootScene = {
   init: function () {
     this.input.maxPointers = 1;
     this.stage.disableVisibilityChange = true;
-    console.log("maxPointers = " + this.input.maxPointers);
   },
 
   create: function () {
@@ -26,7 +25,7 @@ var BootScene = {
 
 var PreloaderScene = {
   preload: function () {
-    this.loadingBar = this.game.add.sprite(75, 340, 'preloader_bar');
+    this.loadingBar = this.game.add.sprite(70, 440, 'preloader_bar');
     this.loadingBar.anchor.setTo(0, 0.5);
     this.load.setPreloadSprite(this.loadingBar);
 
@@ -39,6 +38,8 @@ var PreloaderScene = {
     this.game.load.image('youwin', './assets/images/youwin.png');
     this.game.load.image('wavecomp', './assets/images/waveComplete.png');
     this.game.load.image('waveinc', './assets/images/waveIncoming.png');
+    this.game.load.image('waveui', './assets/images/waveUI.png');
+    this.game.load.image('playerui', './assets/images/playerUI.png');
     this.game.load.image('defeat', './assets/images/defeat.png');
     this.game.load.image('shop', './assets/images/shop1.png');
     //botones
@@ -57,8 +58,8 @@ var PreloaderScene = {
     this.game.load.spritesheet('enemy', './assets/images/2ZombieSpriteSheet.png', 40, 36);
     this.game.load.image('zombiBoy', './assets/images/zombiBoy.png');
     this.game.load.image('player', './assets/images/player.png');
-    this.game.load.image('Boss','./assets/images/Boss.png');
-    this.game.load.image('choff','./assets/images/chof.png');
+    this.game.load.image('Boss', './assets/images/Boss.png');
+    this.game.load.image('choff', './assets/images/chof.png');
     //music & sounds
     this.game.load.audio('musicaFondo', './assets/sounds/Pentagram.mp3');
     this.game.load.audio('musicaAccion', './assets/sounds/HeavyAction.mp3');

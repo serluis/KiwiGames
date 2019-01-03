@@ -8,7 +8,7 @@ var config = require('./config.js');
 
 /*------------------------------*/
 
-const maxRounds = 5;
+const maxRounds = 10;
 
 var PlayScene = {
   preload: function () {
@@ -25,8 +25,8 @@ var PlayScene = {
 
     this.spawnPoints = [{ x: 180, y: 100 }, { x: 300, y: 1000 }, { x: 650, y: 850 }];
   },
-  initializeMap: function () {
 
+  initializeMap: function () {
     this.map = this.game.add.tilemap('Map');
     this.map.addTilesetImage('tilesetsangriento', 'tiledSangre');
     this.map.addTilesetImage('stone_house_interior', 'tiledStoneInterior');
@@ -51,11 +51,13 @@ var PlayScene = {
     this.map.setCollisionBetween(1, 1000, true, 'puerta2');
     this.map.setCollisionBetween(1, 1000, true, 'puerta3');
   },
+
   create: function () {
     // LEVEL MANAGING
     this.round = 0;
     this.killedEnemies = 0;
     this.timer = this.game.time.create(false);
+    this.hudTimer = this.game.time.create(false);
 
     // PLAYER
     this.player = new PlayerManager(this.game, 300, 300, 'player');
@@ -88,15 +90,8 @@ var PlayScene = {
     this.music.play();
     this.music.loopFull();
 
-    //UI cutre
-    this.enemyText = this.game.add.text(10, 300, this.killedEnemies + '/' + this.enemiesToSpawn,
-      {
-        font: "65px Arial",
-        fill: "#ff0044",
-        align: "center"
-      });
-    this.enemyText.anchor.setTo(0, 0.5);
-    this.enemyText.fixedToCamera = true;
+    //UI cada vez menos cutre
+    this.hud = new HUD(this.game);
 
     // FIRST ROUND
     nextRound();
@@ -112,21 +107,20 @@ var PlayScene = {
     this.game.physics.arcade.overlap(this.player.subClass.weapon.bullets.children,
       this.groups.bosses.children, bulletEnemyCollision, null, this);
 
-    this.game.physics.arcade.overlap(this.player.subClass, this.Boss,
+    this.game.physics.arcade.overlap(this.player.subClass, this.groups.bosses.children,
       playerBossCollision, null, this);
 
     this.mapCollision();
     this.groups.updateGroups();
-
     if (this.killedEnemies === this.enemiesToSpawn) {
       PlayScene.killedEnemies = 0;
-      console.log("Se acabó la ronda");
-      roundEnded();
+      roundEnded(10000);
     }
-    this.game.world.bringToTop(this.player.subClass);
-    this.game.world.bringToTop(this.groups.enemies);
-    this.game.world.bringToTop(this.groups.bosses);
 
+    this.game.world.bringToTop(this.player.subClass.weapon.bullets);
+    this.game.world.bringToTop(this.player.subClass);
+
+    this.hud.update();
     gameOver(this.player.subClass);
   },
 
@@ -157,15 +151,10 @@ var PlayScene = {
       bulletMapCollision, null, this);
   },
 
-  /*render: function () {
-    this.game.debug.cameraInfo(this.game.camera, 32, 100);
-    this.game.debug.spriteInfo(this.player, 32, 400);
-    this.game.debug.body(this.player);
-    //this.game.debug.body(this.groups.enemies);
-    this.player.render();
-    this.groups.render();
-
-  },*/
+  render: function () {
+    this.hud.healthText.setText(this.player.subClass.health);
+    this.player.subClass.render();
+  },
 
   backToMenu: function () {
     this.music.stop();
@@ -185,8 +174,8 @@ function bulletEnemyCollision(bullet, enemy) {
   if (enemy.health <= 0) {
     PlayScene.killedEnemies++;
     createChoff(enemy);
-    console.log("Killed enemies: " + PlayScene.killedEnemies);
-    PlayScene.enemyText.setText(PlayScene.killedEnemies + '/' + PlayScene.enemiesToSpawn);
+    PlayScene.hud.enemyText.setText(
+      PlayScene.killedEnemies + '/' + PlayScene.enemiesToSpawn);
   }
 }
 
@@ -199,23 +188,31 @@ function playerBossCollision(player, Boss) {
   player.getsDamage(Boss.damage);
 }
 
-function roundEnded() {
+function roundEnded(time) {
   //hacer que la tienda exista
   // ...
   // activamos el timer entre rondas
-  PlayScene.timer.add(4000, nextRound, PlayScene);
+  PlayScene.timer.add(time, nextRound, PlayScene);
+  PlayScene.hudTimer.add(time - 1500, waveInc, PlayScene);
+  PlayScene.hudTimer.start();
   PlayScene.timer.start();
+  // mensaje de fin de ronda
+  PlayScene.hud.waveComplete();
+}
+
+function waveInc() {
+  // antes de enseñar esto cerramos la tienda
+  // ...
+  // aparece cartel de nueva oleada
+  console.log("nueva oleada message");
+  PlayScene.hud.waveIncoming();
 }
 
 function addSpawnPoint(x, y) {
   PlayScene.spawnPoints.push({ x: x, y: y });
 }
 
-function nextRound() {
-  PlayScene.round++;
-  console.log("RONDA: " + PlayScene.round);
-  PlayScene.enemiesToSpawn = 10 * PlayScene.round;
-  roundSpawn();
+function roundProgression() {
   if (PlayScene.round === 2) {
     PlayScene.puerta3.kill();
     addSpawnPoint(1000, 850);
@@ -238,7 +235,16 @@ function nextRound() {
     addSpawnPoint(1500, 1200);
     spawnBoss();
   }
-  PlayScene.enemyText.setText(PlayScene.killedEnemies + '/' + PlayScene.enemiesToSpawn);
+}
+
+function nextRound() {
+  PlayScene.round++;
+  console.log("RONDA: " + PlayScene.round);
+  PlayScene.hud.waveText.setText(PlayScene.round + '/' + maxRounds);
+  PlayScene.enemiesToSpawn = 10 * PlayScene.round;
+  roundSpawn();
+  roundProgression();
+  PlayScene.hud.enemyText.setText(PlayScene.killedEnemies + '/' + PlayScene.enemiesToSpawn);
 }
 
 function spawnEnemy() {
@@ -266,8 +272,8 @@ function roundSpawn() {
   PlayScene.game.time.events.repeat(500, PlayScene.enemiesToSpawn, spawnEnemy, this);
 }
 
-function createChoff(cadaver) {
-  var choff = PlayScene.game.add.sprite(cadaver.x, cadaver.y, 'choff');
+function createChoff(corpse) {
+  var choff = PlayScene.game.add.sprite(corpse.x, corpse.y, 'choff');
   choff.anchor.setTo(0.5, 0.5);
   choff.scale.setTo(0.50, 0.50);
 }

@@ -9,15 +9,14 @@ const bulletLife = 700;
 
 function Berserker(game, x, y, imgName) {
     Player.call(this, game, x, y, imgName);
-    
+
     this.weapon.bulletLifespan = bulletLife;
     this.weapon.bulletSpeed = bulletSpeed;
     this.weapon.fireRate = fireRate;
     this.weapon.bulletAngleVariance = 15;
     this.weapon.multiFire = true;
-    this.weapon.fireLimit = 3;
+    this.weapon.fireLimit = 5;
     this.damage = 34;
-    this.shoot = this.game.add.audio('shoot');
     console.log("Im a berserker");
 }
 
@@ -29,12 +28,12 @@ Berserker.prototype.update = function () {
     if (this.controls.shoot.isDown) {
         this.shoot.play();
         this.weapon.fireAtPointer();
-        //this.weapon.fireAtPointer();
-        //this.weapon.fireAtPointer();
-        //this.weapon.fireOffset(0, 0);
+        this.weapon.fireAtPointer();
+        this.weapon.fireAtPointer();
     }
-
-    this.weapon.resetShots();
+    else {
+        this.weapon.resetShots();
+    }
 }
 
 module.exports = Berserker;

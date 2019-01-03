@@ -14,6 +14,7 @@ function Medic(game, x, y, imgName) {
     this.weapon.fireRate = fireRate;
     this.weapon.bulletAngleVariance = 5;
     this.damage = 25;
+    this.healStat = 40;
     this.shoot = this.game.add.audio('shoot');
     console.log("Im a medic");
 }
@@ -24,9 +25,8 @@ Medic.constructor = Medic;
 Medic.prototype.update = function () {
     Player.prototype.update.call(this);
     if (this.controls.shoot.isDown) {
-        if (!this.shoot.isPlaying) {
+        if (!this.shoot.isPlaying)
             this.shoot.play();
-        }
         this.weapon.fireAtPointer();
     }
 }

@@ -31,11 +31,14 @@ Groups.prototype.createBosses = function (entities) {
 Groups.prototype.updateGroups = function () {
     this.enemies.forEach(this.game.physics.arcade.moveToObject,
         this.game.physics.arcade, false, this.player, 75);
+    this.game.physics.arcade.collide(this.enemies.children, this.enemies.children);
     this.bosses.forEach(this.game.physics.arcade.moveToObject,
         this.game.physics.arcade, false, this.player, this.bosses.speed);
+    this.game.world.bringToTop(this.enemies);
+    this.game.world.bringToTop(this.bosses);
 }
 
-Groups.prototype.render=function(){
+Groups.prototype.render = function () {
     this.enemies.forEach(this.game.debug.body, this.game.debug);
     this.bosses.forEach(this.game.debug.body, this.game.debug);
 

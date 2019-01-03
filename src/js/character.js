@@ -11,13 +11,14 @@ function Character(game, x, y, imgName) {
     this.maxHealth = 100;
     this.health = maxHealth;
     this.damage = 1;
+    this.timePerHeal = 10000; // se puede curar cada X milisegundos
+    this.lastHeal = Date.now(); // tiempo desde la ultima curacion
 }
 
 Character.prototype = Object.create(Entity.prototype);
 Character.prototype.constructor = Character;
 
 Character.prototype.update = function () {
-
 }
 
 Character.prototype.getsDamage = function (dmg) {

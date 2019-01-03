@@ -19,19 +19,16 @@ var SubMenu = {
 
 	},
 	soldierSelection: function () {
-		//this.game.clase = 1;
 		config.chosenClass = 1;
-		this.game.state.start('MainMenu');
+		this.game.state.start('play');
 	},
 	medicSelection: function () {
-		//this.game.clase = 2;
 		config.chosenClass = 2;
-		this.game.state.start('MainMenu');
+		this.game.state.start('play');
 	},
 	berserkerSelection: function () {
-		//this.game.clase = 3;
 		config.chosenClass = 3;
-		this.game.state.start('MainMenu');
+		this.game.state.start('play');
 	},
 
 };

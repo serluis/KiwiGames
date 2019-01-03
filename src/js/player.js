@@ -1,6 +1,7 @@
 'use strict';
 
 const Character = require('./character.js');
+const PlayScene = require('./play_scene.js');
 
 const speed = 150;
 
@@ -17,6 +18,7 @@ function Player(game, x, y, imgName) {
     // se puede poner un offset con los 2 numeros
 
     this.speed = speed;
+    this.healStat = 25;
 
     this.controls = {
         right: game.input.keyboard.addKey(Phaser.Keyboard.D),
@@ -27,7 +29,15 @@ function Player(game, x, y, imgName) {
         shoot: game.input.activePointer,
     };
 
-    this.controls.heal.onDown.add(Character.prototype.heal, this);
+    this.shoot = this.game.add.audio('shoot');
+
+    this.controls.heal.onDown.add(function () {
+        if (Date.now() - this.lastHeal > this.timePerHeal) {
+            this.lastHeal = Date.now();
+            this.heal(this.healStat)
+        }
+    }, this);
+    game.input.keyboard.removeKeyCapture(Phaser.Keyboard.Q);
 
     console.log("Player created at POS: " + this.x + "," + this.y);
 }
@@ -56,13 +66,15 @@ Player.prototype.update = function () {
     }
 }
 
-Player.prototype.heal = function(h) {
-    Character.prototype.update.heal(this,h);
+Player.prototype.heal = function (h) {
+    Character.prototype.heal.call(this, h);
+    //PlayScene.hud.healthText.setText(this.health);
+    console.log("Me he curao " + h + " de vida jeje");
 }
 
 Player.prototype.render = function () {
-    this.weapon.debug(10, 10, true);
     console.log("Health: " + this.health);
+    this.weapon.debug();
 }
 //this.game.state.start('GameOver');//cuando muera player
 module.exports = Player;
