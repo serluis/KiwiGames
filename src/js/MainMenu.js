@@ -30,11 +30,12 @@ var MainMenu = {
     },
     playSelection: function () {
         this.ZombieRock.stop();
-        if (config.chosenClass != 0)
+        this.game.state.start('SubMenu');            
+       /* if (config.chosenClass != 0)
             this.game.state.start('play');
         else {
             this.game.state.start('SubMenu');            
-        }
+        }*/
     },
     classSelection: function () {
         //this.background.visible =! this.background.visible;

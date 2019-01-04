@@ -2,8 +2,9 @@
 
 const config = require('./config.js');
 
-function HUD(game) {
+function HUD(game, music) {
     this.game = game;
+    this.music = music;
     this.fade = game.add.tween();
 
     this.waveComp = game.add.sprite(config.roundMsgX, config.roundMsgY, 'wavecomp');
@@ -26,16 +27,21 @@ function HUD(game) {
     this.playerUI.scale.setTo(0.5, 0.5);
     this.playerUI.fixedToCamera = true;
 
+    this.money = game.add.sprite(config.waveX, config.dollarY, 'dollar');
+    this.money.anchor.setTo(0, 0.5);
+    this.money.scale.setTo(0.10, 0.10);
+    this.money.fixedToCamera = true;
+
     this.enemyText = this.game.add.text(config.enemyTextX, config.enemyTextY, "",
         {
-            font: "35px Arial",
+            font: "30px Arial",
             fill: "#ffffff",
             align: "center"
         });
     this.enemyText.anchor.setTo(0, 0.5);
     this.enemyText.fixedToCamera = true;
 
-    this.waveText = this.game.add.text(config.waveTextX, config.waveTextY, "90/90",
+    this.waveText = this.game.add.text(config.waveTextX, config.waveTextY, "",
         {
             font: "20px Arial",
             fill: "#ffffff",
@@ -43,6 +49,15 @@ function HUD(game) {
         });
     this.waveText.anchor.setTo(0, 0.5);
     this.waveText.fixedToCamera = true;
+
+    this.moneyText = this.game.add.text(config.dollarTextX, config.dollarTextY, "90/90",
+        {
+            font: "30px Arial",
+            fill: "#ffffff",
+            align: "center"
+        });
+    this.moneyText.anchor.setTo(0, 0.5);
+    this.moneyText.fixedToCamera = true;
 
     this.healthText = this.game.add.text(config.playerTextX, config.healthTextY, "100",
         {
@@ -61,6 +76,65 @@ function HUD(game) {
         });
     this.shieldText.anchor.setTo(0, 0.5);
     this.shieldText.fixedToCamera = true;
+
+    // PAUSE MENU
+    game.input.onDown.add(this.unpause, this);
+
+    this.panel = this.game.add.sprite(game.camera.width / 2, game.camera.height / 2, 'panel');
+    this.resume = this.game.add.sprite(
+        game.camera.width / 2, 90, 'resumebutton');
+    this.restart = this.game.add.sprite(
+        game.camera.width / 2, 290, 'restartbutton');
+    this.exit = this.game.add.sprite(
+        game.camera.width / 2, 490, 'exitpause');
+
+    this.panel.anchor.setTo(0.5, 0.5);
+    this.panel.fixedToCamera = true;
+
+    this.resume.anchor.setTo(0.5, 0.5);
+    this.resume.scale.setTo(0.75, 0.75);
+    this.resume.fixedToCamera = true;
+
+    this.restart.anchor.setTo(0.5, 0.5);
+    this.restart.scale.setTo(0.75, 0.75);
+    this.restart.fixedToCamera = true;
+
+    this.exit.anchor.setTo(0.5, 0.5);
+    this.exit.scale.setTo(0.75, 0.75);
+    this.exit.fixedToCamera = true;
+
+    // we initialize de pausemenu deactivated
+    this.panel.kill();
+    this.resume.kill();
+    this.restart.kill();
+    this.exit.kill();
+
+}
+
+HUD.prototype.pause = function () {
+    this.game.paused = !this.game.paused;
+    this.panel.exists = this.resume.exists = this.restart.exists = this.exit.exists = this.game.paused;
+}
+
+HUD.prototype.unpause = function () {
+    if (this.game.paused) {
+        if (this.resume.getBounds().contains(this.game.input.x, this.game.input.y)) {
+            this.game.paused = false;
+            this.panel.exists = this.resume.exists = this.restart.exists = this.exit.exists = this.game.paused;
+        }
+        else if (this.restart.getBounds().contains(this.game.input.x, this.game.input.y)) {
+            this.game.paused = false;
+            this.music.stop();
+            this.panel.exists = this.resume.exists = this.restart.exists = this.exit.exists = this.game.paused;
+            this.game.state.restart();
+        }
+        else if (this.exit.getBounds().contains(this.game.input.x, this.game.input.y)) {
+            this.game.paused = false;
+            this.music.stop();
+            this.panel.exists = this.resume.exists = this.restart.exists = this.exit.exists = this.game.paused;
+            this.game.state.start('MainMenu');
+        }
+    }
 }
 
 HUD.constructor = HUD;
@@ -70,11 +144,21 @@ HUD.prototype.update = function () {
     this.game.world.bringToTop(this.waveInc);
     this.game.world.bringToTop(this.wave);
     this.game.world.bringToTop(this.playerUI);
+    this.game.world.bringToTop(this.money);
 
     this.game.world.bringToTop(this.waveText);
     this.game.world.bringToTop(this.enemyText);
     this.game.world.bringToTop(this.shieldText);
     this.game.world.bringToTop(this.healthText);
+    this.game.world.bringToTop(this.moneyText);
+
+}
+
+HUD.prototype.pauseUpdate = function () {
+    this.game.world.bringToTop(this.panel);
+    this.game.world.bringToTop(this.resume);
+    this.game.world.bringToTop(this.restart);
+    this.game.world.bringToTop(this.exit);
 }
 
 HUD.prototype.waveComplete = function () {

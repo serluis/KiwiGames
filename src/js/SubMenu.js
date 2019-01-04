@@ -13,10 +13,8 @@ var SubMenu = {
 		this.soldierButton = this.game.add.button(290, 190, 'soldadobutton', this.soldierSelection, this);
 		this.medicButton = this.game.add.button(315, 275, 'medicobutton', this.medicSelection, this);
 		this.berserkerButton = this.game.add.button(270, 380, 'berserkerbutton', this.berserkerSelection, this);
-		/*button.onInputOver.add(over, this);
-		button.onInputOut.add(out, this);
-		button.onInputUp.add(up, this);*/
-
+		
+		this.game.camera.flash(0xff0000, 1000);
 	},
 	soldierSelection: function () {
 		config.chosenClass = 1;

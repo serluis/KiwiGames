@@ -7,7 +7,7 @@ function Enemy(game, x, y, imgName, player) {
     Character.call(this, game, x, y, imgName);
 
     this.speed = speed;
-
+    this.maxHealth = 90;
     this.timePerAttack = 3000; // ataca cada X milisegundos
     this.lastAttack = Date.now(); // tiempo desde el ultimo ataque
 

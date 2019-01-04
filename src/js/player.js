@@ -73,7 +73,6 @@ Player.prototype.heal = function (h) {
 }
 
 Player.prototype.render = function () {
-    console.log("Health: " + this.health);
     this.weapon.debug();
 }
 //this.game.state.start('GameOver');//cuando muera player

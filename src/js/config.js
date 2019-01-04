@@ -2,7 +2,14 @@
 
 
 var config = {
+    // global attributes
     chosenClass: 0,
+    maxRounds: 10,
+
+    // money ui
+    dollarY: 150,
+    dollarTextX: 60,
+    dollarTextY: 153,
 
     // rounds ui
     roundMsgX: 400,
@@ -15,12 +22,23 @@ var config = {
     playerY: 590,
 
     // waves ui
-    waveY: 100,
+    waveY: 70,
     waveX: 10,
-    enemyTextX: 90,
-    enemyTextY: 115,
+    enemyTextX: 70,
+    enemyTextY: 87,
     waveTextX: 125,
-    waveTextY: 85,
+    waveTextY: 55,
+
+    //shop
+    shopTextX: 215,
+    shopButtonX: 215,
+    dmgButtonY: 190,
+    dmgShopY: 390,
+    shieldButtonY: 290,
+    shieldShopY: 490,
+    costTextX: 515,
+    dmgCostY: 190,
+    shieldCostY: 290,
 };
 
 module.exports = config;

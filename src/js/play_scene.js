@@ -4,11 +4,12 @@ const Groups = require('./groups.js');
 const Boss = require('./boss.js');
 const PlayerManager = require('./playerManager.js');
 const HUD = require('./hud.js');
+const Shop = require('./shop.js');
 var config = require('./config.js');
 
 /*------------------------------*/
 
-const maxRounds = 10;
+const maxRounds = config.maxRounds;
 
 var PlayScene = {
   preload: function () {
@@ -56,6 +57,7 @@ var PlayScene = {
     // LEVEL MANAGING
     this.round = 0;
     this.killedEnemies = 0;
+    this.money = 0;
     this.timer = this.game.time.create(false);
     this.hudTimer = this.game.time.create(false);
 
@@ -64,11 +66,6 @@ var PlayScene = {
 
     // CAMERA
     this.game.camera.follow(this.player.subClass); // camera attached to player
-    /*this.game.camera.scale.setTo(1.5, 1.5);
-    this.game.camera.bounds.x = this.cameraSize.x * this.game.camera.scale.x;
-    this.game.camera.bounds.y = this.cameraSize.y * this.game.camera.scale.y;
-    this.game.camera.bounds.width = this.cameraSize.width * this.game.camera.scale.x;
-    this.game.camera.bounds.height = this.cameraSize.height * this.game.camera.scale.y;*/
 
     // GROUPS
     this.groups = new Groups(this.game);
@@ -90,10 +87,19 @@ var PlayScene = {
     this.music.play();
     this.music.loopFull();
 
-    //UI cada vez menos cutre
-    this.hud = new HUD(this.game);
+    // UI cada vez menos cutre
+    this.hud = new HUD(this.game, this.music);
+    this.shop = new Shop(this.game, this.player.subClass, this);
+
+    // INPUT
+    this.pause = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC);
+    this.pause.onDown.add(this.hud.pause, this.hud);
+    this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.ESC);
+
 
     // FIRST ROUND
+    this.game.camera.flash(0xff0000, 500);
+    waveInc();
     nextRound();
   },
 
@@ -112,6 +118,7 @@ var PlayScene = {
 
     this.mapCollision();
     this.groups.updateGroups();
+
     if (this.killedEnemies === this.enemiesToSpawn) {
       PlayScene.killedEnemies = 0;
       roundEnded(10000);
@@ -121,6 +128,8 @@ var PlayScene = {
     this.game.world.bringToTop(this.player.subClass);
 
     this.hud.update();
+    this.shop.update();
+    this.hud.pauseUpdate();
     gameOver(this.player.subClass);
   },
 
@@ -153,12 +162,9 @@ var PlayScene = {
 
   render: function () {
     this.hud.healthText.setText(this.player.subClass.health);
+    this.hud.shieldText.setText(this.player.subClass.shield);
+    this.hud.moneyText.setText(this.money);
     this.player.subClass.render();
-  },
-
-  backToMenu: function () {
-    this.music.stop();
-    this.game.state.start('MainMenu');
   },
 
 };
@@ -176,6 +182,7 @@ function bulletEnemyCollision(bullet, enemy) {
     createChoff(enemy);
     PlayScene.hud.enemyText.setText(
       PlayScene.killedEnemies + '/' + PlayScene.enemiesToSpawn);
+    PlayScene.money += 20;
   }
 }
 
@@ -204,8 +211,9 @@ function waveInc() {
   // antes de enseñar esto cerramos la tienda
   // ...
   // aparece cartel de nueva oleada
-  console.log("nueva oleada message");
-  PlayScene.hud.waveIncoming();
+  if (PlayScene.round < maxRounds) {
+    PlayScene.hud.waveIncoming();
+  }
 }
 
 function addSpawnPoint(x, y) {
@@ -218,7 +226,6 @@ function roundProgression() {
     addSpawnPoint(1000, 850);
     addSpawnPoint(1500, 950);
     addSpawnPoint(1500, 700);
-    spawnBoss();
   }
   else if (PlayScene.round === 3) {
     PlayScene.puerta2.kill();
@@ -235,16 +242,24 @@ function roundProgression() {
     addSpawnPoint(1500, 1200);
     spawnBoss();
   }
+  else if (PlayScene.round === 8) {
+    spawnBoss();
+  }
+  else if (PlayScene.round === 9) {
+    spawnBoss();
+    spawnBoss();
+  }
 }
 
 function nextRound() {
   PlayScene.round++;
-  console.log("RONDA: " + PlayScene.round);
-  PlayScene.hud.waveText.setText(PlayScene.round + '/' + maxRounds);
-  PlayScene.enemiesToSpawn = 10 * PlayScene.round;
-  roundSpawn();
-  roundProgression();
-  PlayScene.hud.enemyText.setText(PlayScene.killedEnemies + '/' + PlayScene.enemiesToSpawn);
+  if (PlayScene.round <= maxRounds) {
+    PlayScene.hud.waveText.setText(PlayScene.round + '/' + maxRounds);
+    PlayScene.enemiesToSpawn = 10 * PlayScene.round;
+    roundSpawn();
+    roundProgression();
+    PlayScene.hud.enemyText.setText(PlayScene.killedEnemies + '/' + PlayScene.enemiesToSpawn);
+  }
 }
 
 function spawnEnemy() {
@@ -252,6 +267,7 @@ function spawnEnemy() {
   if (PlayScene.groups.enemies.getFirstExists(false)) {
     var enemy = PlayScene.groups.enemies.getFirstDead();
     enemy.reset(PlayScene.spawnPoint.x, PlayScene.spawnPoint.y);
+    enemy.maxHealth = enemy.maxHealth + PlayScene.round * 10; // life increases by rounds
     enemy.heal(enemy.maxHealth);
     enemy.body.setSize(150, 150);
   }
@@ -262,6 +278,7 @@ function spawnBoss() {
   if (PlayScene.groups.bosses.getFirstExists(false)) {
     var boss = PlayScene.groups.bosses.getFirstDead();
     boss.reset(PlayScene.spawnPoint.x, PlayScene.spawnPoint.y);
+    boss.maxHealth = boss.maxHealth + PlayScene.round * 2; // boss life increase
     boss.heal(boss.maxHealth);
     boss.body.setSize(200, 200);
     PlayScene.enemiesToSpawn += 1;
@@ -282,6 +299,10 @@ function gameOver(player) {
   if (player.health <= 0) {
     PlayScene.game.state.start('GameOver');
     PlayScene.music.stop();
+  }
+  else if (PlayScene.round > maxRounds) {
+    PlayScene.music.stop();
+    PlayScene.game.state.start('youwin');
   }
 }
 

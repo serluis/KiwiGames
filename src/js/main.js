@@ -42,6 +42,11 @@ var PreloaderScene = {
     this.game.load.image('playerui', './assets/images/playerUI.png');
     this.game.load.image('defeat', './assets/images/defeat.png');
     this.game.load.image('shop', './assets/images/shop1.png');
+    this.game.load.image('panel', './assets/images/pausePanel.png');
+    this.game.load.image('volume', './assets/images/volume.png');
+    this.game.load.image('volumebar', './assets/images/volumeBar.png');
+    this.game.load.image('dollar', './assets/images/dollar.png');
+
     //botones
     this.game.load.image('playbutton', './assets/images/playbutton.png');
     this.game.load.image('classbutton', './assets/images/classbutton.png');
@@ -50,16 +55,21 @@ var PreloaderScene = {
     this.game.load.image('exitbutton', './assets/images/exitbutton.png');
     this.game.load.image('berserkerbutton', './assets/images/berserkerbutton.png');
     this.game.load.image('againbutton', './assets/images/againbutton.png');
+    this.game.load.image('resumebutton', './assets/images/resumebutton.png');
+    this.game.load.image('restartbutton', './assets/images/restart.png');
+    this.game.load.image('exitpause', './assets/images/exitbutton1.png');
+    this.game.load.image('dmgup', './assets/images/dmgUp.png');
+    this.game.load.image('shieldup', './assets/images/shieldUp.png');
+    
 
     //muñecos
     this.game.load.image('bullet', './assets/images/red_bullet.png');
     this.game.load.image('zombi', './assets/images/zombi2.png');
-    this.game.load.spritesheet('player', './assets/images/6ZombieSpriteSheet.png', 40, 36);
-    this.game.load.spritesheet('enemy', './assets/images/2ZombieSpriteSheet.png', 40, 36);
     this.game.load.image('zombiBoy', './assets/images/zombiBoy.png');
     this.game.load.image('player', './assets/images/player.png');
     this.game.load.image('Boss', './assets/images/Boss.png');
     this.game.load.image('choff', './assets/images/chof.png');
+
     //music & sounds
     this.game.load.audio('musicaFondo', './assets/sounds/Pentagram.mp3');
     this.game.load.audio('musicaAccion', './assets/sounds/HeavyAction.mp3');
@@ -71,6 +81,7 @@ var PreloaderScene = {
     this.game.load.audio('shotgun2', './assets/sounds/shotgun+Reload.wav');
     this.game.load.audio('Pdolor', './assets/sounds/pain.wav');
     this.game.load.audio('winsound', './assets/sounds/winsound.wav');
+
     //mapa
     this.game.load.tilemap('Map', './assets/images/Mapa.json', null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiledSangre', './assets/images/tilesetsangriento.png');
