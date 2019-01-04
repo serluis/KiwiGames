@@ -19,9 +19,7 @@ var youwin = {
         this.background = this.game.add.image(0, 0, 'youwin');
 
        
-        againbutton = this.game.add.button(325, 440, 'againbutton', this.actionOnClick, this);
-        //this.game.add.audio('winsound').loopFull(1);
-        //var winsound = this.game.add.audio('winsound');
+        againbutton = this.game.add.button(325, 440, 'exitbutton', this.actionOnClick, this, 1, 0, 1);
         this.winsound.play();
     },
     

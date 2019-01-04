@@ -5,6 +5,10 @@ var config = {
     // global attributes
     chosenClass: 0,
     maxRounds: 10,
+    musicVolume: 0.5,
+    entityVolume: 0.5,
+    shotsVolume: 0.28,
+    menuMusic: undefined,
 
     // money ui
     dollarY: 150,
@@ -30,15 +34,20 @@ var config = {
     waveTextY: 55,
 
     //shop
-    shopTextX: 215,
+    shopTextX: 115,
     shopButtonX: 215,
-    dmgButtonY: 190,
+    dmgButtonY: 90,
     dmgShopY: 390,
-    shieldButtonY: 290,
-    shieldShopY: 490,
-    costTextX: 515,
-    dmgCostY: 190,
-    shieldCostY: 290,
+    shieldButtonY: 190,
+    shieldShopY: 440,
+    rateButtonY: 290,
+    rateShopY: 490,
+    costTextX: 470,
+    dmgCostY: 90,
+    shieldCostY: 190,
+    rateCostY: 290,
+    fireRateScaling: 15,
+    shotGunScaling: 30,
 };
 
 module.exports = config;

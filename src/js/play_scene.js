@@ -20,6 +20,7 @@ var PlayScene = {
     this.game.stage.backgroundColor = '#313131';
 
     this.zDmg = this.game.add.audio('Zdolor');
+    this.zDmg.volume = config.entityVolume;
     this.Zhola = this.game.add.audio('Zhola');
 
     this.initializeMap();
@@ -58,6 +59,8 @@ var PlayScene = {
     this.round = 0;
     this.killedEnemies = 0;
     this.money = 0;
+    this.timeBetweenRound = 20000;
+    this.shopTimer = this.game.time.create(false);
     this.timer = this.game.time.create(false);
     this.hudTimer = this.game.time.create(false);
 
@@ -84,6 +87,7 @@ var PlayScene = {
 
     // MUSIC
     this.music = this.game.add.audio('musicaFondo');
+    this.music.volume = config.musicVolume;
     this.music.play();
     this.music.loopFull();
 
@@ -111,7 +115,7 @@ var PlayScene = {
       playerEnemyCollision, null, this);
 
     this.game.physics.arcade.overlap(this.player.subClass.weapon.bullets.children,
-      this.groups.bosses.children, bulletEnemyCollision, null, this);
+      this.groups.bosses.children, bulletBossCollision, null, this);
 
     this.game.physics.arcade.overlap(this.player.subClass, this.groups.bosses.children,
       playerBossCollision, null, this);
@@ -121,7 +125,7 @@ var PlayScene = {
 
     if (this.killedEnemies === this.enemiesToSpawn) {
       PlayScene.killedEnemies = 0;
-      roundEnded(10000);
+      roundEnded(this.timeBetweenRound);
     }
 
     this.game.world.bringToTop(this.player.subClass.weapon.bullets);
@@ -186,6 +190,13 @@ function bulletEnemyCollision(bullet, enemy) {
   }
 }
 
+function bulletBossCollision(bullet, enemy) {
+  bulletEnemyCollision(bullet, enemy);
+  if (enemy.health <= 0) {
+    PlayScene.money += 30;
+  }
+}
+
 function playerEnemyCollision(player, enemy) {
   enemy.attack();
   player.getsDamage(enemy.damage);
@@ -197,7 +208,8 @@ function playerBossCollision(player, Boss) {
 
 function roundEnded(time) {
   //hacer que la tienda exista
-  // ...
+  PlayScene.shopTimer.add(4000, showShop, PlayScene.shop);
+  PlayScene.shopTimer.start();
   // activamos el timer entre rondas
   PlayScene.timer.add(time, nextRound, PlayScene);
   PlayScene.hudTimer.add(time - 1500, waveInc, PlayScene);
@@ -207,9 +219,16 @@ function roundEnded(time) {
   PlayScene.hud.waveComplete();
 }
 
+function showShop() {
+  // abre la tienda
+  PlayScene.game.camera.flash(0x2e2e30, 1000);
+  PlayScene.shop.revive();
+}
+
 function waveInc() {
-  // antes de enseñar esto cerramos la tienda
-  // ...
+  // cierra la tienda
+  PlayScene.game.camera.flash(0x2e2e30, 1000);
+  PlayScene.shop.kill();
   // aparece cartel de nueva oleada
   if (PlayScene.round < maxRounds) {
     PlayScene.hud.waveIncoming();
@@ -267,7 +286,8 @@ function spawnEnemy() {
   if (PlayScene.groups.enemies.getFirstExists(false)) {
     var enemy = PlayScene.groups.enemies.getFirstDead();
     enemy.reset(PlayScene.spawnPoint.x, PlayScene.spawnPoint.y);
-    enemy.maxHealth = enemy.maxHealth + PlayScene.round * 10; // life increases by rounds
+    if (enemy.maxHealth != enemy.maxHealth + PlayScene.round * 10)
+      enemy.maxHealth = enemy.maxHealth + PlayScene.round * 10; // life increases by rounds
     enemy.heal(enemy.maxHealth);
     enemy.body.setSize(150, 150);
   }
@@ -286,7 +306,7 @@ function spawnBoss() {
 }
 
 function roundSpawn() {
-  PlayScene.game.time.events.repeat(500, PlayScene.enemiesToSpawn, spawnEnemy, this);
+  PlayScene.game.time.events.repeat(300, PlayScene.enemiesToSpawn, spawnEnemy, this);
 }
 
 function createChoff(corpse) {

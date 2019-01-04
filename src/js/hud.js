@@ -34,7 +34,7 @@ function HUD(game, music) {
 
     this.enemyText = this.game.add.text(config.enemyTextX, config.enemyTextY, "",
         {
-            font: "30px Arial",
+            font: "14px 8-bit",
             fill: "#ffffff",
             align: "center"
         });
@@ -43,7 +43,7 @@ function HUD(game, music) {
 
     this.waveText = this.game.add.text(config.waveTextX, config.waveTextY, "",
         {
-            font: "20px Arial",
+            font: "10px 8-bit",
             fill: "#ffffff",
             align: "center"
         });
@@ -52,7 +52,7 @@ function HUD(game, music) {
 
     this.moneyText = this.game.add.text(config.dollarTextX, config.dollarTextY, "90/90",
         {
-            font: "30px Arial",
+            font: "18px 8-bit",
             fill: "#ffffff",
             align: "center"
         });
@@ -61,7 +61,7 @@ function HUD(game, music) {
 
     this.healthText = this.game.add.text(config.playerTextX, config.healthTextY, "100",
         {
-            font: "24px Arial",
+            font: "14px 8-bit",
             fill: "#ffffff",
             align: "center"
         });
@@ -70,7 +70,7 @@ function HUD(game, music) {
 
     this.shieldText = this.game.add.text(config.playerTextX, config.shieldTextY, "000",
         {
-            font: "24px Arial",
+            font: "14px 8-bit",
             fill: "#ffffff",
             align: "center"
         });

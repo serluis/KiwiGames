@@ -11,16 +11,12 @@ var GameOver = {
 
     this.game.stage.backgroundColor = '#000000';
     this.background = this.game.add.image(0, 0, 'gameover');
-    againbutton = this.game.add.button(325, 450, 'againbutton', this.actionOnClick, this/*, 2, 1, 0*/);
-
-    /*button.onInputOver.add(over, this);
-    button.onInputOut.add(out, this);
-    button.onInputUp.add(up, this);*/
+    againbutton = this.game.add.button(325, 450, 'exitbutton', this.actionOnClick, this, 1, 0, 1);
 
   },
   actionOnClick: function () {
 
-    this.game.state.start('youwin');
+    this.game.state.start('MainMenu');
   },
 };
 

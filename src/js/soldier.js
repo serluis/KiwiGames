@@ -15,7 +15,6 @@ function Soldier(game, x, y, imgName) {
     this.weapon.bulletAngleVariance = 5;
     this.damage = 20;
 
-    console.log("Im a soldier");
 }
 
 Soldier.prototype = Object.create(Player.prototype);
@@ -24,9 +23,11 @@ Soldier.constructor = Soldier;
 Soldier.prototype.update = function () {
     Player.prototype.update.call(this);
     if (this.controls.shoot.isDown) {
-        this.weapon.fireAtPointer();
-        if (!this.shoot.isPlaying)
+        if (this.controls.shoot.active) {
+            this.weapon.fireAtPointer();
+
             this.shoot.play();
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 'use strict';
 const Character = require('./character.js');
+var config = require('./config.js');
 
 const speed = 75;
 
@@ -12,7 +13,7 @@ function Enemy(game, x, y, imgName, player) {
     this.lastAttack = Date.now(); // tiempo desde el ultimo ataque
 
     this.pDmg = this.game.add.audio('Pdolor'); // el player recibe daño
-
+    this.pDmg.volume = config.entityVolume;
     this.player = player;
 }
 

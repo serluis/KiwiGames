@@ -13,7 +13,7 @@ function Character(game, x, y, imgName) {
     this.shield = 0;
     this.damage = 1;
     this.timePerHeal = 10000; // se puede curar cada X milisegundos
-    this.lastHeal = Date.now(); // tiempo desde la ultima curacion
+    this.lastHeal = 0; // tiempo desde la ultima curacion
 }
 
 Character.prototype = Object.create(Entity.prototype);

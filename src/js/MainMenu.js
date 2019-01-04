@@ -1,70 +1,43 @@
 'use strict'
-//var sound = require('./sound.js');
 var config = require('./config.js');
 
 var MainMenu = {
 
     preload: function () {
-        //this.game.add.audio('musicaFondo').loopFull(1);
         this.ZombieRock = this.game.add.audio('musicaMenu');
-
+        config.menuMusic = this.ZombieRock;
     },
 
     create: function () {
         this.game.stage.backgroundColor = '#182d3b';
+        this.game.camera.flash(0xff0000, 300);
 
-        if (!this.ZombieRock.isPlaying) {
+        if (!config.menuMusic.isPlaying) {
+            this.ZombieRock.volume = config.musicVolume;
             this.ZombieRock.play();
+            this.ZombieRock.loopFull();
+            config.menuMusic = this.ZombieRock;
         }
 
         this.background = this.game.add.image(0, 0, 'menu');
 
-        this.playButton = this.game.add.button(318, 315, 'playbutton', this.playSelection, this/*, 2, 1, 0*/);
-        this.classButton = this.game.add.button(150, 375, 'classbutton', this.classSelection, this);
-        this.exitButton = this.game.add.button(325, 440, 'exitbutton', this.exitSelection, this);
-
-        /*button.onInputOver.add(over, this);
-        button.onInputOut.add(out, this);
-        button.onInputUp.add(up, this);*/
+        this.playButton = this.game.add.button(318, 315, 'playbutton', this.playSelection, this, 1, 0, 1);
+        this.optionButton = this.game.add.button(260, 375, 'optionbutton', this.optionSelection, this, 1, 0, 1);
+        this.controlButton = this.game.add.button(260, 440, 'controlbutton', this.controlSelection, this, 1, 0, 1);
+        config.menuMusic = this.ZombieRock;
 
     },
     playSelection: function () {
-        this.ZombieRock.stop();
-        this.game.state.start('SubMenu');            
-       /* if (config.chosenClass != 0)
-            this.game.state.start('play');
-        else {
-            this.game.state.start('SubMenu');            
-        }*/
-    },
-    classSelection: function () {
-        //this.background.visible =! this.background.visible;
-        this.ZombieRock.stop();
         this.game.state.start('SubMenu');
     },
-    exitSelection: function () {
-        this.ZombieRock.stop();
-        this.game.state.start('GameOver');
+    optionSelection: function () {
+        this.game.state.start('options');
+    },
+    controlSelection: function () {
+        this.game.state.start('controls');
 
     },
-    /*stoped: function() {
-        ZombieRock.onStop.add('soundStopped', this);
-    },
-    soundStopped: function() {
-        ZombieRock.play();
-    },*/
 
 };
-/*function up() {
-    console.log('button up', arguments);
-}
-
-function over() {
-    console.log('button over');
-}
-
-function out() {
-    console.log('button out');
-}*/
 
 module.exports = MainMenu;
