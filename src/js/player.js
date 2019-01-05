@@ -37,6 +37,7 @@ function Player(game, x, y, imgName) {
         if (Date.now() - this.lastHeal > this.timePerHeal) {
             this.lastHeal = Date.now();
             this.heal(this.healStat);
+            config.healOnCD = false;
         }
     }, this);
     game.input.keyboard.removeKeyCapture(Phaser.Keyboard.Q);
@@ -64,6 +65,11 @@ Player.prototype.update = function () {
     }
     if (this.controls.left.isDown) {
         this.body.velocity.x -= this.speed;
+    }
+
+    if (Date.now() - this.lastHeal > this.timePerHeal) {
+        config.healOnCD = true;
+
     }
 }
 

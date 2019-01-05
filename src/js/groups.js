@@ -34,6 +34,8 @@ Groups.prototype.updateGroups = function () {
     this.game.physics.arcade.collide(this.enemies.children, this.enemies.children);
     this.bosses.forEach(this.game.physics.arcade.moveToObject,
         this.game.physics.arcade, false, this.player, this.bosses.speed);
+    this.game.physics.arcade.collide(this.bosses.children, this.bosses.children);
+    
     this.game.world.bringToTop(this.enemies);
     this.game.world.bringToTop(this.bosses);
 }

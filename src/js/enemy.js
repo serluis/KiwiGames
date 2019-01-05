@@ -9,8 +9,8 @@ function Enemy(game, x, y, imgName, player) {
 
     this.speed = speed;
     this.maxHealth = 90;
-    this.timePerAttack = 3000; // ataca cada X milisegundos
-    this.lastAttack = Date.now(); // tiempo desde el ultimo ataque
+    this.timePerAttack = 2000; // ataca cada X milisegundos
+    this.lastAttack = 0; // tiempo desde el ultimo ataque
 
     this.pDmg = this.game.add.audio('Pdolor'); // el player recibe daño
     this.pDmg.volume = config.entityVolume;
@@ -27,7 +27,8 @@ Enemy.prototype.update = function () {
 Enemy.prototype.attack = function () {
     if (Date.now() - this.lastAttack > this.timePerAttack) {
         this.lastAttack = Date.now();
-        this.damage = 20;
+        this.damage = 20 + config.dmgScale;
+        console.log(this.damage);
         this.pDmg.play();
     }
     else {

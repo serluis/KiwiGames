@@ -165,6 +165,7 @@ module.exports = Berserker;
 },{"./config.js":7,"./player.js":17}],5:[function(require,module,exports){
 'use strict'
 const Enemy = require('./enemy.js');
+var config = require('./config.js');
 
 function Boss(game, x, y, imgName, player) {
     Enemy.call(this, game, x, y, imgName, player);
@@ -182,7 +183,7 @@ Boss.constructor = Boss;
 Boss.prototype.attack = function () {
     if (Date.now() - this.lastAttack > this.timePerAttack) {
         this.lastAttack = Date.now();
-        this.damage = 50;
+        this.damage = 50 + config.dmgScale;
         this.pDmg.play();
     }
     else {
@@ -196,7 +197,7 @@ Boss.prototype.update = function () {
 
 module.exports = Boss;
 
-},{"./enemy.js":9}],6:[function(require,module,exports){
+},{"./config.js":7,"./enemy.js":9}],6:[function(require,module,exports){
 'use strict';
 const Entity = require('./entity.js');
 
@@ -275,6 +276,10 @@ var config = {
     shieldTextY: 540,
     playerTextX: 105,
     playerY: 590,
+    healY: 555,
+    healX: 27,
+    healOnCD: false,
+
 
     // waves ui
     waveY: 70,
@@ -283,6 +288,10 @@ var config = {
     enemyTextY: 87,
     waveTextX: 125,
     waveTextY: 55,
+
+    // enemies
+    healthScale: 1.3,
+    dmgScale: 5,
 
     //shop
     shopTextX: 115,
@@ -297,7 +306,7 @@ var config = {
     dmgCostY: 90,
     shieldCostY: 190,
     rateCostY: 290,
-    fireRateScaling: 15,
+    fireRateScaling: 10,
     shotGunScaling: 30,
 };
 
@@ -339,8 +348,8 @@ function Enemy(game, x, y, imgName, player) {
 
     this.speed = speed;
     this.maxHealth = 90;
-    this.timePerAttack = 3000; // ataca cada X milisegundos
-    this.lastAttack = Date.now(); // tiempo desde el ultimo ataque
+    this.timePerAttack = 2000; // ataca cada X milisegundos
+    this.lastAttack = 0; // tiempo desde el ultimo ataque
 
     this.pDmg = this.game.add.audio('Pdolor'); // el player recibe daño
     this.pDmg.volume = config.entityVolume;
@@ -357,7 +366,8 @@ Enemy.prototype.update = function () {
 Enemy.prototype.attack = function () {
     if (Date.now() - this.lastAttack > this.timePerAttack) {
         this.lastAttack = Date.now();
-        this.damage = 20;
+        this.damage = 20 + config.dmgScale;
+        console.log(this.damage);
         this.pDmg.play();
     }
     else {
@@ -420,6 +430,8 @@ Groups.prototype.updateGroups = function () {
     this.game.physics.arcade.collide(this.enemies.children, this.enemies.children);
     this.bosses.forEach(this.game.physics.arcade.moveToObject,
         this.game.physics.arcade, false, this.player, this.bosses.speed);
+    this.game.physics.arcade.collide(this.bosses.children, this.bosses.children);
+    
     this.game.world.bringToTop(this.enemies);
     this.game.world.bringToTop(this.bosses);
 }
@@ -460,6 +472,11 @@ function HUD(game, music) {
     this.playerUI.anchor.setTo(0, 1);
     this.playerUI.scale.setTo(0.5, 0.5);
     this.playerUI.fixedToCamera = true;
+
+    this.healUI = game.add.sprite(config.healX, config.healY, 'heal');
+    this.healUI.anchor.setTo(0.5, 0.5);
+    this.healUI.scale.setTo(0.5, 0.5);
+    this.healUI.fixedToCamera = true;
 
     this.money = game.add.sprite(config.waveX, config.dollarY, 'dollar');
     this.money.anchor.setTo(0, 0.5);
@@ -574,10 +591,13 @@ HUD.prototype.unpause = function () {
 HUD.constructor = HUD;
 
 HUD.prototype.update = function () {
+    this.healUI.exists = config.healOnCD;
+
     this.game.world.bringToTop(this.waveComp);
     this.game.world.bringToTop(this.waveInc);
     this.game.world.bringToTop(this.wave);
     this.game.world.bringToTop(this.playerUI);
+    this.game.world.bringToTop(this.healUI);
     this.game.world.bringToTop(this.money);
 
     this.game.world.bringToTop(this.waveText);
@@ -672,6 +692,7 @@ var PreloaderScene = {
     this.game.load.image('volume', './assets/images/volume.png');
     this.game.load.image('volumebar', './assets/images/volumeBar.png');
     this.game.load.image('dollar', './assets/images/dollar.png');
+    this.game.load.image('heal', './assets/images/heal.png');
 
     //botones
     this.game.load.image('againbutton', './assets/images/againbutton.png');
@@ -1103,6 +1124,7 @@ var PlayScene = {
     this.hud.update();
     this.shop.update();
     this.hud.pauseUpdate();
+
     gameOver(this.player.subClass);
   },
 
@@ -1209,6 +1231,8 @@ function addSpawnPoint(x, y) {
 }
 
 function roundProgression() {
+  config.dmgScale += config.dmgScale;
+
   if (PlayScene.round === 2) {
     PlayScene.puerta3.kill();
     addSpawnPoint(1000, 850);
@@ -1237,6 +1261,11 @@ function roundProgression() {
     spawnBoss();
     spawnBoss();
   }
+  else if (PlayScene.round === 10) {
+    spawnBoss();
+    spawnBoss();
+    spawnBoss();
+  }
 }
 
 function nextRound() {
@@ -1255,8 +1284,8 @@ function spawnEnemy() {
   if (PlayScene.groups.enemies.getFirstExists(false)) {
     var enemy = PlayScene.groups.enemies.getFirstDead();
     enemy.reset(PlayScene.spawnPoint.x, PlayScene.spawnPoint.y);
-    if (enemy.maxHealth != enemy.maxHealth + PlayScene.round * 10)
-      enemy.maxHealth = enemy.maxHealth + PlayScene.round * 10; // life increases by rounds
+    if (enemy.maxHealth != enemy.maxHealth + PlayScene.round * 10 * config.healthScale)
+      enemy.maxHealth = enemy.maxHealth + PlayScene.round * 10 * config.healthScale; // life increases by rounds
     enemy.heal(enemy.maxHealth);
     enemy.body.setSize(150, 150);
   }
@@ -1267,7 +1296,7 @@ function spawnBoss() {
   if (PlayScene.groups.bosses.getFirstExists(false)) {
     var boss = PlayScene.groups.bosses.getFirstDead();
     boss.reset(PlayScene.spawnPoint.x, PlayScene.spawnPoint.y);
-    boss.maxHealth = boss.maxHealth + PlayScene.round * 2; // boss life increase
+    boss.maxHealth = boss.maxHealth + PlayScene.round * 2 * config.healthScale; // boss life increase
     boss.heal(boss.maxHealth);
     boss.body.setSize(200, 200);
     PlayScene.enemiesToSpawn += 1;
@@ -1337,6 +1366,7 @@ function Player(game, x, y, imgName) {
         if (Date.now() - this.lastHeal > this.timePerHeal) {
             this.lastHeal = Date.now();
             this.heal(this.healStat);
+            config.healOnCD = false;
         }
     }, this);
     game.input.keyboard.removeKeyCapture(Phaser.Keyboard.Q);
@@ -1364,6 +1394,11 @@ Player.prototype.update = function () {
     }
     if (this.controls.left.isDown) {
         this.body.velocity.x -= this.speed;
+    }
+
+    if (Date.now() - this.lastHeal > this.timePerHeal) {
+        config.healOnCD = true;
+
     }
 }
 
@@ -1551,7 +1586,7 @@ Shop.prototype.dmgUpClick = function () {
 
         var log = Math.log(this.dmgUpSelec) / Math.log(this.costProg);
         this.dmgUpCost += Math.floor(this.dmgUpCost * log);
-        this.player.damage += Math.floor(this.player.damage * log / 2);
+        this.player.damage += Math.floor(this.player.damage * log / 3);
         this.dmgUpSelec++;
     }
 }
@@ -1596,7 +1631,7 @@ module.exports = Shop;
 
 const Player = require('./player.js');
 
-const fireRate = 100;
+const fireRate = 150;
 const bulletSpeed = 350;
 const bulletLife = 1500;
 

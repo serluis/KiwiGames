@@ -134,6 +134,7 @@ var PlayScene = {
     this.hud.update();
     this.shop.update();
     this.hud.pauseUpdate();
+
     gameOver(this.player.subClass);
   },
 
@@ -240,6 +241,8 @@ function addSpawnPoint(x, y) {
 }
 
 function roundProgression() {
+  config.dmgScale += config.dmgScale;
+
   if (PlayScene.round === 2) {
     PlayScene.puerta3.kill();
     addSpawnPoint(1000, 850);
@@ -268,6 +271,11 @@ function roundProgression() {
     spawnBoss();
     spawnBoss();
   }
+  else if (PlayScene.round === 10) {
+    spawnBoss();
+    spawnBoss();
+    spawnBoss();
+  }
 }
 
 function nextRound() {
@@ -286,8 +294,8 @@ function spawnEnemy() {
   if (PlayScene.groups.enemies.getFirstExists(false)) {
     var enemy = PlayScene.groups.enemies.getFirstDead();
     enemy.reset(PlayScene.spawnPoint.x, PlayScene.spawnPoint.y);
-    if (enemy.maxHealth != enemy.maxHealth + PlayScene.round * 10)
-      enemy.maxHealth = enemy.maxHealth + PlayScene.round * 10; // life increases by rounds
+    if (enemy.maxHealth != enemy.maxHealth + PlayScene.round * 10 * config.healthScale)
+      enemy.maxHealth = enemy.maxHealth + PlayScene.round * 10 * config.healthScale; // life increases by rounds
     enemy.heal(enemy.maxHealth);
     enemy.body.setSize(150, 150);
   }
@@ -298,7 +306,7 @@ function spawnBoss() {
   if (PlayScene.groups.bosses.getFirstExists(false)) {
     var boss = PlayScene.groups.bosses.getFirstDead();
     boss.reset(PlayScene.spawnPoint.x, PlayScene.spawnPoint.y);
-    boss.maxHealth = boss.maxHealth + PlayScene.round * 2; // boss life increase
+    boss.maxHealth = boss.maxHealth + PlayScene.round * 2 * config.healthScale; // boss life increase
     boss.heal(boss.maxHealth);
     boss.body.setSize(200, 200);
     PlayScene.enemiesToSpawn += 1;

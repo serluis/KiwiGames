@@ -24,6 +24,10 @@ var config = {
     shieldTextY: 540,
     playerTextX: 105,
     playerY: 590,
+    healY: 555,
+    healX: 27,
+    healOnCD: false,
+
 
     // waves ui
     waveY: 70,
@@ -32,6 +36,10 @@ var config = {
     enemyTextY: 87,
     waveTextX: 125,
     waveTextY: 55,
+
+    // enemies
+    healthScale: 1.3,
+    dmgScale: 5,
 
     //shop
     shopTextX: 115,
@@ -46,7 +54,7 @@ var config = {
     dmgCostY: 90,
     shieldCostY: 190,
     rateCostY: 290,
-    fireRateScaling: 15,
+    fireRateScaling: 10,
     shotGunScaling: 30,
 };
 

@@ -2,7 +2,7 @@
 
 const Player = require('./player.js');
 
-const fireRate = 100;
+const fireRate = 150;
 const bulletSpeed = 350;
 const bulletLife = 1500;
 

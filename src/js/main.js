@@ -46,6 +46,7 @@ var PreloaderScene = {
     this.game.load.image('volume', './assets/images/volume.png');
     this.game.load.image('volumebar', './assets/images/volumeBar.png');
     this.game.load.image('dollar', './assets/images/dollar.png');
+    this.game.load.image('heal', './assets/images/heal.png');
 
     //botones
     this.game.load.image('againbutton', './assets/images/againbutton.png');

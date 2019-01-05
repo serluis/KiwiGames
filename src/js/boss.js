@@ -1,5 +1,6 @@
 'use strict'
 const Enemy = require('./enemy.js');
+var config = require('./config.js');
 
 function Boss(game, x, y, imgName, player) {
     Enemy.call(this, game, x, y, imgName, player);
@@ -17,7 +18,7 @@ Boss.constructor = Boss;
 Boss.prototype.attack = function () {
     if (Date.now() - this.lastAttack > this.timePerAttack) {
         this.lastAttack = Date.now();
-        this.damage = 50;
+        this.damage = 50 + config.dmgScale;
         this.pDmg.play();
     }
     else {

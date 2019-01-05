@@ -27,6 +27,11 @@ function HUD(game, music) {
     this.playerUI.scale.setTo(0.5, 0.5);
     this.playerUI.fixedToCamera = true;
 
+    this.healUI = game.add.sprite(config.healX, config.healY, 'heal');
+    this.healUI.anchor.setTo(0.5, 0.5);
+    this.healUI.scale.setTo(0.5, 0.5);
+    this.healUI.fixedToCamera = true;
+
     this.money = game.add.sprite(config.waveX, config.dollarY, 'dollar');
     this.money.anchor.setTo(0, 0.5);
     this.money.scale.setTo(0.10, 0.10);
@@ -140,10 +145,13 @@ HUD.prototype.unpause = function () {
 HUD.constructor = HUD;
 
 HUD.prototype.update = function () {
+    this.healUI.exists = config.healOnCD;
+
     this.game.world.bringToTop(this.waveComp);
     this.game.world.bringToTop(this.waveInc);
     this.game.world.bringToTop(this.wave);
     this.game.world.bringToTop(this.playerUI);
+    this.game.world.bringToTop(this.healUI);
     this.game.world.bringToTop(this.money);
 
     this.game.world.bringToTop(this.waveText);

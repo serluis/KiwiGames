@@ -151,7 +151,7 @@ Shop.prototype.dmgUpClick = function () {
 
         var log = Math.log(this.dmgUpSelec) / Math.log(this.costProg);
         this.dmgUpCost += Math.floor(this.dmgUpCost * log);
-        this.player.damage += Math.floor(this.player.damage * log / 2);
+        this.player.damage += Math.floor(this.player.damage * log / 3);
         this.dmgUpSelec++;
     }
 }
