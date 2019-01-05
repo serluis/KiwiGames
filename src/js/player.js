@@ -1,6 +1,7 @@
 'use strict';
 
 const Character = require('./character.js');
+var config = require('./config.js');
 
 const speed = 150;
 
@@ -9,14 +10,16 @@ function Player(game, x, y, imgName) {
     Character.call(this, game, x, y, imgName);
     this.scale.setTo(0.15, 0.15);
     // we create the weapon 
-    this.weapon = game.add.weapon(30, 'bullet');
+    this.weapon = game.add.weapon(100, 'bullet');
     this.weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
     this.weapon.bullets.setAll('anchor.x', 0.5);
     this.weapon.bullets.setAll('anchor.y', 0.5);
     this.weapon.trackSprite(this, 0, 0, true);// the bullets come out from player
     // se puede poner un offset con los 2 numeros
 
+    this.lastShoot = 0;
     this.speed = speed;
+    this.healStat = 25;
 
     this.controls = {
         right: game.input.keyboard.addKey(Phaser.Keyboard.D),
@@ -27,9 +30,17 @@ function Player(game, x, y, imgName) {
         shoot: game.input.activePointer,
     };
 
-    this.controls.heal.onDown.add(Character.prototype.heal, this);
+    this.shoot = this.game.add.audio('shoot');
+    this.shoot.volume = config.shotsVolume;
 
-    console.log("Player created at POS: " + this.x + "," + this.y);
+    this.controls.heal.onDown.add(function () {
+        if (Date.now() - this.lastHeal > this.timePerHeal) {
+            this.lastHeal = Date.now();
+            this.heal(this.healStat);
+        }
+    }, this);
+    game.input.keyboard.removeKeyCapture(Phaser.Keyboard.Q);
+
 }
 
 Player.prototype = Object.create(Character.prototype);
@@ -56,13 +67,11 @@ Player.prototype.update = function () {
     }
 }
 
-Player.prototype.heal = function(h) {
-    Character.prototype.update.heal(this,h);
+Player.prototype.heal = function (h) {
+    Character.prototype.heal.call(this, h);
 }
 
 Player.prototype.render = function () {
-    this.weapon.debug(10, 10, true);
-    console.log("Health: " + this.health);
 }
-//this.game.state.start('GameOver');//cuando muera player
+
 module.exports = Player;

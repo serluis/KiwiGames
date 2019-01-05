@@ -6,13 +6,13 @@ html {
 body {
   padding: 0;
   margin: 0;
-  font-family: Courier, 'Courier New', monospace;/*28 Days Later.ttf*/
+  font-family: '8-bit', cursive;
   font-size: 1.6rem;
   background: #ba1010;
   color: #fff;
-  background-image: url("fondoweb.png");
-  background-repeat: no-repeat;
-  background-size: 2000px 1000px;
+  background-image: url("web.png");
+  background-repeat: repeat;
+  background-size: 1950px 1500px;
 }
 
 a {
@@ -22,11 +22,6 @@ a {
 main {
   margin: 2rem 0;
   text-align: center;
-  /*@font-face {
-    font-family: 28Days;
-    src: url(/assets/fonts/28 Days Later.ttf) format('ttf');
-  }*/
-
 }
 
 #game {
