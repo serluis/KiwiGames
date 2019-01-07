@@ -1016,6 +1016,8 @@ var PlayScene = {
     this.initializeMap();
 
     this.spawnPoints = [{ x: 180, y: 100 }, { x: 300, y: 1000 }, { x: 650, y: 850 }];
+
+    config.dmgScale = 5;
   },
 
   initializeMap: function () {
